@@ -1,0 +1,64 @@
+
+	**********************************************************************************
+	Differences from code in article Linux/Documentation/target/tcmu-design.txt
+	**********************************************************************************
+
+	- All code in one file
+
+	- We need to include some libraries to make it work:
+
+		#include <fcntl.h>                      - for codes O_RDONLY and etc
+		#include <stdlib.h>			- for stroull
+		#include <stdio.h>			- for io
+		#include <unistd.h>			- for open, read, etc
+		#include <string.h>			- for strncmp
+		#include <stdbool.h>			- for bool
+		#include <sys/mman.h>			- for mmap
+		#include <linux/target_core_user.h>	- trivial
+
+	- Need to define codes for SCSI (such as NO_SENSE)
+
+	- Some variable declarations lost in article
+		i.e.: unsigned int ret
+
+	- We must check file-opening error
+		i.e.: if (fd == -1)
+
+	- Type cast (__u32) added for tcmu_hdr_get_len function call
+
+	**********************************************************************************
+	Compilation and execution
+	**********************************************************************************
+
+	Compiled with gcc and clang in terminal
+	Compiled with JetBrains Clion
+
+	Compilation: gcc -o tcmu_example -c tcmu_example.c
+
+	Problem with execution:
+		We'll get exit code 1, because we don't have .../uio0/name file
+
+	Ideas about solution:
+		It's UIO feature. This code is only manager, that works in endless loop and
+		processes operations.
+		To make it work we must have userspace driver with its own device
+		We must register this device with call such as uio_register_device(...)
+		Link: https://lwn.net/Articles/232575/
+
+	**********************************************************************************
+	Plans
+	**********************************************************************************
+
+	Read more about uio. Create our own device and driver code.
+	Make it work with existing tcmu_example code.
+
+	**********************************************************************************
+	Questions
+	**********************************************************************************
+
+	Are we on right way?
+
+
+
+
+
