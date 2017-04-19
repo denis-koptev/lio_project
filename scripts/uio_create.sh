@@ -6,7 +6,8 @@ then echo "Wrong number of arguments. Must be 3: HBA name, storage object name, 
 fi
 
 # maybe it's quite shitty
-#rm -rf /sys/kernel/config/target/core/user_* 
+rmdir /sys/kernel/config/target/core/user_*/*
+rmdir /sys/kernel/config/target/core/user_*
 
 mkdir -p "/sys/kernel/config/target/core/$1/$2"
 
