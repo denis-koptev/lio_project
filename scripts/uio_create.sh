@@ -5,9 +5,7 @@ then echo "Wrong number of arguments. Must be 3: HBA name, storage object name, 
      exit
 fi
 
-# maybe it's quite shitty
-rmdir /sys/kernel/config/target/core/user_*/*
-rmdir /sys/kernel/config/target/core/user_*
+# maybe insert deletion of old versions?
 
 mkdir -p "/sys/kernel/config/target/core/$1/$2"
 
