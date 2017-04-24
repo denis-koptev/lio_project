@@ -40,7 +40,7 @@ int main()
 
 	/* Further checking for subtype also needed here */
 
-	fd = open("/sys/class/uio0/maps/map0/size", O_RDONLY);
+	fd = open("/sys/class/uio/uio0/maps/map0/size", O_RDONLY);
 	ret = read(fd, buf, sizeof(buf));
 
 	if (ret == -1)
