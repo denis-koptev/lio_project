@@ -23,12 +23,19 @@ int main()
 	unsigned int ret = 0;
 
 	fd = open("/sys/class/uio/uio0/name", O_RDONLY);
+
+	if (!fd)
+	{
+		printf("Could not open uio0/name file\n");
+		return 1;
+	}
+
 	ret = read(fd, buf, sizeof(buf));
 
 	if (ret == -1)
 	{
 		printf("Error on read uio0/name\n");
-		return 1;
+		return 2;
 	}
 
 	close(fd);
@@ -41,12 +48,19 @@ int main()
 	/* Further checking for subtype also needed here */
 
 	fd = open("/sys/class/uio/uio0/maps/map0/size", O_RDONLY);
+
+	if (!fd)
+	{
+		printf("Could not open uio0/.../size\n");
+		return 3;
+	}
+
 	ret = read(fd, buf, sizeof(buf));
 
 	if (ret == -1)
 	{
 		printf("Error on read uio0/.../size\n");
-		return 1;
+		return 4;
 	}
 
 	close(fd);
@@ -55,6 +69,13 @@ int main()
 	map_len = strtoull(buf, NULL, 0);
 
 	dev_fd = open("/dev/uio0", O_RDWR);
+
+	if (!dev_fd)
+	{
+		printf("Could not open /dev/uio0\n");
+		return 5;
+	}
+
 	map = mmap(NULL, map_len, PROT_READ|PROT_WRITE, MAP_SHARED, dev_fd, 0);
 
 	while (1) {
@@ -65,7 +86,7 @@ int main()
 	  if (ret == -1)
 	  {
 		printf("Error on read dev_fd\n");
-      	return 1;    
+      	return 6;    
       }
 
 	  handle_device_events(dev_fd, map);
