@@ -1,6 +1,4 @@
-************************************************
-* Creating uio to make lio work with userspace *
-************************************************
+* Creating uio to make lio work with userspace
 
 denis@ubuntu:/sys/kernel/config/target/core$ sudo mkdir user_1
 denis@ubuntu:/sys/kernel/config/target/core/user_1$ sudo mkdir test
