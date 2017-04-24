@@ -28,7 +28,7 @@ int main()
 	if (ret == -1)
 	{
 		printf("Error on read uio0/name\n");
-		return;
+		return 1;
 	}
 
 	close(fd);
@@ -46,7 +46,7 @@ int main()
 	if (ret == -1)
 	{
 		printf("Error on read uio0/.../size\n");
-		return;
+		return 1;
 	}
 
 	close(fd);
@@ -65,7 +65,8 @@ int main()
 	  if (ret == -1)
 	  {
 		printf("Error on read dev_fd\n");
-          }
+      	return 1;    
+      }
 
 	  handle_device_events(dev_fd, map);
 	}
