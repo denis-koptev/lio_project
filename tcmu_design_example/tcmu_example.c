@@ -103,33 +103,39 @@ int handle_device_events(int fd, void *map)
   int did_some_work = 0;
 
   /* Process events from cmd ring until we catch up with cmd_head */
-  while (ent != (void *)mb + mb->cmdr_off + mb->cmd_head) {
+  while (ent != (void *)mb + mb->cmdr_off + mb->cmd_head)
+  {
 
-    if (tcmu_hdr_get_op(ent->hdr.len_op) == TCMU_OP_CMD) {
-      uint8_t *cdb = (void *)mb + ent->req.cdb_off;
-      bool success = true;
+    if (tcmu_hdr_get_op(ent->hdr.len_op) == TCMU_OP_CMD)
+    {
+	    uint8_t *cdb = (void *)mb + ent->req.cdb_off;
+	    bool success = true;
 
-      /* Handle command here. */
-      printf("SCSI opcode: 0x%x\n", cdb[0]);
+	    /* Handle command here. */
+	    printf("SCSI opcode: 0x%x\n", cdb[0]);
 
-      /* Set response fields */
-      if (success)
-        ent->rsp.scsi_status = SCSI_NO_SENSE;
-    	printf("Successfully processed: scsi_no_sense\n", );
-      else {
-        /* Also fill in rsp->sense_buffer here */
-        ent->rsp.scsi_status = SCSI_CHECK_CONDITION;
-        printf("Successfully processed: scsi_check_condition\n", );
-      }
+	    /* Set response fields */
+		if (success)
+	    {
+			ent->rsp.scsi_status = SCSI_NO_SENSE;
+			printf("Successfully processed: scsi_no_sense\n");
+		}
+		else
+		{
+	        /* Also fill in rsp->sense_buffer here */
+	        ent->rsp.scsi_status = SCSI_CHECK_CONDITION;
+	        printf("Successfully processed: scsi_check_condition\n");
+	    }
     }
     else if (tcmu_hdr_get_op(ent->hdr.len_op) != TCMU_OP_PAD) {
-      /* Tell the kernel we didn't handle unknown opcodes */
-      ent->hdr.uflags |= TCMU_UFLAG_UNKNOWN_OP;
-      printf("Unknown opcode\n");
+		/* Tell the kernel we didn't handle unknown opcodes */
+		ent->hdr.uflags |= TCMU_UFLAG_UNKNOWN_OP;
+		printf("Unknown opcode\n");
     }
-    else {
-      /* Do nothing for PAD entries except update cmd_tail */
-    	printf("Do nothing...\n");
+    else
+    {
+		/* Do nothing for PAD entries except update cmd_tail */
+		printf("Do nothing...\n");
     }
 
     /* update cmd_tail */
@@ -139,7 +145,8 @@ int handle_device_events(int fd, void *map)
   }
 
   /* Notify the kernel that work has been finished */
-  if (did_some_work) {
+  if (did_some_work)
+  {
     uint32_t buf = 0;
 
     write(fd, &buf, 4);
