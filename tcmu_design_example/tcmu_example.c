@@ -115,17 +115,21 @@ int handle_device_events(int fd, void *map)
       /* Set response fields */
       if (success)
         ent->rsp.scsi_status = SCSI_NO_SENSE;
+    	printf("Successfully processed: scsi_no_sense\n", );
       else {
         /* Also fill in rsp->sense_buffer here */
         ent->rsp.scsi_status = SCSI_CHECK_CONDITION;
+        printf("Successfully processed: scsi_check_condition\n", );
       }
     }
     else if (tcmu_hdr_get_op(ent->hdr.len_op) != TCMU_OP_PAD) {
       /* Tell the kernel we didn't handle unknown opcodes */
       ent->hdr.uflags |= TCMU_UFLAG_UNKNOWN_OP;
+      printf("Unknown opcode\n");
     }
     else {
       /* Do nothing for PAD entries except update cmd_tail */
+    	printf("Do nothing...\n");
     }
 
     /* update cmd_tail */
