@@ -24,6 +24,13 @@ int main()
 
 	fd = open("/sys/class/uio/uio0/name", O_RDONLY);
 	ret = read(fd, buf, sizeof(buf));
+
+	if (ret == -1)
+	{
+		printf("Error on read uio0/name\n");
+		return;
+	}
+
 	close(fd);
 	buf[ret-1] = '\0'; /* null-terminate and chop off the \n */
 
@@ -33,8 +40,15 @@ int main()
 
 	/* Further checking for subtype also needed here */
 
-	fd = open("/sys/class/uio/%s/maps/map0/size", O_RDONLY);
+	fd = open("/sys/class/uio0/maps/map0/size", O_RDONLY);
 	ret = read(fd, buf, sizeof(buf));
+
+	if (ret == -1)
+	{
+		printf("Error on read uio0/.../size\n");
+		return;
+	}
+
 	close(fd);
 	buf[ret-1] = '\0'; /* null-terminate and chop off the \n */
 
@@ -47,6 +61,11 @@ int main()
 	  char buf[4];
 
 	  int ret = read(dev_fd, buf, 4); /* will block */
+
+	  if (ret == -1)
+	  {
+		printf("Error on read dev_fd\n");
+          }
 
 	  handle_device_events(dev_fd, map);
 	}
