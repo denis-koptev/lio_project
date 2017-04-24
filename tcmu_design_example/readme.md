@@ -5,40 +5,40 @@
 
 * We need to include some libraries to make it work:
 
-for codes O_RDONLY and etc
-`#include <fcntl.h>`
+      for codes O_RDONLY and etc 
+      `#include <fcntl.h>`
 
-for stroull
-`#include <stdlib.h>`
+      for stroull 
+      `#include <stdlib.h>`
 
-for io
-`#include <stdio.h>`
+      for io 
+      `#include <stdio.h>`
 
-for open, read, etc
-`#include <unistd.h>`
+      for open, read, etc 
+      `#include <unistd.h>`
 
-for strncmp
-`#include <string.h>`
+      for strncmp 
+      `#include <string.h>`
 
-for bool
-`#include <stdbool.h>`
+      for bool 
+      `#include <stdbool.h>`
 
-for mmap
-`#include <sys/mman.h>`
+      for mmap 
+      `#include <sys/mman.h>`
 
-trivial
-`#include <linux/target_core_user.h>`
+      trivial 
+      `#include <linux/target_core_user.h>`
 
-for uint32_t
-`#include <stdint.h>`
+      for uint32_t 
+      `#include <stdint.h>`
 
 * Need to define codes for SCSI (such as NO_SENSE)
 
 * Some variable declarations lost in article
-* i.e.: unsigned int ret *
+*i.e.: unsigned int ret*
 
 * We must check file-opening error
-* i.e.: if (fd == -1) *
+*i.e.: if (fd == -1)*
 
 * Type cast (__u32) added for tcmu_hdr_get_len function call
 
