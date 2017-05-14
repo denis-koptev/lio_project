@@ -1,0 +1,1 @@
+/usr/bin/cc  -fPIC  -Wall -std=c99  -shared -Wl,-soname,handler_file.so -o handler_file.so CMakeFiles/handler_file.dir/file_example.c.o 

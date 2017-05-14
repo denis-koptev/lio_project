@@ -1,0 +1,17 @@
+/home/denis/tcmu-runner/CMakeFiles/rebuild_cache.dir
+/home/denis/tcmu-runner/CMakeFiles/edit_cache.dir
+/home/denis/tcmu-runner/CMakeFiles/install/local.dir
+/home/denis/tcmu-runner/CMakeFiles/handler_qcow.dir
+/home/denis/tcmu-runner/CMakeFiles/tcmu-runner.dir
+/home/denis/tcmu-runner/CMakeFiles/install.dir
+/home/denis/tcmu-runner/CMakeFiles/tcmu_static.dir
+/home/denis/tcmu-runner/CMakeFiles/tcmu.dir
+/home/denis/tcmu-runner/CMakeFiles/handler_glfs.dir
+/home/denis/tcmu-runner/CMakeFiles/list_install_components.dir
+/home/denis/tcmu-runner/CMakeFiles/install/strip.dir
+/home/denis/tcmu-runner/CMakeFiles/handler_file.dir
+/home/denis/tcmu-runner/CMakeFiles/cscope.dir
+/home/denis/tcmu-runner/CMakeFiles/consumer.dir
+/home/denis/tcmu-runner/CMakeFiles/tcmu-synthesizer.dir
+/home/denis/tcmu-runner/CMakeFiles/handler_file_optical.dir
+/home/denis/tcmu-runner/CMakeFiles/handler_rbd.dir

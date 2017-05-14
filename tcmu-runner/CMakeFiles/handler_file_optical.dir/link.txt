@@ -1,0 +1,1 @@
+/usr/bin/cc  -fPIC  -Wall -std=c99  -shared -Wl,-soname,handler_file_optical.so -o handler_file_optical.so CMakeFiles/handler_file_optical.dir/file_optical.c.o -lpthread 

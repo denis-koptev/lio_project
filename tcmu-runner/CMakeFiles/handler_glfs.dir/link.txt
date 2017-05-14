@@ -1,0 +1,1 @@
+/usr/bin/cc  -fPIC  -Wall -std=c99  -shared -Wl,-soname,handler_glfs.so -o handler_glfs.so CMakeFiles/handler_glfs.dir/glfs.c.o -lgfapi 

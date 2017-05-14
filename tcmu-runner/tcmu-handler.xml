@@ -1,0 +1,33 @@
+<node>
+  <interface name="org.kernel.TCMUService1">
+    <property name="ConfigDesc" type="s" access="read"/>
+    <!--
+	CheckConfig:
+
+The creation of a TCMU device is decoupled from the discovery and
+use by its backing handler, and there's no good way for errors in
+the handler-specific configstring to be visible to the user when
+creating the device.
+This method lets tools that are creating TCMU devices check
+that the configstring is valid before the device has been created.
+    -->
+    <method name="CheckConfig">
+      <arg type="s" name="configstr" direction="in"/>
+      <arg type="b" name="is_valid" direction="out"/>
+      <arg type="s" name="message" direction="out"/>
+    </method>
+  </interface>
+  <interface name="org.kernel.TCMUService1.HandlerManager1">
+    <method name="RegisterHandler">
+      <arg type="s" name="subtype" direction="in"/>
+      <arg type="s" name="cfgstr_desc" direction="in"/>
+      <arg type="b" name="succeeded" direction="out"/>
+      <arg type="s" name="message" direction="out"/>
+    </method>
+    <method name="UnregisterHandler">
+      <arg type="s" name="subtype" direction="in"/>
+      <arg type="b" name="succeeded" direction="out"/>
+      <arg type="s" name="message" direction="out"/>
+    </method>
+  </interface>
+</node>

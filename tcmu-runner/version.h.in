@@ -1,0 +1,4 @@
+
+#define TCMUR_VERSION "@VERSION@"
+
+#define DEFAULT_HANDLER_PATH "@tcmu-runner_HANDLER_PATH@"
