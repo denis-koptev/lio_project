@@ -10,7 +10,7 @@ Install targetcli
 Install open-iscsi 
 `sudo apt-get install open-iscsi`
 
-If you're createng loop device unstall 
+If you're creating loop device install 
 `sudo apt-get install lvm2`
 
 ### Creating device
@@ -27,6 +27,7 @@ How to create device:
 ### Creating target
 
 First, let target load on every system boot 
+
 * `sudo systemctl start target`
 * `sudo systemctl enable target`
 
@@ -40,6 +41,7 @@ Create iqn for target: `/iscsi create iqn.2017-03.com.example:target`
 *set up by default. But it's better to set your own unique name*
 
 Set-up authentication
+
 * `cd cd /iscsi/iqn…/tpg1/`
 * `set parameter AuthMethod=None`
 * `set attribute authentication=0`
@@ -56,6 +58,7 @@ Add initiator iqn: `acls/ create iqn.1993-08…`
 *Note: iqn.1993-08... - is example. Your real iqn can be found in initiatorname.iscsi*
 
 Create LUN and portal for this configuration:
+
 * `luns/ create /backstores/iblock/storage1`
 * `portals/ create`
 
@@ -69,6 +72,7 @@ Exit: `exit`
 ## Set up initiator
 
 Turn-off firewall:
+
 * `sudo firewall-cmd --permanent --add-port=3260/tcp`
 * `sudo firewall-cmd --reload`
 
