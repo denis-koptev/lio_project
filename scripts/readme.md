@@ -36,3 +36,9 @@
 
 `0x0000000000110000`
 
+## Working with scripts
+
+`sudo sh uio_create.sh user_1 test 4096`
+
+`sudo sh uio_delete.sh user_1 test`
+
