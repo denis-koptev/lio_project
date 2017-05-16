@@ -4,8 +4,8 @@
  * The license of this code is the same as for the source it was derived from.
  */
 
-#ifndef ___HOME_DENIS_TCMU_RUNNER_TCMUHANDLER_GENERATED_H__
-#define ___HOME_DENIS_TCMU_RUNNER_TCMUHANDLER_GENERATED_H__
+#ifndef ___HOME_DENIS_LIO_PROJECT_TCMU_RUNNER_TCMUHANDLER_GENERATED_H__
+#define ___HOME_DENIS_LIO_PROJECT_TCMU_RUNNER_TCMUHANDLER_GENERATED_H__
 
 #include <gio/gio.h>
 
@@ -552,4 +552,4 @@ GDBusObjectManager *object_manager_client_new_for_bus_sync (
 
 G_END_DECLS
 
-#endif /* ___HOME_DENIS_TCMU_RUNNER_TCMUHANDLER_GENERATED_H__ */
+#endif /* ___HOME_DENIS_LIO_PROJECT_TCMU_RUNNER_TCMUHANDLER_GENERATED_H__ */

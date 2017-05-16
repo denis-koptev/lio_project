@@ -1,4 +1,4 @@
-# Install script for directory: /home/denis/tcmu-runner
+# Install script for directory: /home/denis/lio_project/tcmu-runner
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,8 +45,8 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
     endif()
   endforeach()
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES
-    "/home/denis/tcmu-runner/libtcmu.so.1"
-    "/home/denis/tcmu-runner/libtcmu.so"
+    "/home/denis/lio_project/tcmu-runner/libtcmu.so.1"
+    "/home/denis/lio_project/tcmu-runner/libtcmu.so"
     )
   foreach(file
       "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libtcmu.so.1"
@@ -68,12 +68,12 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tcmu-runner"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/denis/tcmu-runner/tcmu-runner")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/denis/lio_project/tcmu-runner/tcmu-runner")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tcmu-runner" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tcmu-runner")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tcmu-runner"
-         OLD_RPATH "/home/denis/tcmu-runner:"
+         OLD_RPATH "/home/denis/lio_project/tcmu-runner:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tcmu-runner")
@@ -88,7 +88,7 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tcmu-runner/handler_rbd.so"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/tcmu-runner" TYPE SHARED_LIBRARY FILES "/home/denis/tcmu-runner/handler_rbd.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/tcmu-runner" TYPE SHARED_LIBRARY FILES "/home/denis/lio_project/tcmu-runner/handler_rbd.so")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tcmu-runner/handler_rbd.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tcmu-runner/handler_rbd.so")
     if(CMAKE_INSTALL_DO_STRIP)
@@ -104,7 +104,7 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tcmu-runner/handler_glfs.so"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/tcmu-runner" TYPE SHARED_LIBRARY FILES "/home/denis/tcmu-runner/handler_glfs.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/tcmu-runner" TYPE SHARED_LIBRARY FILES "/home/denis/lio_project/tcmu-runner/handler_glfs.so")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tcmu-runner/handler_glfs.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tcmu-runner/handler_glfs.so")
     if(CMAKE_INSTALL_DO_STRIP)
@@ -120,7 +120,7 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tcmu-runner/handler_qcow.so"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/tcmu-runner" TYPE SHARED_LIBRARY FILES "/home/denis/tcmu-runner/handler_qcow.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/tcmu-runner" TYPE SHARED_LIBRARY FILES "/home/denis/lio_project/tcmu-runner/handler_qcow.so")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tcmu-runner/handler_qcow.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/tcmu-runner/handler_qcow.so")
     if(CMAKE_INSTALL_DO_STRIP)
@@ -131,9 +131,9 @@ endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE FILE FILES
-    "/home/denis/tcmu-runner/libtcmu.h"
-    "/home/denis/tcmu-runner/libtcmu_common.h"
-    "/home/denis/tcmu-runner/tcmu-runner.h"
+    "/home/denis/lio_project/tcmu-runner/libtcmu.h"
+    "/home/denis/lio_project/tcmu-runner/libtcmu_common.h"
+    "/home/denis/lio_project/tcmu-runner/tcmu-runner.h"
     )
 endif()
 
@@ -146,7 +146,7 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/etc/tcmu" TYPE FILE FILES "/home/denis/tcmu-runner/tcmu.conf")
+file(INSTALL DESTINATION "/etc/tcmu" TYPE FILE FILES "/home/denis/lio_project/tcmu-runner/tcmu.conf")
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
@@ -158,7 +158,7 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/usr/share/dbus-1/system-services" TYPE FILE FILES "/home/denis/tcmu-runner/org.kernel.TCMUService1.service")
+file(INSTALL DESTINATION "/usr/share/dbus-1/system-services" TYPE FILE FILES "/home/denis/lio_project/tcmu-runner/org.kernel.TCMUService1.service")
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
@@ -170,7 +170,7 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/etc/dbus-1/system.d" TYPE FILE FILES "/home/denis/tcmu-runner/tcmu-runner.conf")
+file(INSTALL DESTINATION "/etc/dbus-1/system.d" TYPE FILE FILES "/home/denis/lio_project/tcmu-runner/tcmu-runner.conf")
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
@@ -182,7 +182,7 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/usr/local/share/man/man8" TYPE FILE FILES "/home/denis/tcmu-runner/tcmu-runner.8")
+file(INSTALL DESTINATION "/usr/local/share/man/man8" TYPE FILE FILES "/home/denis/lio_project/tcmu-runner/tcmu-runner.8")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -193,5 +193,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/denis/tcmu-runner/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/denis/lio_project/tcmu-runner/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

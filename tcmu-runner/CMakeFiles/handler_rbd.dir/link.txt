@@ -1,1 +1,0 @@
-/usr/bin/cc  -fPIC  -Wall -std=c99  -shared -Wl,-soname,handler_rbd.so -o handler_rbd.so CMakeFiles/handler_rbd.dir/rbd.c.o -lrbd 

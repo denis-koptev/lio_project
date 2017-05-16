@@ -8,7 +8,7 @@
 #  include "config.h"
 #endif
 
-#include "/home/denis/tcmu-runner/tcmuhandler-generated.h"
+#include "/home/denis/lio_project/tcmu-runner/tcmuhandler-generated.h"
 
 #include <string.h>
 #ifdef G_OS_UNIX

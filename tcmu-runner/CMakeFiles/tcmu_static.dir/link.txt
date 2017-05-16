@@ -1,2 +1,0 @@
-/usr/bin/ar qc libtcmu_static.a  CMakeFiles/tcmu_static.dir/configfs.c.o CMakeFiles/tcmu_static.dir/api.c.o CMakeFiles/tcmu_static.dir/libtcmu.c.o CMakeFiles/tcmu_static.dir/libtcmu-register.c.o CMakeFiles/tcmu_static.dir/tcmuhandler-generated.c.o CMakeFiles/tcmu_static.dir/libtcmu_log.c.o CMakeFiles/tcmu_static.dir/libtcmu_config.c.o
-/usr/bin/ranlib libtcmu_static.a

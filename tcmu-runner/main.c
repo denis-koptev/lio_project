@@ -39,6 +39,7 @@
 #include <scsi/scsi.h>
 
 #include <libkmod.h>
+#include <stdint.h>
 #include <linux/target_core_user.h>
 #include "darray.h"
 #include "tcmu-runner.h"
@@ -456,6 +457,7 @@ static void dbus_name_lost(GDBusConnection *connection,
 	tcmu_dbg("name lost\n");
 }
 
+
 int load_our_module(void) {
 	struct kmod_list *list = NULL, *itr;
 	int err;
@@ -490,6 +492,8 @@ int load_our_module(void) {
 
 	return 0;
 }
+
+
 
 static void cmdproc_thread_cleanup(void *arg)
 {
@@ -674,6 +678,7 @@ static struct option long_options[] = {
 
 int main(int argc, char **argv)
 {
+	printf("Starting\n");
 	int ret;
 	GMainLoop *loop;
 	GIOChannel *libtcmu_gio;
@@ -687,6 +692,8 @@ int main(int argc, char **argv)
 	cfg = tcmu_config_new();
 	tcmu_load_config(cfg, NULL);
 	tcmu_set_log_level(cfg->log_level);
+
+	printf("Configurated\n");
 
 	while (1) {
 		int option_index = 0;
@@ -714,13 +721,21 @@ int main(int argc, char **argv)
 		}
 	}
 
+	printf("Loop ended\n");
+
 	tcmu_dbg("handler path: %s\n", handler_path);
 
+	
 	ret = load_our_module();
 	if (ret < 0) {
 		tcmu_err("couldn't load module\n");
 		exit(1);
 	}
+
+	printf("Module loaded\n");
+	
+
+	printf("Starting to open handlers\n");
 
 	ret = open_handlers();
 	if (ret < 0) {
@@ -728,6 +743,8 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 	tcmu_dbg("%d runner handlers found\n", ret);
+
+	printf("Handlers opened\n");
 
 	/*
 	 * Convert from tcmu-runner's handler struct to libtcmu's
@@ -759,11 +776,15 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
+	printf("tcmu lib was initialized\n");
+
 	ret = sigaction(SIGINT, &tcmu_sigaction, NULL);
 	if (ret) {
 		tcmu_err("couldn't set sigaction\n");
 		exit(1);
 	}
+
+	printf("sigaction was set\n");
 
 	/* Set up event for libtcmu */
 	libtcmu_gio = g_io_channel_unix_new(tcmulib_get_master_fd(tcmulib_context));
@@ -787,6 +808,8 @@ int main(int argc, char **argv)
 	g_bus_unown_name(reg_id);
 	g_main_loop_unref(loop);
 	tcmu_config_destroy(cfg);
+
+	printf("Exiting...");
 
 	return 0;
 }

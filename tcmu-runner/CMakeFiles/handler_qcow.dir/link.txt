@@ -1,1 +1,0 @@
-/usr/bin/cc  -fPIC  -Wall -std=c99  -shared -Wl,-soname,handler_qcow.so -o handler_qcow.so CMakeFiles/handler_qcow.dir/qcow.c.o -lz 
