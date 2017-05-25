@@ -38,7 +38,19 @@
 
 ## Working with scripts
 
+### To create and delete uio
+
 `sudo sh uio_create.sh user_1 test 4096`
 
 `sudo sh uio_delete.sh user_1 test`
+
+### To create target
+
+`sudo sh target_create.sh iqn.2015-05.com.example:target`
+
+### To create lun for uio
+
+`sudo sh lun_create.sh iqn.2015-05.com.example:target user_1 test`
+
+
 
