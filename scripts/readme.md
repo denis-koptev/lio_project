@@ -52,5 +52,30 @@
 
 `sudo sh lun_create.sh iqn.2015-05.com.example:target user_1 test`
 
+## After uio_create
+
+### Directory /sys/devices/tcm_user/uio/uio0 appears
+
+In this dir:
+
+device -> ../../../tcm_user
+
+subsystem -> ../../../../class/uio
+
+name: tcm-user/1/test/baz/addl_info_for_baz_handler
+
+### The same directory (uio0) appears (like a link?) in /sys/devices/tcm_user/uio/
+
+Link to this (tcm_user/uio/uio0) folder appears in: /sys/class/uio
+
+### user_1 folder appears in /sys/kernel/config/target/core
+
+In this folder we have hba_info and hba_mode files and test folder
+
+### Device uio0 appears in /dev
+
+### Problem
+
+Name of the device and info in config contains `baz/addl_info_for_baz_handler` path. It's strange, because we don't have it anywhere
 
 

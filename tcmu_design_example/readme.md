@@ -52,3 +52,9 @@
 * Compilation: gcc -o tcmu_example -c tcmu_example.c
 
 * See uio creation in scripts folder of rep
+
+
+## Problem
+
+With uio0 program pauses trying to read from dev_fd in while cycle.
+Maybe it happens because we don't get any info from uio (nothing to read) or it's busy

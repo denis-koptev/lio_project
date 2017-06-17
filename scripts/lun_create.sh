@@ -22,4 +22,4 @@ cd lun_1
 
 # create symbolic link to uio
 
-sudo ln -s /sys/kernel/config/target/core/$2/$3
+sudo ln -s /dev/uio0

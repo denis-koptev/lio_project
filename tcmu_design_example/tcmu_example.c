@@ -67,6 +67,7 @@ int main()
 	buf[ret-1] = '\0'; /* null-terminate and chop off the \n */
 
 	map_len = strtoull(buf, NULL, 0);
+	printf("map_len: %d\n", map_len);
 
 	dev_fd = open("/dev/uio0", O_RDWR);
 
@@ -81,7 +82,9 @@ int main()
 	while (1) {
 	  char buf[4];
 
+	printf("Trying to block\n");
 	  int ret = read(dev_fd, buf, 4); /* will block */
+	printf("Blocked\n");
 
 	  if (ret == -1)
 	  {
