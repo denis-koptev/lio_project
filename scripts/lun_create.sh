@@ -20,6 +20,6 @@ cd /sys/kernel/config/target/iscsi/$1/tpgt_1/lun
 mkdir lun_1
 cd lun_1
 
-# create symbolic link to uio
+# create symbolic link to device
 
-sudo ln -s /dev/uio0
+sudo ln -s /sys/kernel/config/target/core/$2/$3
