@@ -1,0 +1,235 @@
+1. iscsi target appears: /sys/kernel/target/iscsi/iqn...
+2. In this folder:
+
+drwxr-xr-x 7 root root 0 Jun 22 15:55 fabric_statistics
+drwxr-xr-x 8 root root 0 Jun 22 16:12 tpgt_1
+
+In tpgt_1:
+
+drwxr-xr-x 3 root root    0 Jun 22 15:56 acls
+drwxr-xr-x 2 root root    0 Jun 22 16:03 attrib
+drwxr-xr-x 2 root root    0 Jun 22 16:03 auth
+-r--r--r-- 1 root root 4096 Jun 22 16:14 dynamic_sessions
+-rw-r--r-- 1 root root 4096 Jun 22 15:55 enable (1)
+drwxr-xr-x 3 root root    0 Jun 22 15:56 lun
+drwxr-xr-x 3 root root    0 Jun 22 15:55 np
+drwxr-xr-x 2 root root    0 Jun 22 16:03 param
+
+
+ACLs:
+
+drwxr-xr-x 7 root root 0 Jun 22 16:03 iqn.1993-08.org.debian:01:ef2e26bf3a9e
+
+In this iqn folder
+
+drwxr-xr-x 2 root root    0 Jun 22 16:03 attrib
+drwxr-xr-x 2 root root    0 Jun 22 16:03 auth
+-rw-r--r-- 1 root root 4096 Jun 22 16:14 cmdsn_depth
+drwxr-xr-x 3 root root    0 Jun 22 15:56 fabric_statistics
+-r--r--r-- 1 root root 4096 Jun 22 16:14 info
+drwxr-xr-x 3 root root    0 Jun 22 16:03 lun_0
+drwxr-xr-x 2 root root    0 Jun 22 16:03 param
+-rw-r--r-- 1 root root 4096 Jun 22 16:14 tag
+
+In lun_0 folder
+
+lrwxrwxrwx 1 root root    0 Jun 22 15:56 85acdd3635 -> ../../../../../../../target/iscsi/iqn.2017-06.com.example:target/tpgt_1/lun/lun_0
+drwxr-xr-x 4 root root    0 Jun 22 15:56 statistics
+-rw-r--r-- 1 root root 4096 Jun 22 15:56 write_protect (cat: 0)
+
+Back to tpgt folder
+In attrib folder
+
+-rw-r--r-- 1 root root 4096 Jun 22 15:57 authentication (0)
+-rw-r--r-- 1 root root 4096 Jun 22 16:19 cache_dynamic_acls (0)
+-rw-r--r-- 1 root root 4096 Jun 22 16:19 default_cmdsn_depth (64)
+-rw-r--r-- 1 root root 4096 Jun 22 16:19 default_erl (0)
+-rw-r--r-- 1 root root 4096 Jun 22 16:19 demo_mode_discovery (1)
+-rw-r--r-- 1 root root 4096 Jun 22 16:19 demo_mode_write_protect (1)
+-rw-r--r-- 1 root root 4096 Jun 22 16:19 fabric_prot_type (0)
+-rw-r--r-- 1 root root 4096 Jun 22 16:19 generate_node_acls (0)
+-rw-r--r-- 1 root root 4096 Jun 22 16:19 login_timeout (15)
+-rw-r--r-- 1 root root 4096 Jun 22 16:19 netif_timeout (2)
+-rw-r--r-- 1 root root 4096 Jun 22 16:19 prod_mode_write_protect (0)
+-rw-r--r-- 1 root root 4096 Jun 22 16:19 t10_pi (0)
+-rw-r--r-- 1 root root 4096 Jun 22 16:19 tpg_enabled_sendtargets (1)
+
+Back to tpgt folder
+
+cat enable : 1
+
+In lun folder: lun_0
+In lun_0 folder
+
+-rw-r--r-- 1 root root 4096 Jun 22 16:22 alua_tg_pt_gp
+-rw-r--r-- 1 root root 4096 Jun 22 16:22 alua_tg_pt_offline
+-rw-r--r-- 1 root root 4096 Jun 22 16:22 alua_tg_pt_status
+-rw-r--r-- 1 root root 4096 Jun 22 16:22 alua_tg_pt_write_md
+lrwxrwxrwx 1 root root    0 Jun 22 15:56 bbfb398a4c -> ../../../../../../target/core/fileio_0/test_dev
+drwxr-xr-x 5 root root    0 Jun 22 15:56 statistics
+
+Back to tpgt. In np folder:
+
+drwxr-xr-x 2 root root 0 Jun 22 16:03 0.0.0.0:3260
+
+In this folder
+
+-rw-r--r-- 1 root root 4096 Jun 22 16:26 cxgbit (0)
+-rw-r--r-- 1 root root 4096 Jun 22 16:26 iser (0)
+
+In param folder (back to tpgt)
+
+-rw-r--r-- 1 root root 4096 Jun 22 15:57 AuthMethod (None)
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 DataDigest (CRC32C,None)
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 DataPDUInOrder
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 DataSequenceInOrder
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 DefaultTime2Retain
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 DefaultTime2Wait
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 ErrorRecoveryLevel
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 FirstBurstLength
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 HeaderDigest
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 IFMarker
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 IFMarkInt
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 ImmediateData
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 InitialR2T
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 MaxBurstLength
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 MaxConnections
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 MaxOutstandingR2T
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 MaxRecvDataSegmentLength
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 MaxXmitDataSegmentLength
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 OFMarker
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 OFMarkInt
+-rw-r--r-- 1 root root 4096 Jun 22 16:27 TargetAlias
+
+Go to /sys/kernel/config/target/core
+fileio_0 appears. In this folder
+
+-r--r--r-- 1 root root 4096 Jun 22 16:29 hba_info (HBA Index: 1 plugin: fileio version: v5.0)
+-rw-r--r-- 1 root root 4096 Jun 22 16:29 hba_mode (0)
+drwxr-xr-x 7 root root    0 Jun 22 16:03 test_dev
+
+In test_dev dir
+
+-rw-r--r-- 1 root root 4096 Jun 22 16:30 alias ()
+drwxr-xr-x 3 root root    0 Jun 22 15:54 alua
+-rw-r--r-- 1 root root 4096 Jun 22 16:30 alua_lu_gp (LU Group Alias: default_lu_gp LU Group ID: 0)
+drwxr-xr-x 2 root root    0 Jun 22 16:03 attrib
+--w------- 1 root root 4096 Jun 22 15:54 control (Permission denied, can't read)
+-rw-r--r-- 1 root root 4096 Jun 22 15:54 enable (1)
+-r--r--r-- 1 root root 4096 Jun 22 16:30 info (see later)
+-rw-r--r-- 1 root root 4096 Jun 22 16:30 lba_map ()
+drwxr-xr-x 2 root root    0 Jun 22 15:54 pr
+drwxr-xr-x 5 root root    0 Jun 22 15:54 statistics
+-rw-r--r-- 1 root root 4096 Jun 22 15:54 udev_path (/home/denis/test_file)
+drwxr-xr-x 2 root root    0 Jun 22 16:03 wwn
+
+
+info:
+
+Status: ACTIVATED  Max Queue Depth: 0  SectorSize: 512  HwMaxSectors: 16384
+        TCM FILEIO ID: 0        File: /home/denis/test_file  Size: 1048576  Mode: Buffered-WCE
+
+In alua folder:
+
+drwxr-xr-x 2 root root 0 Jun 22 15:54 default_tg_pt_gp
+
+In this folder:
+
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 alua_access_state
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 alua_access_status
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 alua_access_type
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 alua_support_active_nonoptimized
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 alua_support_active_optimized
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 alua_support_lba_dependent
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 alua_support_offline
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 alua_support_standby
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 alua_support_transitioning
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 alua_support_unavailable
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 alua_write_metadata
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 implicit_trans_secs
+-r--r--r-- 1 root root 4096 Jun 22 16:35 members (iSCSI/iqn.2017-06.com.example:target/tpgt_1/lun_0)
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 nonop_delay_msecs
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 preferred
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 tg_pt_gp_id
+-rw-r--r-- 1 root root 4096 Jun 22 16:35 trans_delay_msecs
+
+Back to test_dev folder
+In attrib folder
+
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 block_size (512)
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 emulate_3pc
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 emulate_caw
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 emulate_dpo
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 emulate_fua_read
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 emulate_fua_write
+-rw-r--r-- 1 root root 4096 Jun 22 15:54 emulate_model_alias
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 emulate_rest_reord
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 emulate_tas
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 emulate_tpu
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 emulate_tpws
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 emulate_ua_intlck_ctrl
+-rw-r--r-- 1 root root 4096 Jun 22 15:54 emulate_write_cache
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 enforce_pr_isids
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 force_pr_aptpl
+-r--r--r-- 1 root root 4096 Jun 22 16:37 hw_block_size (512)
+-r--r--r-- 1 root root 4096 Jun 22 16:37 hw_max_sectors
+-r--r--r-- 1 root root 4096 Jun 22 16:37 hw_pi_prot_type
+-r--r--r-- 1 root root 4096 Jun 22 16:37 hw_queue_depth
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 is_nonrot
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 max_unmap_block_desc_count
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 max_unmap_lba_count
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 max_write_same_len
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 optimal_sectors
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 pi_prot_format
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 pi_prot_type
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 queue_depth
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 unmap_granularity
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 unmap_granularity_alignment
+-rw-r--r-- 1 root root 4096 Jun 22 16:37 unmap_zeroes_data
+
+Back to test_dev folder
+In pr folder
+
+-r--r--r-- 1 root root 4096 Jun 22 16:38 res_aptpl_active
+-rw-r--r-- 1 root root 4096 Jun 22 16:38 res_aptpl_metadata
+-r--r--r-- 1 root root 4096 Jun 22 16:38 res_holder
+-r--r--r-- 1 root root 4096 Jun 22 16:38 res_pr_all_tgt_pts
+-r--r--r-- 1 root root 4096 Jun 22 16:38 res_pr_generation
+-r--r--r-- 1 root root 4096 Jun 22 16:38 res_pr_holder_tg_port
+-r--r--r-- 1 root root 4096 Jun 22 16:38 res_pr_registered_i_pts
+-r--r--r-- 1 root root 4096 Jun 22 16:38 res_pr_type
+-r--r--r-- 1 root root 4096 Jun 22 16:38 res_type
+
+Back to test_dev folder
+In wwn folder
+
+-r--r--r-- 1 root root 4096 Jun 22 16:40 vpd_assoc_logical_unit ()
+-r--r--r-- 1 root root 4096 Jun 22 16:40 vpd_assoc_scsi_target_device ()
+-r--r--r-- 1 root root 4096 Jun 22 16:40 vpd_assoc_target_port ()
+-r--r--r-- 1 root root 4096 Jun 22 16:40 vpd_protocol_identifier ()
+-rw-r--r-- 1 root root 4096 Jun 22 15:54 vpd_unit_serial (T10 VPD Unit Serial Number: e22e4013-6335-405b-9140-dd6ebdb12cfc)
+
+Back to test_dev folder
+Problem: can't open control and read it, because it's protected
+Root can't help. Chmod +r can't help
+
+Back to core folder
+Go to alua folder, then to lu_gps folder, then to default_lu_gps
+
+-rw-r--r-- 1 root root 4096 Jun 22 16:51 lu_gp_id (0)
+-r--r--r-- 1 root root 4096 Jun 22 16:51 members (fileio_0/test_dev)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
