@@ -44,6 +44,8 @@ cd $temp_name
 mkdir $2
 cd $2
 
+echo "Your backstore path: $temp_name/$2"
+
 # configure device
 
 echo "fd_dev_name=$1,fd_dev_size=$3" > control
