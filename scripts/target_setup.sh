@@ -9,26 +9,16 @@ fi
 
 # check args
 
-# create file
-
-touch /home/denis/test_file
-echo 1234567989abcdefg > /home/denis/test_file
-
-# create backstore
-
-cd /sys/kernel/config/target/core
-mkdir fileio_0
-cd fileio_0
-mkdir test_dev
-cd test_dev
-echo "fd_dev_name=/home/denis/test_file,fd_dev_size=1048576" > control
-echo 1 > enable
+if [ $# -ne 2 ]
+	then echo "Wrong number of arguments. Must be 2: target iqn, backstore path"
+	exit
+fi
 
 # create iqn
 
 cd /sys/kernel/config/target/iscsi
-mkdir iqn.2017-06.com.example:target
-cd iqn.2017-06.com.example:target
+mkdir $1
+cd $1
 
 # create target portal group
 
@@ -44,16 +34,20 @@ echo 1 > enable
 cd lun
 mkdir lun_0
 cd lun_0
-ln -s /sys/kernel/config/target/core/fileio_0/test_dev/
+ln -s /sys/kernel/config/target/core/$2
 cd ../..
 
 # create acls
 
 cd acls
-mkdir iqn.1993-08.org.debian:01:ef2e26bf3a9e
+
+init_name=`grep '^InitiatorName=' /etc/iscsi/initiatorname.iscsi | sed 's/\(.*\)InitiatorName=\s*\(.*\)/\1\2/'`
+
+mkdir $init_name
+cd $init_name
 mkdir lun_0
 cd lun_0
-ln -s /sys/kernel/config/target/iscsi/iqn2017-06.com.example\:target/tpgt_1/lun/lun_0/
+ln -s /sys/kernel/config/target/iscsi/$1/tpgt_1/lun/lun_0/
 cd ../../..
 
 # set auth params to None
