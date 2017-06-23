@@ -7,17 +7,19 @@ There are script for file and device creation and for target creation and config
 * Run as root: `su`
 * `cd lio_project/scripts/fileio_configuration`
 * Using fileio_create script you must specify path and name for file, device name and size: 
-`sh fileio_create.sh /home/denis/Desktop/target_file file_dev 1024'
+`sh fileio_create.sh /home/denis/Desktop/target_file file_dev 1024`
 * File on desktop appears, device folders in sysfs appears (/sys/kernel/config/target/core/fileio_#/file_dev)
 * Script will print your path to backstore (will be used later)
 
 ### Let's create file on initiator side
 
-For example, wi'll be able to dd from this file to scsi dev
+For example, we'll be able to dd from this file to scsi dev
 
-cd /home/denis/Desktop
-touch init_file
-echo Hello World > init_file
+`cd /home/denis/Desktop`
+
+`touch init_file`
+
+`echo Hello World > init_file`
 
 ### Configuring target
 
