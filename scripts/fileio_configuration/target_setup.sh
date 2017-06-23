@@ -9,16 +9,17 @@ fi
 
 # check args
 
-if [ $# -ne 2 ]
-	then echo "Wrong number of arguments. Must be 2: target iqn, backstore path"
+if [ $# -ne 1 ]
+	then echo "Wrong number of arguments. Must be 1: backstore path"
 	exit
 fi
 
 # create iqn
 
 cd /sys/kernel/config/target/iscsi
-mkdir $1
-cd $1
+iqn_name=iqn.$(date +%Y-%m).com.test:target-$(date +%d-%H-%M)
+mkdir $iqn_name
+cd $iqn_name
 
 # create target portal group
 
@@ -34,7 +35,7 @@ echo 1 > enable
 cd lun
 mkdir lun_0
 cd lun_0
-ln -s /sys/kernel/config/target/core/$2
+ln -s /sys/kernel/config/target/core/$1
 cd ../..
 
 # create acls
@@ -47,7 +48,7 @@ mkdir $init_name
 cd $init_name
 mkdir lun_0
 cd lun_0
-ln -s /sys/kernel/config/target/iscsi/$1/tpgt_1/lun/lun_0/
+ln -s /sys/kernel/config/target/iscsi/$iqn_name/tpgt_1/lun/lun_0/
 cd ../../..
 
 # set auth params to None
