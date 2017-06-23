@@ -25,9 +25,9 @@ For example, we'll be able to dd from this file to scsi dev
 
 Use target_setup script from lio_project/scripts/fileio_configuration
 
-* You need to specify target iqn (i.e.: iqn.2017-88.com.example:target)
+* You don't need to specify iqn for target (it will be formed using date and time)
 * You need to specify path to backstore (in this example: fileio_3/file_dev)
-* Usage: `sh target_setup.sh iqn.2017-88.com.example:target fileio_3/file_dev`
+* Usage: `sh target_setup.sh fileio_3/file_dev`
 * Entries in sysfs appears (/sys/kernel/config/target/iscsi/iqn.../tpgt_1/...)
 
 ### Let's connect target with open-iscsi initiator
@@ -36,15 +36,15 @@ Use target_setup script from lio_project/scripts/fileio_configuration
 
 `root@debian:/# iscsiadm -m discovery -t sendtargets -p 0.0.0.0`
 
-`127.0.0.1:3260,1 iqn.2017-88.com.example:target`
+`127.0.0.1:3260,1 iqn.2017-06.com.example:target-23-06-00`
 
 * Connect
 
 `root@debian:/# iscsiadm -m node -p 127.0.0.1 --login`
 
-`Logging in to [iface: default, target: iqn.2017-88.com.example:target, portal: 127.0.0.1,3260] (multiple)`
+`Logging in to [iface: default, target: iqn.2017-06.com.example:target-23-06-00, portal: 127.0.0.1,3260] (multiple)`
 
-`Login to [iface: default, target: iqn.2017-88.com.example:target, portal: 127.0.0.1,3260] successful.`
+`Login to [iface: default, target: iqn.2017-06.com.example:target-23-06-00, portal: 127.0.0.1,3260] successful.`
 
 * Check
 
