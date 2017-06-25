@@ -10,7 +10,7 @@ fi
 # check args
 
 if [ $# -ne 2 ]
-	then echo "Wrong number of arguments. Must be 3: dir/blockdev_name, iblock dev name"
+	then echo "Wrong number of arguments. Must be 2: dir/block_file, iblock dev name"
 	exit
 fi
 
@@ -18,14 +18,31 @@ fi
 
 truncate --size 10M $1
 dev_path=`losetup --find --show $1`
-vgcreate vol_group $dev_path
-lvcreate --size 4M --name log_vol vol_group
+
+cd /dev
+
+vg_name=vol_group_
+idx=0
+
+# If file already exists, find next dir_name that is not yet taken
+while true; do
+    temp_name=$vg_name$idx
+    if [ ! -d $temp_name ]; then
+        break
+    fi
+    idx=$(($idx + 1))
+done
+vg_name=$temp_name
+
+vgcreate $vg_name $dev_path
+
+lvcreate --size 4M --name log_vol $vg_name
 
 # create backstore for target
 
 cd /sys/kernel/config/target/core
 
-# generate next fileio folder
+# generate next iblock folder
 
 dir_name=iblock_
 idx=0
@@ -50,6 +67,5 @@ echo "Your backstore path: $temp_name/$2"
 
 # configure device
 
-#echo "fd_dev_name=$1,fd_dev_size=$3" > control ???
-echo "udev_path=/dev/vol_group/log_vol"
+echo "udev_path=/dev/$vg_name/log_vol" > control
 echo 1 > enable
