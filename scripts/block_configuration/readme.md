@@ -2,6 +2,7 @@
 
 * Script block_create.sh creates logical volume and scsi backstore
 * Script target_setup.sh creates target, tpg, acl and lun
+* Used libraries: lvm2, open-iscsi
 
 ### Device creation
 
@@ -15,7 +16,7 @@
 
 * This script should be run as root `su`
 
-* Running this scrip you need to specify directory and name for file and name for backstore device
+* Running this script you need to specify directory and name for file and name for backstore device
 
 * In this example:  `sh block_create.sh /home/iscsi_files/test_file test_block`
 
