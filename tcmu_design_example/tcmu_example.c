@@ -79,21 +79,21 @@ int main()
 
 	map = mmap(NULL, map_len, PROT_READ|PROT_WRITE, MAP_SHARED, dev_fd, 0);
 
-	while (1) {
-	  char buf[4];
+	//while (1) {
+	char cmd_buf[4];
 
 	printf("Trying to block\n");
-	  int ret = read(dev_fd, buf, 4); /* will block */
+	int block_ret = read(dev_fd, cmd_buf, 4); /* will block */
 	printf("Blocked\n");
 
-	  if (ret == -1)
-	  {
+	if (block_ret == -1)
+	{
 		printf("Error on read dev_fd\n");
       	return 6;    
-      }
+    }
 
-	  handle_device_events(dev_fd, map);
-	}
+	handle_device_events(dev_fd, map);
+	//}
 
 	return 0;
 
@@ -129,6 +129,7 @@ int handle_device_events(int fd, void *map)
 	        ent->rsp.scsi_status = SCSI_CHECK_CONDITION;
 	        printf("Successfully processed: scsi_check_condition\n");
 	    }
+	    break;
     }
     else if (tcmu_hdr_get_op(ent->hdr.len_op) != TCMU_OP_PAD) {
 		/* Tell the kernel we didn't handle unknown opcodes */
