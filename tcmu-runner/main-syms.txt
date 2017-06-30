@@ -1,5 +1,0 @@
-{
-	tcmur_register_handler;
-	errp;
-	dbgp;
-};
