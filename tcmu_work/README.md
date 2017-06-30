@@ -53,7 +53,7 @@ tcmu-runner is a special "API" for tcmu usage and writing handlers for scsi comm
 ### Creating uio
 
 * Run script uio_create.sh as root and specify hba-name, dev-name and size
-* Example: sh uio_create.sh user_1 test 4096
+* Example: `sh uio_create.sh user_1 test 4096`
 
 *Note: hba-name has its own strict structure user_x*
 
