@@ -159,8 +159,9 @@ tcmu-runner is a special "API" for tcmu usage and writing handlers for scsi comm
 
 * On the other hand: surprising thing
 
-		We were running all scripts from 'lio_project/tcmu_work'
-		After all work file 'test' appears here with content: 'Hello World'
+		We were running tcmu-runner from /home/<user_name>
+		After uio creation file 'test' appears here.
+		After dd content of this file: 'Hello World'
 
 ### Finishing
 
