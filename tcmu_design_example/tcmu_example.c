@@ -79,21 +79,21 @@ int main()
 
 	map = mmap(NULL, map_len, PROT_READ|PROT_WRITE, MAP_SHARED, dev_fd, 0);
 
-	//while (1) {
-	char cmd_buf[4];
+	while (1) {
+		char cmd_buf[4];
 
-	printf("Trying to block\n");
-	int block_ret = read(dev_fd, cmd_buf, 4); /* will block */
-	printf("Blocked\n");
+		printf("Trying to block\n");
+		int block_ret = read(dev_fd, cmd_buf, 4); /* will block */
+		printf("Blocked\n");
 
-	if (block_ret == -1)
-	{
-		printf("Error on read dev_fd\n");
-      	return 6;    
-    }
+		if (block_ret == -1)
+		{
+			printf("Error on read dev_fd\n");
+	      	return 6;    
+	    }
 
-	handle_device_events(dev_fd, map);
-	//}
+		handle_device_events(dev_fd, map);
+	}
 
 	return 0;
 
@@ -120,8 +120,13 @@ int handle_device_events(int fd, void *map)
 	    /* Set response fields */
 		if (success)
 	    {
-			ent->rsp.scsi_status = SCSI_NO_SENSE;
+			ent->rsp.scsi_status = SCSI_NO_SENSE; // need it?
 			printf("Successfully processed: scsi_no_sense\n");
+			switch cdb[0] {
+				case 0x12: // process inquiry
+					
+					break;
+			}
 		}
 		else
 		{
@@ -129,7 +134,6 @@ int handle_device_events(int fd, void *map)
 	        ent->rsp.scsi_status = SCSI_CHECK_CONDITION;
 	        printf("Successfully processed: scsi_check_condition\n");
 	    }
-	    break;
     }
     else if (tcmu_hdr_get_op(ent->hdr.len_op) != TCMU_OP_PAD) {
 		/* Tell the kernel we didn't handle unknown opcodes */
