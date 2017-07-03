@@ -132,8 +132,8 @@ static int file_read(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 {
 
 	printf(">>> [FILE] file_read\n");
-	//char * str = (char *)iov->iov_base;
-	//printf("	content: %s\n", str);
+	/*char * str = (char *)iov->iov_base;
+	printf("	content: %s\n", str);*/
 	printf("	cfgstring: %s, wwn: %s\n", 
 		tcmu_get_dev_cfgstring(dev), tcmu_get_wwn(dev));
 	printf("	command: 0x%x\n", cmd->cdb[0]);
@@ -143,8 +143,7 @@ static int file_read(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 	for (int i = 0; i < bytes; i++) {
 		printf("%x ", cmd->cdb[i]);
 	}
-	printf("\n");
-	printf("	length: %lu, offset: %ld\n", length, offset);
+	printf("	length: %lu, offset: %ld, iov_cnt: %lu\n", length, offset, iov_cnt);
 
 	struct file_state *state = tcmu_get_dev_private(dev);
 	size_t remaining = length;
@@ -167,6 +166,7 @@ static int file_read(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 
 		tcmu_seek_in_iovec(iov, ret);
 		offset += ret;
+		printf("	new offset: %ld\n", offset);
 		remaining -= ret;
 	}
 	ret = SAM_STAT_GOOD;
@@ -181,8 +181,8 @@ static int file_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 {
 
 	printf(">>> [FILE] file_write\n");
-	//char * str = (char *)iov->iov_base;
-	//printf("	content: %s\n", str);
+	/*char * str = (char *)iov->iov_base;
+	printf("	content: %s\n", str);*/
 	printf("	cfgstring: %s, wwn: %s\n", 
 		tcmu_get_dev_cfgstring(dev), tcmu_get_wwn(dev));
 	printf("	command: 0x%x\n", cmd->cdb[0]);
@@ -192,8 +192,7 @@ static int file_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 	for (int i = 0; i < bytes; i++) {
 		printf("%x ", cmd->cdb[i]);
 	}
-	printf("\n");
-	printf("	length: %lu, offset: %ld\n", length, offset);
+	printf("	length: %lu, offset: %ld, iov_cnt: %lu\n", length, offset, iov_cnt);
 
 	struct file_state *state = tcmu_get_dev_private(dev);
 	size_t remaining = length;
@@ -209,6 +208,7 @@ static int file_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 		}
 		tcmu_seek_in_iovec(iov, ret);
 		offset += ret;
+		printf("	new offset: %ld\n", offset);
 		remaining -= ret;
 	}
 	ret = SAM_STAT_GOOD;

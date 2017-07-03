@@ -1,7 +1,7 @@
 #!/bin/sh
 
-echo "Script not ready yet"
-exit
+#echo "Script not ready yet"
+#exit
 
 if [ $# -ne 3 ]
 then echo "Wrong number of arguments. Must be 3: HBA name, storage object name, size"
@@ -12,7 +12,7 @@ mkdir -p "/sys/kernel/config/target/core/$1/$2"
 
 cd /sys/kernel/config/target/core/$1/$2
 echo -n dev_size=$3 > control
-echo -n dev_config=glfs/$2 > control
+echo -n dev_config="glfs/sda@denis-linux/glfs_test" > control # doesn't work
 echo -n 1 > enable
 
 echo "Your backstore directory: $1/$2"
