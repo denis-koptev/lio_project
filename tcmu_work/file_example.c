@@ -49,6 +49,9 @@ struct file_state {
 
 static bool file_check_config(const char *cfgstring, char **reason)
 {
+
+	printf(">>> [FILE] file_check_config (cfgstring: %s)\n", cfgstring);
+
 	char *path;
 	int fd;
 
@@ -78,6 +81,9 @@ static bool file_check_config(const char *cfgstring, char **reason)
 
 static int file_open(struct tcmu_device *dev)
 {
+	printf(">>> [FILE] file_open (cfgstring: %s, wwn: %s)\n", 
+		tcmu_get_dev_cfgstring(dev), tcmu_get_wwn(dev));
+
 	struct file_state *state;
 	char *config;
 
@@ -111,6 +117,9 @@ err:
 
 static void file_close(struct tcmu_device *dev)
 {
+	printf(">>> [FILE] file_close (cfgstring: %s, wwn: %s)\n", 
+		tcmu_get_dev_cfgstring(dev), tcmu_get_wwn(dev));
+
 	struct file_state *state = tcmu_get_dev_private(dev);
 
 	close(state->fd);
@@ -121,6 +130,22 @@ static int file_read(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 		     struct iovec *iov, size_t iov_cnt, size_t length,
 		     off_t offset)
 {
+
+	printf(">>> [FILE] file_read\n");
+	//char * str = (char *)iov->iov_base;
+	//printf("	content: %s\n", str);
+	printf("	cfgstring: %s, wwn: %s\n", 
+		tcmu_get_dev_cfgstring(dev), tcmu_get_wwn(dev));
+	printf("	command: 0x%x\n", cmd->cdb[0]);
+
+	int bytes = tcmu_get_cdb_length(cmd->cdb);
+	printf("	content: ");
+	for (int i = 0; i < bytes; i++) {
+		printf("%x ", cmd->cdb[i]);
+	}
+	printf("\n");
+	printf("	length: %lu, offset: %ld\n", length, offset);
+
 	struct file_state *state = tcmu_get_dev_private(dev);
 	size_t remaining = length;
 	ssize_t ret;
@@ -155,10 +180,20 @@ static int file_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 		      off_t offset)
 {
 
-	printf("[DEBUG PRINT] WRITE OPERATION\n");
+	printf(">>> [FILE] file_write\n");
+	//char * str = (char *)iov->iov_base;
+	//printf("	content: %s\n", str);
+	printf("	cfgstring: %s, wwn: %s\n", 
+		tcmu_get_dev_cfgstring(dev), tcmu_get_wwn(dev));
+	printf("	command: 0x%x\n", cmd->cdb[0]);
 
-	char * str = (char *)iov->iov_base;
-	printf("[CONTENT] %s\n", str);
+	int bytes = tcmu_get_cdb_length(cmd->cdb);
+	printf("	content: ");
+	for (int i = 0; i < bytes; i++) {
+		printf("%x ", cmd->cdb[i]);
+	}
+	printf("\n");
+	printf("	length: %lu, offset: %ld\n", length, offset);
 
 	struct file_state *state = tcmu_get_dev_private(dev);
 	size_t remaining = length;
@@ -184,6 +219,17 @@ done:
 
 static int file_flush(struct tcmu_device *dev, struct tcmulib_cmd *cmd)
 {
+	printf(">>> [FILE] file_flush (cfgstring: %s, wwn: %s)\n", 
+		tcmu_get_dev_cfgstring(dev), tcmu_get_wwn(dev));
+	printf("	command: 0x%x\n", cmd->cdb[0]);
+
+	int bytes = tcmu_get_cdb_length(cmd->cdb);
+	printf("	content: ");
+	for (int i = 0; i < bytes; i++) {
+		printf("%x ", cmd->cdb[i]);
+	}
+	printf("\n");
+
 	struct file_state *state = tcmu_get_dev_private(dev);
 	int ret;
 
@@ -220,5 +266,7 @@ static struct tcmur_handler file_handler = {
 /* Entry point must be named "handler_init". */
 int handler_init(void)
 {
+	printf(">>> [FILE] handler_init\n");
+
 	return tcmur_register_handler(&file_handler);
 }
