@@ -10,6 +10,9 @@ tcmu-runner is a special "API" for tcmu usage and writing handlers for scsi comm
 * Then `make`
 * Ensure, that target_core_user module is loaded (lsmod)
 * If not, load it from /lib/modules/<kernel version>/kernel/drivers/target
+
+*Note: otherwise, tcmu-runner should load it*
+
 * Copy `tcmu-runner.conf` to `/etc/dbus-1/system.d/`. This allows tcmu-runner to be on the system bus, which is privileged.
 * If using systemd, copy `org.kernel.TCMUService1.service` to `/usr/share/dbus-1/system-services/` and `tcmu-runner.service` to `/lib/systemd/system`.
 * Copy tcmu-runner executable from tcmu-runner folder to /usr/bin/
@@ -64,6 +67,8 @@ tcmu-runner is a special "API" for tcmu usage and writing handlers for scsi comm
 
 		2017-06-30 12:53:37.379 3091 [DEBUG] dev_added:656 test: Got block_size 512, size in bytes 4096
 		2017-06-30 12:53:37.379 3091 [DEBUG] file_open:103 : config file/test
+		
+* After that, tcmu-runner will detect this and create file (test) in dir where it's running
 
 * In targetcli:
 
@@ -146,8 +151,10 @@ tcmu-runner is a special "API" for tcmu usage and writing handlers for scsi comm
 		0+1 records in
 		0+1 records out
 		12 bytes copied, 0.0105804 s, 1.1 kB/s
+		
+* To control write operation some debug prints were added to file_example.c (tcmu-runner)
 
-* But tcmu-runner still cannot handle this:
+* But tcmu-runner still cannot handle some commands:
 
 		...
 		2017-06-30 13:06:33.650 3091 [DEBUG] handle_inquiry:1815 test: no enabled ports found. Skipping ALUA support
@@ -157,11 +164,16 @@ tcmu-runner is a special "API" for tcmu usage and writing handlers for scsi comm
 		2017-06-30 13:06:33.650 3091 [DEBUG_SCSI_CMD] tcmu_cdb_debug_info:1026 : 28 0 0 0 0 0 0 0 8 0 
 		2017-06-30 13:06:33.651 3091 [DEBUG_SCSI_CMD] tcmu_cdb_debug_info:1026 : 0 0 0 0 0 0 	
 
-* On the other hand: surprising thing
+* On the other hand, debug prints:
 
-		We were running tcmu-runner from /home/<user_name>
-		After uio creation file 'test' appears here.
-		After dd content of this file: 'Hello World'
+		2017-07-03 11:43:21.487 18062 [DEBUG_SCSI_CMD] tcmu_cdb_debug_info:1026 : 28 0 0 0 0 0 0 0 8 0 
+		[DEBUG PRINT] WRITE OPERATION
+		[CONTENT] Hello World
+		
+* Content of test file:
+
+		root@denis-linux:~/Desktop/tcmu-runner# cat test
+		Hello World
 
 ### Finishing
 
