@@ -222,17 +222,17 @@ tcmu-runner is a special "API" for tcmu usage and writing handlers for scsi comm
 
 ### Connecting to it
 
-`root@denis-linux:~/Desktop/lio_project/tcmu_work# iscsiadm -m discovery -t sendtargets -p 127.0.0.1`
+`# iscsiadm -m discovery -t sendtargets -p 127.0.0.1`
 
 		127.0.0.1:3260,1 iqn.2017-07.com.test:target-05-15-52
 		127.0.0.1:3260,1 iqn.2017-07.com.test:target-05-15-53
 		
-`root@denis-linux:~/Desktop/lio_project/tcmu_work# iscsiadm -m node -T iqn.2017-07.com.test:target-05-15-52 -p 127.0.0.1 --login`
+`# iscsiadm -m node -T iqn.2017-07.com.test:target-05-15-52 -p 127.0.0.1 --login`
 
 		Logging in to [iface: default, target: iqn.2017-07.com.test:target-05-15-52, portal: 127.0.0.1,3260] (multiple)
 		Login to [iface: default, target: iqn.2017-07.com.test:target-05-15-52, portal: 127.0.0.1,3260] successful.
 		
-`root@denis-linux:~/Desktop/lio_project/tcmu_work# lsscsi`
+`# lsscsi`
 
 		[0:0:0:0]    disk    VMware,  VMware Virtual S 1.0   /dev/sda 
 		[2:0:0:0]    cd/dvd  NECVMWar VMware IDE CDR10 1.00  /dev/sr0 
