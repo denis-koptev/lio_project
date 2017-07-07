@@ -308,3 +308,38 @@ tcmu-runner is a special "API" for tcmu usage and writing handlers for scsi comm
 	| 0 0 0 0 0 0                                 | test unit ready    |
 	| 0 0 0 0 0 0                                 | test unit ready    |
 	|------------------------------------------------------------------| 
+
+## tcmu-runner
+
+### Inquiry (0x12) processing
+
+1. main.c: tcmur_cmdproc_thread
+2. tcmur_cmd_handler.c: tcmur_generic_handle_cmd
+3. tcmur_cmd_handler.c: handle_generic_cmd (case INQUIRY)
+4. tcmur_cmd_handler.c: handle_inquiry
+5. list.h: list_head_init
+6. alua.c: tcmu_get_tgt_port_grps (..., result: struct list_head)
+7. if. tcmu_set_sense_data
+8. else. api.c: tcmu_emulate_inquiry
+9. in our example: emulate_evpd_inquiry (api.c)
+10. Later actions depends on what data placed in cdb[2]:
+
+	0x0:
+		
+	0x80:
+	0x83:
+	0xb0:
+	0xb1:
+	0xb2:
+	default:
+	...
+
+We have in login:
+
+	12 0 0 0 24 0 
+	12 1 0 0 ff 0 
+	12 1 80 0 ff 0
+	12 1 83 0 ff 0
+	12 1 0 0 40 0   
+	12 1 b0 0 40 0  
+	12 1 0 0 40 0   
