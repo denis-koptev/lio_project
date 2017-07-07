@@ -238,4 +238,73 @@ tcmu-runner is a special "API" for tcmu usage and writing handlers for scsi comm
 	[2:0:0:0]    cd/dvd  NECVMWar VMware IDE CDR10 1.00  /dev/sr0 
 	[3:0:0:0]    disk    LIO-ORG  TCMU device      0002  /dev/sdb 
 	[3:0:0:1]    disk    LIO-ORG  TCMU device      0002  /dev/sdc 
+	
+### While logging in
 
+	|---------------------------------------------|--------------------|
+	| CDB                                         | COMMAND TYPE       |
+	|---------------------------------------------|--------------------|
+	| 12 0 0 0 24 0                               | inquiry            |
+	| 12 1 0 0 ff 0                               | inquiry            |
+	| 12 1 80 0 ff 0                              | inquiry            |
+	| 12 1 83 0 ff 0                              | inquiry            |
+	| 0 0 0 0 0 0                                 | test unit ready    |
+	| 9e 10 0 0 0 0 0 0 0 0 0 0 0 20 0 0          | service action in  |
+	| 12 1 0 0 40 0                               | inquiry            |
+	| 12 1 b0 0 40 0                              | inquiry            |
+	| 12 1 0 0 40 0                               | inquiry            |
+	| 12 1 b1 0 40 0                              | inquiry            |
+	| 1a 0 3f 0 4 0                               | mode sense         |
+	| 1a 0 8 0 4 0                                | mode sense         |
+	| a3 c 1 12 0 0 0 0 2 0 0 0 (not supported)   | maintenance in     |
+	| a3 c 1 93 0 0 0 0 2 0 0 0 (not supported)   | maintenance in     |
+	| a3 c 1 41 0 0 0 0 2 0 0 0 (not supported)   | maintenance in     |
+	| 0 0 0 0 0 0                                 | test unit ready    |
+	| 9e 10 0 0 0 0 0 0 0 0 0 0 0 20 0 0          | service action in  |
+	| 12 1 0 0 40 0                               | inquiry            |
+	| 12 1 b0 0 40 0                              | inquiry            |
+	| 12 1 0 0 40 0                               | inquiry            |
+	| 12 1 b1 0 40 0                              | inquiry            |
+	| 1a 0 3f 0 4 0                               | mode sense         |
+	| 1a 0 8 0 4 0                                | mode sense         |
+	| a3 c 1 12 0 0 0 0 2 0 0 0 (not supported)   | maintenance in     |
+	| a3 c 1 93 0 0 0 0 2 0 0 0 (not supported)   | maintenance in     |
+	| a3 c 1 41 0 0 0 0 2 0 0 0 (not supported)   | maintenance in     |
+	| 28 0 0 0 0 0 0 0 8 0                        | read               |
+	| 0 0 0 0 0 0                                 | test unit ready    |
+	| 9e 10 0 0 0 0 0 0 0 0 0 0 0 20 0 0          | service action in  |
+	| 12 1 0 0 40 0                               | inquiry            |
+	| 12 1 b0 0 40 0                              | inquiry            |
+	| 12 1 0 0 40 0                               | inquiry            |
+	| 12 1 b1 0 40 0                              | inquiry            |
+	| 1a 0 3f 0 4 0                               | mode sense         |
+	| 1a 0 8 0 4 0                                | mode sense         |
+	| a3 c 1 12 0 0 0 0 2 0 0 0 (not supported)   | maintenance in     |
+	| a3 c 1 93 0 0 0 0 2 0 0 0 (not supported)   | maintenance in     |
+	| a3 c 1 41 0 0 0 0 2 0 0 0 (not supported)   | maintenance in     |
+	| 28 0 0 0 0 0 0 0 8 0                        | read               |
+	| 0 0 0 0 0 0                                 | test unit ready    |
+	| 0 0 0 0 0 0                                 | test unit ready    |
+	| 9e 10 0 0 0 0 0 0 0 0 0 0 0 20 0 0          | service action in  |
+	| 12 1 0 0 40 0                               | inquiry            |
+	| 12 1 b0 0 40 0                              | inquiry            |
+	| 12 1 0 0 40 0                               | inquiry            |
+	| 12 1 b1 0 40 0                              | inquiry            |
+	| 1a 0 3f 0 4 0                               | mode sense         |
+	| 1a 0 8 0 4 0                                | mode sense         |
+	| a3 c 1 12 0 0 0 0 2 0 0 0 (not supported)   | maintenance in     |
+	| a3 c 1 93 0 0 0 0 2 0 0 0 (not supported)   | maintenance in     |
+	| a3 c 1 41 0 0 0 0 2 0 0 0 (not supported)   | maintenance in     |
+	| 12 0 0 0 fe 0                               | inquiry            |
+	| 0 0 0 0 0 0                                 | test unit ready    |
+	| 12 1 0 0 fe 0                               | inquiry            |
+	| 12 1 80 0 fe 0                              | inquiry            |
+	| 12 1 83 0 fe 0                              | inquiry            |
+	| 0 0 0 0 0 0                                 | test unit ready    |
+	| 28 0 0 0 0 0 0 0 8 0                        | read               |
+	| 0 0 0 0 0 0                                 | test unit ready    |
+	| 85 6 20 0 5 0 fe 0 0 0 0 0 0 40 ef 0 (n.s.) | ATA pass-through   |
+	| 85 8 e 0 0 0 1 0 0 0 0 0 0 40 ec 0  (n.s.)  | ATA pass-through   |
+	| 0 0 0 0 0 0                                 | test unit ready    |
+	| 0 0 0 0 0 0                                 | test unit ready    |
+	|------------------------------------------------------------------| 
