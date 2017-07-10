@@ -124,7 +124,8 @@ int handle_device_events(int fd, void *map)
 			printf("Successfully processed: scsi_no_sense\n");
 			switch cdb[0] {
 				case 0x12: // process inquiry
-					
+					ent->rsp.scsi_status = 0x00; //GOOD
+					printf("INQUIRY HANDLED: GOOD\n");
 					break;
 			}
 		}
