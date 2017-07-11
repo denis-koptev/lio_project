@@ -106,8 +106,8 @@ int handle_device_events(int fd, void *map)
   int did_some_work = 0;
 
   /* Process events from cmd ring until we catch up with cmd_head */
-  while (ent != (void *)mb + mb->cmdr_off + mb->cmd_head)
-  {
+  //while (ent != (void *)mb + mb->cmdr_off + mb->cmd_head)
+  //{
 
     if (tcmu_hdr_get_op(ent->hdr.len_op) == TCMU_OP_CMD)
     {
@@ -122,7 +122,7 @@ int handle_device_events(int fd, void *map)
 	    {
 			ent->rsp.scsi_status = SCSI_NO_SENSE; // need it?
 			printf("Successfully processed: scsi_no_sense\n");
-			switch cdb[0] {
+			switch (cdb[0]) {
 				case 0x12: // process inquiry
 					ent->rsp.scsi_status = 0x00; //GOOD
 					printf("INQUIRY HANDLED: GOOD\n");
@@ -151,7 +151,7 @@ int handle_device_events(int fd, void *map)
     mb->cmd_tail = (mb->cmd_tail + tcmu_hdr_get_len((__u32)&ent->hdr)) % mb->cmdr_size;
     ent = (void *) mb + mb->cmdr_off + mb->cmd_tail;
     did_some_work = 1;
-  }
+  //}
 
   /* Notify the kernel that work has been finished */
   if (did_some_work)
