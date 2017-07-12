@@ -1,0 +1,39 @@
+tcmulib_callback : /home/denis/Desktop/tcmu-runner/main.c 
+tcmulib_master_fd_ready : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+handle_netlink : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+log_internal : /home/denis/Desktop/tcmu-runner/libtcmu_log.c 
+remove_device : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+lookup_dev_by_name : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+dev_removed : /home/denis/Desktop/tcmu-runner/main.c 
+tcmu_get_daemon_dev_private : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+cleanup_io_work_queue_threads : /home/denis/Desktop/tcmu-runner/tcmur_aio.c 
+tcmu_get_runner_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmu_get_dev_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmu_get_daemon_dev_private : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+cancel_thread : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+_cleanup_mutex_lock : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+cancel_thread : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+_cleanup_mutex_lock : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmulib_cleanup_cmdproc_thread : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+cancel_thread : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+cmdproc_thread_cleanup : /home/denis/Desktop/tcmu-runner/main.c 
+tcmu_get_runner_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmu_get_dev_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+file_close : /home/denis/Desktop/tcmu-runner/file_example.c 
+tcmu_get_dev_private : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+cleanup_io_work_queue : /home/denis/Desktop/tcmu-runner/tcmur_aio.c 
+tcmu_get_daemon_dev_private : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+cleanup_aio_tracking : /home/denis/Desktop/tcmu-runner/tcmur_aio.c 
+
+// After ctrl+C
+
+^Csighandler : /home/denis/Desktop/tcmu-runner/main.c 
+tcmulib_cleanup_all_cmdproc_threads : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmu_cancel_log_thread : /home/denis/Desktop/tcmu-runner/libtcmu_log.c 
+cancel_log_thread : /home/denis/Desktop/tcmu-runner/libtcmu_log.c 
+log_thread_cleanup : /home/denis/Desktop/tcmu-runner/libtcmu_log.c 
+close_syslog : /home/denis/Desktop/tcmu-runner/libtcmu_log.c 
+close_fd : /home/denis/Desktop/tcmu-runner/libtcmu_log.c 
+close_fd : /home/denis/Desktop/tcmu-runner/libtcmu_log.c 
+
+

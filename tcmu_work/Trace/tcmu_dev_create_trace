@@ -1,47 +1,45 @@
-[TRACE] tcmulib_callback : /home/denis/Desktop/tcmu-runner/main.c
-[TRACE] tcmulib_master_fd_ready : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] handle_netlink : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmu_dbg_message : /home/denis/Desktop/tcmu-runner/libtcmu_log.c
-[TRACE] log_internal : /home/denis/Desktop/tcmu-runner/libtcmu_log.c
-[TRACE] add_device : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] find_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] file_check_config : /home/denis/Desktop/tcmu-runner/file_example.c
-[TRACE] dev_added : /home/denis/Desktop/tcmu-runner/main.c
-[TRACE] tcmu_get_runner_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmu_get_dev_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmu_set_daemon_dev_private : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmu_get_attribute : /home/denis/Desktop/tcmu-runner/configfs.c
-[TRACE] tcmu_get_cfgfs_int : /home/denis/Desktop/tcmu-runner/configfs.c
-[TRACE] tcmu_set_dev_block_size : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmu_get_device_size : /home/denis/Desktop/tcmu-runner/configfs.c
-[TRACE] tcmu_set_dev_num_lbas : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmu_get_attribute : /home/denis/Desktop/tcmu-runner/configfs.c
-[TRACE] tcmu_get_cfgfs_int : /home/denis/Desktop/tcmu-runner/configfs.c
-[TRACE] tcmu_set_dev_max_xfer_len : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmu_dbg_message : /home/denis/Desktop/tcmu-runner/libtcmu_log.c
-[TRACE] log_internal : /home/denis/Desktop/tcmu-runner/libtcmu_log.c
-[TRACE] setup_io_work_queue : /home/denis/Desktop/tcmu-runner/tcmur_aio.c
-[TRACE] tcmu_get_runner_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmu_get_dev_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmu_get_daemon_dev_private : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] setup_aio_tracking : /home/denis/Desktop/tcmu-runner/tcmur_aio.c
-[TRACE] file_open : /home/denis/Desktop/tcmu-runner/file_example.c
-[TRACE] tcmu_set_dev_private : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmu_get_dev_cfgstring : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmu_get_dev_cfgstring : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmu_dbg_message : /home/denis/Desktop/tcmu-runner/libtcmu_log.c
-[TRACE] log_internal : /home/denis/Desktop/tcmu-runner/libtcmu_log.c
-[TRACE] tcmulib_start_cmdproc_thread : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmur_cmdproc_thread : /home/denis/Desktop/tcmu-runner/main.c
-[TRACE] tcmu_get_runner_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmu_get_dev_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmulib_processing_start : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmulib_get_next_command : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] device_cmd_tail : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] device_cmd_head : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] tcmu_get_dev_fd : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] io_work_queue : /home/denis/Desktop/tcmu-runner/tcmur_aio.c
-[TRACE] tcmu_get_daemon_dev_private : /home/denis/Desktop/tcmu-runner/libtcmu.c
-[TRACE] io_work_queue : /home/denis/Desktop/tcmu-runner/tcmur_aio.c
-[TRACE] tcmu_get_daemon_dev_private : /home/denis/Desktop/tcmu-runner/libtcmu.c
+tcmulib_callback : /home/denis/Desktop/tcmu-runner/main.c 
+tcmulib_master_fd_ready : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+handle_netlink : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+log_internal : /home/denis/Desktop/tcmu-runner/libtcmu_log.c 
+add_device : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+find_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+file_check_config : /home/denis/Desktop/tcmu-runner/file_example.c 
+dev_added : /home/denis/Desktop/tcmu-runner/main.c 
+tcmu_get_runner_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmu_get_dev_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmu_set_daemon_dev_private : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmu_get_attribute : /home/denis/Desktop/tcmu-runner/configfs.c 
+tcmu_get_cfgfs_int : /home/denis/Desktop/tcmu-runner/configfs.c 
+tcmu_set_dev_block_size : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmu_get_device_size : /home/denis/Desktop/tcmu-runner/configfs.c 
+tcmu_set_dev_num_lbas : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmu_get_attribute : /home/denis/Desktop/tcmu-runner/configfs.c 
+tcmu_get_cfgfs_int : /home/denis/Desktop/tcmu-runner/configfs.c 
+tcmu_set_dev_max_xfer_len : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+log_internal : /home/denis/Desktop/tcmu-runner/libtcmu_log.c 
+setup_io_work_queue : /home/denis/Desktop/tcmu-runner/tcmur_aio.c 
+tcmu_get_runner_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmu_get_dev_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmu_get_daemon_dev_private : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+setup_aio_tracking : /home/denis/Desktop/tcmu-runner/tcmur_aio.c 
+file_open : /home/denis/Desktop/tcmu-runner/file_example.c 
+tcmu_set_dev_private : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmu_get_dev_cfgstring : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmu_get_dev_cfgstring : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+log_internal : /home/denis/Desktop/tcmu-runner/libtcmu_log.c 
+darray_next_alloc : /home/denis/Desktop/tcmu-runner/darray.h 
+darray_next_alloc : /home/denis/Desktop/tcmu-runner/darray.h 
+tcmur_cmdproc_thread : /home/denis/Desktop/tcmu-runner/main.c 
+tcmu_get_runner_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmu_get_dev_handler : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmulib_processing_start : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmulib_get_next_command : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+device_cmd_tail : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+device_cmd_head : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+tcmu_get_dev_fd : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+io_work_queue : /home/denis/Desktop/tcmu-runner/tcmur_aio.c 
+tcmu_get_daemon_dev_private : /home/denis/Desktop/tcmu-runner/libtcmu.c 
+io_work_queue : /home/denis/Desktop/tcmu-runner/tcmur_aio.c 
+tcmu_get_daemon_dev_private : /home/denis/Desktop/tcmu-runner/libtcmu.c 
 
