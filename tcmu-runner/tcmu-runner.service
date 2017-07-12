@@ -1,0 +1,8 @@
+[Unit]
+Description=LIO Userspace-passthrough daemon
+
+[Service]
+Type=dbus
+BusName=org.kernel.TCMUService1
+KillMode=process
+ExecStart=/usr/bin/tcmu-runner

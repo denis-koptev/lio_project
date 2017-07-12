@@ -1,0 +1,1 @@
+/usr/bin/cc  -fPIC  -Wall -std=c99  -shared -Wl,-soname,handler_alloc.so -o handler_alloc.so CMakeFiles/handler_alloc.dir/alloc_example.c.o 
