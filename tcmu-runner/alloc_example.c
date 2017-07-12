@@ -56,7 +56,7 @@ struct alloc_state {
 	char * buf;
 	ssize_t ptr;
 	ssize_t size;
-}
+};
 
 
 static bool alloc_check_config(const char *cfgstring, char **reason)

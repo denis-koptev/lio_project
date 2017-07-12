@@ -9,7 +9,7 @@ mkdir -p "/sys/kernel/config/target/core/$1/$2"
 
 cd /sys/kernel/config/target/core/$1/$2
 echo -n dev_size=$3 > control
-echo -n dev_config=alloc > control
+echo -n dev_config=alloc/$2 > control
 echo -n 1 > enable
 
 echo "Your backstore directory: $1/$2"
