@@ -343,3 +343,103 @@ We have in login:
 	12 1 0 0 40 0   
 	12 1 b0 0 40 0  
 	12 1 0 0 40 0   
+
+### Running tcmu-runner with alloc handler
+
+Alloc handler doesn't have any file as a device.
+Instead of it this handler uses programmatically allocated memory
+This git has it's own tcmu-runner with new alloc handler
+Glfs, qcow and rbd handlers were removed
+All dependencies have been already writen to makefiles
+You can build tcmu-runner as it was described earlier:
+
+	# cmake .
+	# make
+	# ./tcmu-runner --handler-path $(pwd)
+	
+After that
+
+* Run script: `sh alloc_create.sh user_1 test 4096`
+* After that no file will be created, but memory will be allocatred in program
+
+Instead of file descriptor this handler stores another struct:
+
+	struct alloc_state {
+		char * buf;
+		ssize_t ptr;
+		ssize_t size;
+	};
+	
+This struct will be connected to tcmu-device after creation
+alloc_open script has a few changes from file_create script.
+
+Actually, alloc device don't need to have cfgstring, so, check is ommited
+
+*Note: maybe we should ask for buffer size in configstring*
+
+* Run script: `sh target_setup.sh user_1/test`
+
+Result can be seen via targetcli:
+
+	/> ls
+	o- / ..................................................................... [...]
+	  o- backstores .......................................................... [...]
+	  | o- block .............................................. [Storage Objects: 0]
+	  | o- fileio ............................................. [Storage Objects: 0]
+	  | o- pscsi .............................................. [Storage Objects: 0]
+	  | o- ramdisk ............................................ [Storage Objects: 0]
+	  | o- user:alloc ......................................... [Storage Objects: 1]
+	  | | o- test ........................................ [test (4.0KiB) activated]
+	  | o- user:file .......................................... [Storage Objects: 0]
+	  o- iscsi ........................................................ [Targets: 1]
+	  | o- iqn.2017-07.com.test:target-12-17-27 .......................... [TPGs: 1]
+	  |   o- tpg1 ........................................... [no-gen-acls, no-auth]
+	  |     o- acls ...................................................... [ACLs: 1]
+	  |     | o- iqn.1993-08.org.debian:01:ef2e26bf3a9e ........... [Mapped LUNs: 1]
+	  |     |   o- mapped_lun0 ............................... [lun0 user/test (rw)]
+	  |     o- luns ...................................................... [LUNs: 1]
+	  |     | o- lun0 .................................................. [user/test]
+	  |     o- portals ................................................ [Portals: 1]
+	  |       o- 0.0.0.0:3260 ................................................. [OK]
+	  o- loopback ..................................................... [Targets: 0]
+	  o- vhost ........................................................ [Targets: 0]
+
+* Connect to dev via iscsiadm and use dd to read and write
+
+*Note: here will be described some details and problems*
+
+Read and write ops are processed using memcpy:
+
+	struct alloc_state *state = tcmu_get_dev_private(dev);
+
+	int amount = 0;
+	if (iov->iov_len > state->size) {
+		amount = state->size;
+	} else {
+		amount = iov->iov_len;
+	}
+
+	memcpy(iov->iov_base, state->buf, amount);
+
+	ssize_t ret;
+	ret = SAM_STAT_GOOD;
+	cmd->done(dev, cmd, ret);
+
+When we dd to tcmu-dev and then dd from it to a file we have sth like this:
+
+	This is more longer Hello World string than it was later
+	shmO"- autofsV. hidraw0/disk0 block1sda52sda23sda1
+										    4sr05sda6bsg27
+	rtc
+	*8char9bus�: 
+	stderr
+	�; 
+	stdout
+	�< 
+	stdin
+	...
+	
+So, data was transferred, but with a lot of rubbish after it.
+
+
+
