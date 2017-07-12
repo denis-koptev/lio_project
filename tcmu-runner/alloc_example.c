@@ -66,6 +66,10 @@ static bool alloc_check_config(const char *cfgstring, char **reason)
 	 * Because we operate with allocated memory inside this handler
 	 */
 
+	/*
+	 * Or maybe ask for buf size in config?
+	 */
+
 	return true;
 }
 
@@ -81,39 +85,18 @@ static int alloc_open(struct tcmu_device *dev)
 
 	tcmu_set_dev_private(dev, state);
 
+	state->buf = malloc(sizeof(char) * 4096); // just for a while
+	state->size = 4096;
+	state->ptr = 0;
+
+	if (!state->buf)
+		return -ENOMEM;
+
 	/*
 	 * Need to allocate some memory at start??
 	 */
 
-	/*struct file_state *state;
-	char *config;
-
-	state = calloc(1, sizeof(*state));
-	if (!state)
-		return -ENOMEM;
-
-	tcmu_set_dev_private(dev, state);
-
-	config = strchr(tcmu_get_dev_cfgstring(dev), '/');
-	if (!config) {
-		tcmu_err("no configuration found in cfgstring\n");
-		goto err;
-	}
-	config += 1; // get past '/' 
-
-	state->fd = open(config, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
-	if (state->fd == -1) {
-		tcmu_err("could not open %s: %m\n", config);
-		goto err;
-	}
-
-	tcmu_dbg("config %s\n", tcmu_get_dev_cfgstring(dev));*/
-
 	return 0;
-
-/*err:
-	free(state);
-	return -EINVAL;*/
 }
 
 static void alloc_close(struct tcmu_device *dev)
@@ -133,10 +116,6 @@ static int alloc_read(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 {
 
 	printf(">>> [ALLOC] alloc_read\n");
-
-	char * str = (char *)iov->iov_base;
-	printf("\n[DATA OUTPUT BEGIN]\n%s\n[DATA OUTPUT END]\n", str);
-
 	printf(">>> [ALLOC] command: ");
 	int bytes = tcmu_get_cdb_length(cmd->cdb);
 	for (int i = 0; i < bytes; i++) {
@@ -144,32 +123,19 @@ static int alloc_read(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 	}
 	printf("\n");
 
-	/*struct file_state *state = tcmu_get_dev_private(dev);
-	size_t remaining = length;*/
+	struct alloc_state *state = tcmu_get_dev_private(dev);
+
+	int amount = 0;
+	if (iov->iov_len > state->size) {
+		amount = state->size;
+	} else {
+		amount = iov->iov_len;
+	}
+
+	memcpy(iov->iov_base, state->buf, amount);
+
 	ssize_t ret;
-
-	/*while (remaining) {
-		ret = preadv(state->fd, iov, iov_cnt, offset);
-		if (ret < 0) {
-			tcmu_err("read failed: %m\n");
-			ret = tcmu_set_sense_data(cmd->sense_buf, MEDIUM_ERROR,
-						  ASC_READ_ERROR, NULL);
-			goto done;
-		}
-
-		if (ret == 0) {
-			// EOF, then zeros the iovecs left 
-			tcmu_zero_iovec(iov, iov_cnt);
-			break;
-		}
-
-		tcmu_seek_in_iovec(iov, ret);
-		offset += ret;
-		printf("	new offset: %ld\n", offset);
-		remaining -= ret;
-	}*/
 	ret = SAM_STAT_GOOD;
-done:
 	cmd->done(dev, cmd, ret);
 	return 0;
 }
@@ -180,10 +146,6 @@ static int alloc_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 {
 
 	printf(">>> [ALLOC] alloc_write\n");
-
-	char * str = (char *)iov->iov_base;
-	printf("\n[DATA INPUT BEGIN]\n%s\n[DATA INPUT END]\n", str);
-
 	printf(">>> [ALLOC] command: ");
 	int bytes = tcmu_get_cdb_length(cmd->cdb);
 	for (int i = 0; i < bytes; i++) {
@@ -191,25 +153,19 @@ static int alloc_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 	}
 	printf("\n");
 
-	/*struct file_state *state = tcmu_get_dev_private(dev);
-	size_t remaining = length;*/
-	ssize_t ret;
+	struct alloc_state *state = tcmu_get_dev_private(dev);
 
-	/*while (remaining) {
-		ret = pwritev(state->fd, iov, iov_cnt, offset);
-		if (ret < 0) {
-			tcmu_err("write failed: %m\n");
-			ret = tcmu_set_sense_data(cmd->sense_buf, MEDIUM_ERROR,
-						  ASC_WRITE_ERROR, NULL);
-			goto done;
-		}
-		tcmu_seek_in_iovec(iov, ret);
-		offset += ret;
-		printf("	new offset: %ld\n", offset);
-		remaining -= ret;
-	}*/
+	int amount = 0;
+	if (iov->iov_len > state->size) {
+		amount = state->size;
+	} else {
+		amount = iov->iov_len;
+	}
+
+	memcpy(state->buf, iov->iov_base, amount);
+
+	ssize_t ret;
 	ret = SAM_STAT_GOOD;
-done:
 	cmd->done(dev, cmd, ret);
 	return 0;
 }
@@ -226,17 +182,8 @@ static int alloc_flush(struct tcmu_device *dev, struct tcmulib_cmd *cmd)
 	}
 	printf("\n");
 
-	/*struct file_state *state = tcmu_get_dev_private(dev);*/
 	int ret;
-
-	/*if (fsync(state->fd)) {
-		tcmu_err("sync failed\n");
-		ret = tcmu_set_sense_data(cmd->sense_buf, MEDIUM_ERROR,
-					  ASC_WRITE_ERROR, NULL);
-		goto done;
-	}*/
 	ret = SAM_STAT_GOOD;
-done:
 	cmd->done(dev, cmd, ret);
 	return 0;
 }
