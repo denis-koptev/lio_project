@@ -85,7 +85,9 @@ static int alloc_open(struct tcmu_device *dev)
 
 	tcmu_set_dev_private(dev, state);
 
-	state->buf = malloc(sizeof(char) * 4096); // just for a while
+	printf(">>> [ALLOC] dev size: %lli\n", tcmu_get_device_size(dev));
+
+	state->buf = malloc(sizeof(char) * tcmu_get_device_size(dev)); // just for a while
 	state->size = 4096;
 	state->ptr = 0;
 
