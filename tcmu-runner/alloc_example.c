@@ -131,13 +131,10 @@ static int alloc_read(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 	struct alloc_state *state = tcmu_get_dev_private(dev);
 
 	int amount = 0;
-	if (iov->iov_len > state->size) {
-		amount = state->size;
-	} else {
-		amount = iov->iov_len;
-	}
+	amount = iov->iov_len;
 
 	memcpy(iov->iov_base, state->buf, amount);
+	//tcmu_zero_iovec(iov, iov_cnt);
 
 	ssize_t ret;
 	ret = SAM_STAT_GOOD;
@@ -164,11 +161,7 @@ static int alloc_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 	struct alloc_state *state = tcmu_get_dev_private(dev);
 
 	int amount = 0;
-	if (iov->iov_len > state->size) {
-		amount = state->size;
-	} else {
-		amount = iov->iov_len;
-	}
+	amount = iov->iov_len;
 
 	memcpy(state->buf, iov->iov_base, amount);
 
