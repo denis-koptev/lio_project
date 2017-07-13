@@ -123,6 +123,9 @@ static int alloc_read(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 	}
 	printf("\n");
 
+	printf(">>> [ALLOC] iov_len: %lu; iov_cnt: %lu; length: %lu; offset: %lu\n", 
+		iov->iov_len, iov_cnt, length, offset);
+
 	struct alloc_state *state = tcmu_get_dev_private(dev);
 
 	int amount = 0;
@@ -152,6 +155,9 @@ static int alloc_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 		printf("%x ", cmd->cdb[i]);
 	}
 	printf("\n");
+
+	printf(">>> [ALLOC] iov_len: %lu; iov_cnt: %lu; length: %lu; offset: %lu\n", 
+		iov->iov_len, iov_cnt, length, offset);
 
 	struct alloc_state *state = tcmu_get_dev_private(dev);
 
