@@ -8,8 +8,6 @@
 ## 2. Backstore path (got from user_create script)
 # Example: ./target_setup.sh iqn.2017-07.com.example:target user_0/test
 
-# run as su
-
 # run as superuser
 
 if [ $(id -u) -ne 0 ]
