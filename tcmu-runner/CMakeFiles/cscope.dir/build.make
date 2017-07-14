@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/denis/Desktop/lio_project/tcmu-runner
+CMAKE_SOURCE_DIR = /home/lio/lio_project/tcmu-runner
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/denis/Desktop/lio_project/tcmu-runner
+CMAKE_BINARY_DIR = /home/lio/lio_project/tcmu-runner
 
 # Utility rule file for cscope.
 
@@ -72,6 +72,6 @@ CMakeFiles/cscope.dir/clean:
 .PHONY : CMakeFiles/cscope.dir/clean
 
 CMakeFiles/cscope.dir/depend:
-	cd /home/denis/Desktop/lio_project/tcmu-runner && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/denis/Desktop/lio_project/tcmu-runner /home/denis/Desktop/lio_project/tcmu-runner /home/denis/Desktop/lio_project/tcmu-runner /home/denis/Desktop/lio_project/tcmu-runner /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles/cscope.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/lio/lio_project/tcmu-runner && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/lio/lio_project/tcmu-runner /home/lio/lio_project/tcmu-runner /home/lio/lio_project/tcmu-runner /home/lio/lio_project/tcmu-runner /home/lio/lio_project/tcmu-runner/CMakeFiles/cscope.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/cscope.dir/depend
 

@@ -1,1 +1,1 @@
-/usr/bin/cc   -Wall -std=c99   CMakeFiles/tcmu-synthesizer.dir/tcmu-synthesizer.c.o  -o tcmu-synthesizer -Wl,-rpath,/home/denis/Desktop/lio_project/tcmu-runner -rdynamic libtcmu.so.1 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lnl-3 -lnl-genl-3 -lgio-2.0 -lgobject-2.0 -lglib-2.0 
+/usr/bin/cc   -Wall -std=c99   CMakeFiles/tcmu-synthesizer.dir/tcmu-synthesizer.c.o  -o tcmu-synthesizer -Wl,-rpath,/home/lio/lio_project/tcmu-runner -rdynamic libtcmu.so.1 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lnl-3 -lnl-genl-3 -lgio-2.0 -lgobject-2.0 -lglib-2.0 

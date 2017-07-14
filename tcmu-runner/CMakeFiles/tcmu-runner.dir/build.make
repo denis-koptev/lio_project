@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/denis/Desktop/lio_project/tcmu-runner
+CMAKE_SOURCE_DIR = /home/lio/lio_project/tcmu-runner
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/denis/Desktop/lio_project/tcmu-runner
+CMAKE_BINARY_DIR = /home/lio/lio_project/tcmu-runner
 
 # Include any dependencies generated for this target.
 include CMakeFiles/tcmu-runner.dir/depend.make
@@ -58,24 +58,24 @@ include CMakeFiles/tcmu-runner.dir/progress.make
 include CMakeFiles/tcmu-runner.dir/flags.make
 
 tcmuhandler-generated.c: tcmu-handler.xml
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating tcmuhandler-generated.c, tcmuhandler-generated.h"
-	gdbus-codegen /home/denis/Desktop/lio_project/tcmu-runner/tcmu-handler.xml --generate-c-code /home/denis/Desktop/lio_project/tcmu-runner/tcmuhandler-generated --c-generate-object-manager --interface-prefix org.kernel
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating tcmuhandler-generated.c, tcmuhandler-generated.h"
+	gdbus-codegen /home/lio/lio_project/tcmu-runner/tcmu-handler.xml --generate-c-code /home/lio/lio_project/tcmu-runner/tcmuhandler-generated --c-generate-object-manager --interface-prefix org.kernel
 
 tcmuhandler-generated.h: tcmuhandler-generated.c
 	@$(CMAKE_COMMAND) -E touch_nocreate tcmuhandler-generated.h
 
 CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.o: CMakeFiles/tcmu-runner.dir/flags.make
 CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.o: tcmur_cmd_handler.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.o   -c /home/denis/Desktop/lio_project/tcmu-runner/tcmur_cmd_handler.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.o   -c /home/lio/lio_project/tcmu-runner/tcmur_cmd_handler.c
 
 CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/denis/Desktop/lio_project/tcmu-runner/tcmur_cmd_handler.c > CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/lio/lio_project/tcmu-runner/tcmur_cmd_handler.c > CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.i
 
 CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/denis/Desktop/lio_project/tcmu-runner/tcmur_cmd_handler.c -o CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/lio/lio_project/tcmu-runner/tcmur_cmd_handler.c -o CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.s
 
 CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.o.requires:
 
@@ -90,16 +90,16 @@ CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.o.provides.build: CMakeFiles/tcmu
 
 CMakeFiles/tcmu-runner.dir/tcmur_aio.c.o: CMakeFiles/tcmu-runner.dir/flags.make
 CMakeFiles/tcmu-runner.dir/tcmur_aio.c.o: tcmur_aio.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/tcmu-runner.dir/tcmur_aio.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tcmu-runner.dir/tcmur_aio.c.o   -c /home/denis/Desktop/lio_project/tcmu-runner/tcmur_aio.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/tcmu-runner.dir/tcmur_aio.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tcmu-runner.dir/tcmur_aio.c.o   -c /home/lio/lio_project/tcmu-runner/tcmur_aio.c
 
 CMakeFiles/tcmu-runner.dir/tcmur_aio.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/tcmu-runner.dir/tcmur_aio.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/denis/Desktop/lio_project/tcmu-runner/tcmur_aio.c > CMakeFiles/tcmu-runner.dir/tcmur_aio.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/lio/lio_project/tcmu-runner/tcmur_aio.c > CMakeFiles/tcmu-runner.dir/tcmur_aio.c.i
 
 CMakeFiles/tcmu-runner.dir/tcmur_aio.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/tcmu-runner.dir/tcmur_aio.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/denis/Desktop/lio_project/tcmu-runner/tcmur_aio.c -o CMakeFiles/tcmu-runner.dir/tcmur_aio.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/lio/lio_project/tcmu-runner/tcmur_aio.c -o CMakeFiles/tcmu-runner.dir/tcmur_aio.c.s
 
 CMakeFiles/tcmu-runner.dir/tcmur_aio.c.o.requires:
 
@@ -114,16 +114,16 @@ CMakeFiles/tcmu-runner.dir/tcmur_aio.c.o.provides.build: CMakeFiles/tcmu-runner.
 
 CMakeFiles/tcmu-runner.dir/alua.c.o: CMakeFiles/tcmu-runner.dir/flags.make
 CMakeFiles/tcmu-runner.dir/alua.c.o: alua.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/tcmu-runner.dir/alua.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tcmu-runner.dir/alua.c.o   -c /home/denis/Desktop/lio_project/tcmu-runner/alua.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/tcmu-runner.dir/alua.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tcmu-runner.dir/alua.c.o   -c /home/lio/lio_project/tcmu-runner/alua.c
 
 CMakeFiles/tcmu-runner.dir/alua.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/tcmu-runner.dir/alua.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/denis/Desktop/lio_project/tcmu-runner/alua.c > CMakeFiles/tcmu-runner.dir/alua.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/lio/lio_project/tcmu-runner/alua.c > CMakeFiles/tcmu-runner.dir/alua.c.i
 
 CMakeFiles/tcmu-runner.dir/alua.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/tcmu-runner.dir/alua.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/denis/Desktop/lio_project/tcmu-runner/alua.c -o CMakeFiles/tcmu-runner.dir/alua.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/lio/lio_project/tcmu-runner/alua.c -o CMakeFiles/tcmu-runner.dir/alua.c.s
 
 CMakeFiles/tcmu-runner.dir/alua.c.o.requires:
 
@@ -138,16 +138,16 @@ CMakeFiles/tcmu-runner.dir/alua.c.o.provides.build: CMakeFiles/tcmu-runner.dir/a
 
 CMakeFiles/tcmu-runner.dir/main.c.o: CMakeFiles/tcmu-runner.dir/flags.make
 CMakeFiles/tcmu-runner.dir/main.c.o: main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/tcmu-runner.dir/main.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tcmu-runner.dir/main.c.o   -c /home/denis/Desktop/lio_project/tcmu-runner/main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/tcmu-runner.dir/main.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tcmu-runner.dir/main.c.o   -c /home/lio/lio_project/tcmu-runner/main.c
 
 CMakeFiles/tcmu-runner.dir/main.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/tcmu-runner.dir/main.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/denis/Desktop/lio_project/tcmu-runner/main.c > CMakeFiles/tcmu-runner.dir/main.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/lio/lio_project/tcmu-runner/main.c > CMakeFiles/tcmu-runner.dir/main.c.i
 
 CMakeFiles/tcmu-runner.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/tcmu-runner.dir/main.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/denis/Desktop/lio_project/tcmu-runner/main.c -o CMakeFiles/tcmu-runner.dir/main.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/lio/lio_project/tcmu-runner/main.c -o CMakeFiles/tcmu-runner.dir/main.c.s
 
 CMakeFiles/tcmu-runner.dir/main.c.o.requires:
 
@@ -162,16 +162,16 @@ CMakeFiles/tcmu-runner.dir/main.c.o.provides.build: CMakeFiles/tcmu-runner.dir/m
 
 CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.o: CMakeFiles/tcmu-runner.dir/flags.make
 CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.o: tcmuhandler-generated.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.o   -c /home/denis/Desktop/lio_project/tcmu-runner/tcmuhandler-generated.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.o   -c /home/lio/lio_project/tcmu-runner/tcmuhandler-generated.c
 
 CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/denis/Desktop/lio_project/tcmu-runner/tcmuhandler-generated.c > CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/lio/lio_project/tcmu-runner/tcmuhandler-generated.c > CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.i
 
 CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/denis/Desktop/lio_project/tcmu-runner/tcmuhandler-generated.c -o CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/lio/lio_project/tcmu-runner/tcmuhandler-generated.c -o CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.s
 
 CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.o.requires:
 
@@ -207,7 +207,7 @@ tcmu-runner: /usr/lib/x86_64-linux-gnu/libdl.so
 tcmu-runner: /lib/x86_64-linux-gnu/libnl-3.so
 tcmu-runner: /lib/x86_64-linux-gnu/libnl-genl-3.so
 tcmu-runner: CMakeFiles/tcmu-runner.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking C executable tcmu-runner"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking C executable tcmu-runner"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/tcmu-runner.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -238,7 +238,7 @@ CMakeFiles/CMakeRelink.dir/tcmu-runner: /usr/lib/x86_64-linux-gnu/libdl.so
 CMakeFiles/CMakeRelink.dir/tcmu-runner: /lib/x86_64-linux-gnu/libnl-3.so
 CMakeFiles/CMakeRelink.dir/tcmu-runner: /lib/x86_64-linux-gnu/libnl-genl-3.so
 CMakeFiles/CMakeRelink.dir/tcmu-runner: CMakeFiles/tcmu-runner.dir/relink.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking C executable CMakeFiles/CMakeRelink.dir/tcmu-runner"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking C executable CMakeFiles/CMakeRelink.dir/tcmu-runner"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/tcmu-runner.dir/relink.txt --verbose=$(VERBOSE)
 
 # Rule to relink during preinstall.
@@ -260,6 +260,6 @@ CMakeFiles/tcmu-runner.dir/clean:
 
 CMakeFiles/tcmu-runner.dir/depend: tcmuhandler-generated.c
 CMakeFiles/tcmu-runner.dir/depend: tcmuhandler-generated.h
-	cd /home/denis/Desktop/lio_project/tcmu-runner && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/denis/Desktop/lio_project/tcmu-runner /home/denis/Desktop/lio_project/tcmu-runner /home/denis/Desktop/lio_project/tcmu-runner /home/denis/Desktop/lio_project/tcmu-runner /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles/tcmu-runner.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/lio/lio_project/tcmu-runner && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/lio/lio_project/tcmu-runner /home/lio/lio_project/tcmu-runner /home/lio/lio_project/tcmu-runner /home/lio/lio_project/tcmu-runner /home/lio/lio_project/tcmu-runner/CMakeFiles/tcmu-runner.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/tcmu-runner.dir/depend
 

@@ -6,11 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/denis/Desktop/lio_project/tcmu-runner/alua.h
+/home/lio/lio_project/tcmu-runner/alua.h
 ccan/list/list.h
-/home/denis/Desktop/lio_project/tcmu-runner/ccan/list/list.h
+/home/lio/lio_project/tcmu-runner/ccan/list/list.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/api.c
+/home/lio/lio_project/tcmu-runner/api.c
 stdio.h
 -
 stdlib.h
@@ -40,15 +40,15 @@ endian.h
 errno.h
 -
 libtcmu_log.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_log.h
+/home/lio/lio_project/tcmu-runner/libtcmu_log.h
 libtcmu_common.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_common.h
+/home/lio/lio_project/tcmu-runner/libtcmu_common.h
 libtcmu_priv.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_priv.h
+/home/lio/lio_project/tcmu-runner/libtcmu_priv.h
 alua.h
-/home/denis/Desktop/lio_project/tcmu-runner/alua.h
+/home/lio/lio_project/tcmu-runner/alua.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/configfs.c
+/home/lio/lio_project/tcmu-runner/configfs.c
 stdio.h
 -
 stdlib.h
@@ -62,19 +62,19 @@ string.h
 errno.h
 -
 libtcmu_log.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_log.h
+/home/lio/lio_project/tcmu-runner/libtcmu_log.h
 libtcmu_common.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_common.h
+/home/lio/lio_project/tcmu-runner/libtcmu_common.h
 libtcmu_priv.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_priv.h
+/home/lio/lio_project/tcmu-runner/libtcmu_priv.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/darray.h
+/home/lio/lio_project/tcmu-runner/darray.h
 stdlib.h
 -
 string.h
 -
 
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu-register.c
+/home/lio/lio_project/tcmu-runner/libtcmu-register.c
 stdio.h
 -
 sys/types.h
@@ -86,15 +86,15 @@ errno.h
 assert.h
 -
 libtcmu.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu.h
+/home/lio/lio_project/tcmu-runner/libtcmu.h
 libtcmu_log.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_log.h
+/home/lio/lio_project/tcmu-runner/libtcmu_log.h
 libtcmu_priv.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_priv.h
+/home/lio/lio_project/tcmu-runner/libtcmu_priv.h
 tcmuhandler-generated.h
-/home/denis/Desktop/lio_project/tcmu-runner/tcmuhandler-generated.h
+/home/lio/lio_project/tcmu-runner/tcmuhandler-generated.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu.c
+/home/lio/lio_project/tcmu-runner/libtcmu.c
 memory.h
 -
 sys/types.h
@@ -128,21 +128,21 @@ libnl3/netlink/genl/mngt.h
 libnl3/netlink/genl/ctrl.h
 -
 target_core_user_local.h
-/home/denis/Desktop/lio_project/tcmu-runner/target_core_user_local.h
+/home/lio/lio_project/tcmu-runner/target_core_user_local.h
 libtcmu.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu.h
+/home/lio/lio_project/tcmu-runner/libtcmu.h
 libtcmu_log.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_log.h
+/home/lio/lio_project/tcmu-runner/libtcmu_log.h
 libtcmu_priv.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_priv.h
+/home/lio/lio_project/tcmu-runner/libtcmu_priv.h
 tcmur_aio.h
-/home/denis/Desktop/lio_project/tcmu-runner/tcmur_aio.h
+/home/lio/lio_project/tcmu-runner/tcmur_aio.h
 tcmur_cmd_handler.h
-/home/denis/Desktop/lio_project/tcmu-runner/tcmur_cmd_handler.h
+/home/lio/lio_project/tcmu-runner/tcmur_cmd_handler.h
 tcmu-runner.h
-/home/denis/Desktop/lio_project/tcmu-runner/tcmu-runner.h
+/home/lio/lio_project/tcmu-runner/tcmu-runner.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu.h
+/home/lio/lio_project/tcmu-runner/libtcmu.h
 stdbool.h
 -
 stdint.h
@@ -150,15 +150,15 @@ stdint.h
 sys/uio.h
 -
 libtcmu_common.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_common.h
+/home/lio/lio_project/tcmu-runner/libtcmu_common.h
 libtcmu_log.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_log.h
+/home/lio/lio_project/tcmu-runner/libtcmu_log.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_common.h
+/home/lio/lio_project/tcmu-runner/libtcmu_common.h
 stdbool.h
 -
 
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_config.c
+/home/lio/lio_project/tcmu-runner/libtcmu_config.c
 stdio.h
 -
 stdlib.h
@@ -178,17 +178,17 @@ ctype.h
 stdbool.h
 -
 darray.h
-/home/denis/Desktop/lio_project/tcmu-runner/darray.h
+/home/lio/lio_project/tcmu-runner/darray.h
 libtcmu_config.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_config.h
+/home/lio/lio_project/tcmu-runner/libtcmu_config.h
 libtcmu_log.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_log.h
+/home/lio/lio_project/tcmu-runner/libtcmu_log.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_config.h
+/home/lio/lio_project/tcmu-runner/libtcmu_config.h
 stdbool.h
 -
 
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_log.c
+/home/lio/lio_project/tcmu-runner/libtcmu_log.c
 stdint.h
 -
 pthread.h
@@ -206,17 +206,17 @@ fcntl.h
 errno.h
 -
 darray.h
-/home/denis/Desktop/lio_project/tcmu-runner/darray.h
+/home/lio/lio_project/tcmu-runner/darray.h
 libtcmu_log.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_log.h
+/home/lio/lio_project/tcmu-runner/libtcmu_log.h
 libtcmu_config.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_config.h
+/home/lio/lio_project/tcmu-runner/libtcmu_config.h
 libtcmu_time.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_time.h
+/home/lio/lio_project/tcmu-runner/libtcmu_time.h
 libtcmu_priv.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_priv.h
+/home/lio/lio_project/tcmu-runner/libtcmu_priv.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_log.h
+/home/lio/lio_project/tcmu-runner/libtcmu_log.h
 syslog.h
 -
 stdio.h
@@ -226,7 +226,7 @@ stdlib.h
 stdarg.h
 -
 
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_priv.h
+/home/lio/lio_project/tcmu-runner/libtcmu_priv.h
 stdbool.h
 -
 stdint.h
@@ -238,27 +238,27 @@ gio/gio.h
 pthread.h
 -
 scsi_defs.h
-/home/denis/Desktop/lio_project/tcmu-runner/scsi_defs.h
+/home/lio/lio_project/tcmu-runner/scsi_defs.h
 darray.h
-/home/denis/Desktop/lio_project/tcmu-runner/darray.h
+/home/lio/lio_project/tcmu-runner/darray.h
 ccan/list/list.h
-/home/denis/Desktop/lio_project/tcmu-runner/ccan/list/list.h
+/home/lio/lio_project/tcmu-runner/ccan/list/list.h
 tcmur_aio.h
-/home/denis/Desktop/lio_project/tcmu-runner/tcmur_aio.h
+/home/lio/lio_project/tcmu-runner/tcmur_aio.h
 tcmu-runner.h
-/home/denis/Desktop/lio_project/tcmu-runner/tcmu-runner.h
+/home/lio/lio_project/tcmu-runner/tcmu-runner.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_time.h
+/home/lio/lio_project/tcmu-runner/libtcmu_time.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/scsi_defs.h
+/home/lio/lio_project/tcmu-runner/scsi_defs.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/target_core_user_local.h
+/home/lio/lio_project/tcmu-runner/target_core_user_local.h
 linux/types.h
 -
 linux/uio.h
 -
 
-/home/denis/Desktop/lio_project/tcmu-runner/tcmu-runner.h
+/home/lio/lio_project/tcmu-runner/tcmu-runner.h
 stdbool.h
 -
 stdint.h
@@ -266,35 +266,35 @@ stdint.h
 sys/uio.h
 -
 scsi_defs.h
-/home/denis/Desktop/lio_project/tcmu-runner/scsi_defs.h
+/home/lio/lio_project/tcmu-runner/scsi_defs.h
 libtcmu_log.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_log.h
+/home/lio/lio_project/tcmu-runner/libtcmu_log.h
 libtcmu_common.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_common.h
+/home/lio/lio_project/tcmu-runner/libtcmu_common.h
 alua.h
-/home/denis/Desktop/lio_project/tcmu-runner/alua.h
+/home/lio/lio_project/tcmu-runner/alua.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/tcmuhandler-generated.c
+/home/lio/lio_project/tcmu-runner/tcmuhandler-generated.c
 config.h
-/home/denis/Desktop/lio_project/tcmu-runner/config.h
-/home/denis/Desktop/lio_project/tcmu-runner/tcmuhandler-generated.h
+/home/lio/lio_project/tcmu-runner/config.h
+/home/lio/lio_project/tcmu-runner/tcmuhandler-generated.h
 -
 string.h
 -
 gio/gunixfdlist.h
 -
 
-/home/denis/Desktop/lio_project/tcmu-runner/tcmuhandler-generated.h
+/home/lio/lio_project/tcmu-runner/tcmuhandler-generated.h
 gio/gio.h
 -
 
-/home/denis/Desktop/lio_project/tcmu-runner/tcmur_aio.h
+/home/lio/lio_project/tcmu-runner/tcmur_aio.h
 pthread.h
 -
 ccan/list/list.h
-/home/denis/Desktop/lio_project/tcmu-runner/ccan/list/list.h
+/home/lio/lio_project/tcmu-runner/ccan/list/list.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/tcmur_cmd_handler.h
+/home/lio/lio_project/tcmu-runner/tcmur_cmd_handler.h
 stdint.h
 -
 

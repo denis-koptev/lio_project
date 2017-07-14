@@ -88,7 +88,7 @@ static int alloc_open(struct tcmu_device *dev)
 	printf(">>> [ALLOC] dev size: %lli\n", tcmu_get_device_size(dev));
 
 	state->buf = malloc(sizeof(char) * tcmu_get_device_size(dev)); // just for a while
-	state->size = 4096;
+	state->size = tcmu_get_device_size(dev);
 	state->ptr = 0;
 
 	if (!state->buf)
@@ -133,7 +133,7 @@ static int alloc_read(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 	int amount = 0;
 	amount = iov->iov_len;
 
-	memcpy(iov->iov_base, state->buf, amount);
+	memcpy(iov->iov_base, state->buf+offset, amount);
 	//tcmu_zero_iovec(iov, iov_cnt);
 
 	ssize_t ret;

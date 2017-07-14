@@ -6,11 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/denis/Desktop/lio_project/tcmu-runner/alua.h
+/home/lio/lio_project/tcmu-runner/alua.h
 ccan/list/list.h
-/home/denis/Desktop/lio_project/tcmu-runner/ccan/list/list.h
+/home/lio/lio_project/tcmu-runner/ccan/list/list.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/file_example.c
+/home/lio/lio_project/tcmu-runner/file_example.c
 stddef.h
 -
 stdint.h
@@ -38,13 +38,13 @@ errno.h
 scsi/scsi.h
 -
 scsi_defs.h
-/home/denis/Desktop/lio_project/tcmu-runner/scsi_defs.h
+/home/lio/lio_project/tcmu-runner/scsi_defs.h
 libtcmu.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu.h
+/home/lio/lio_project/tcmu-runner/libtcmu.h
 tcmu-runner.h
-/home/denis/Desktop/lio_project/tcmu-runner/tcmu-runner.h
+/home/lio/lio_project/tcmu-runner/tcmu-runner.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu.h
+/home/lio/lio_project/tcmu-runner/libtcmu.h
 stdbool.h
 -
 stdint.h
@@ -52,15 +52,15 @@ stdint.h
 sys/uio.h
 -
 libtcmu_common.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_common.h
+/home/lio/lio_project/tcmu-runner/libtcmu_common.h
 libtcmu_log.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_log.h
+/home/lio/lio_project/tcmu-runner/libtcmu_log.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_common.h
+/home/lio/lio_project/tcmu-runner/libtcmu_common.h
 stdbool.h
 -
 
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_log.h
+/home/lio/lio_project/tcmu-runner/libtcmu_log.h
 syslog.h
 -
 stdio.h
@@ -70,9 +70,9 @@ stdlib.h
 stdarg.h
 -
 
-/home/denis/Desktop/lio_project/tcmu-runner/scsi_defs.h
+/home/lio/lio_project/tcmu-runner/scsi_defs.h
 
-/home/denis/Desktop/lio_project/tcmu-runner/tcmu-runner.h
+/home/lio/lio_project/tcmu-runner/tcmu-runner.h
 stdbool.h
 -
 stdint.h
@@ -80,13 +80,13 @@ stdint.h
 sys/uio.h
 -
 scsi_defs.h
-/home/denis/Desktop/lio_project/tcmu-runner/scsi_defs.h
+/home/lio/lio_project/tcmu-runner/scsi_defs.h
 libtcmu_log.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_log.h
+/home/lio/lio_project/tcmu-runner/libtcmu_log.h
 libtcmu_common.h
-/home/denis/Desktop/lio_project/tcmu-runner/libtcmu_common.h
+/home/lio/lio_project/tcmu-runner/libtcmu_common.h
 alua.h
-/home/denis/Desktop/lio_project/tcmu-runner/alua.h
+/home/lio/lio_project/tcmu-runner/alua.h
 
 ccan/ccan/build_assert/build_assert.h
 

@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/denis/Desktop/lio_project/tcmu-runner/consumer.c" "/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles/consumer.dir/consumer.c.o"
+  "/home/lio/lio_project/tcmu-runner/consumer.c" "/home/lio/lio_project/tcmu-runner/CMakeFiles/consumer.dir/consumer.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
@@ -19,7 +19,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles/tcmu.dir/DependInfo.cmake"
+  "/home/lio/lio_project/tcmu-runner/CMakeFiles/tcmu.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

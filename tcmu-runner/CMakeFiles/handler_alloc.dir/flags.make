@@ -6,5 +6,5 @@ C_FLAGS =  -Wall -std=c99 -fPIC
 
 C_DEFINES = -Dhandler_alloc_EXPORTS
 
-C_INCLUDES = -I/home/denis/Desktop/lio_project/tcmu-runner/ccan 
+C_INCLUDES = -I/home/lio/lio_project/tcmu-runner/ccan 
 

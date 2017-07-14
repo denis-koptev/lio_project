@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/denis/Desktop/lio_project/tcmu-runner/file_example.c" "/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles/handler_file.dir/file_example.c.o"
+  "/home/lio/lio_project/tcmu-runner/file_example.c" "/home/lio/lio_project/tcmu-runner/CMakeFiles/handler_file.dir/file_example.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

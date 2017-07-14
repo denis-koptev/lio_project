@@ -6,5 +6,5 @@ C_FLAGS =  -Wall -std=c99
 
 C_DEFINES = 
 
-C_INCLUDES = -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/home/denis/Desktop/lio_project/tcmu-runner/ccan 
+C_INCLUDES = -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/home/lio/lio_project/tcmu-runner/ccan 
 

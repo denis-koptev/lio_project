@@ -54,10 +54,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/denis/Desktop/lio_project/tcmu-runner
+CMAKE_SOURCE_DIR = /home/lio/lio_project/tcmu-runner
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/denis/Desktop/lio_project/tcmu-runner
+CMAKE_BINARY_DIR = /home/lio/lio_project/tcmu-runner
 
 #=============================================================================
 # Target rules for target CMakeFiles/tcmu-synthesizer.dir
@@ -66,7 +66,7 @@ CMAKE_BINARY_DIR = /home/denis/Desktop/lio_project/tcmu-runner
 CMakeFiles/tcmu-synthesizer.dir/all: CMakeFiles/tcmu.dir/all
 	$(MAKE) -f CMakeFiles/tcmu-synthesizer.dir/build.make CMakeFiles/tcmu-synthesizer.dir/depend
 	$(MAKE) -f CMakeFiles/tcmu-synthesizer.dir/build.make CMakeFiles/tcmu-synthesizer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num=26,27 "Built target tcmu-synthesizer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num=26,27 "Built target tcmu-synthesizer"
 .PHONY : CMakeFiles/tcmu-synthesizer.dir/all
 
 # Include target in all.
@@ -76,9 +76,9 @@ all: CMakeFiles/tcmu-synthesizer.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/tcmu-synthesizer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 13
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 13
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/tcmu-synthesizer.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 0
 .PHONY : CMakeFiles/tcmu-synthesizer.dir/rule
 
 # Convenience name for target.
@@ -103,7 +103,7 @@ clean: CMakeFiles/tcmu-synthesizer.dir/clean
 CMakeFiles/tcmu_static.dir/all:
 	$(MAKE) -f CMakeFiles/tcmu_static.dir/build.make CMakeFiles/tcmu_static.dir/depend
 	$(MAKE) -f CMakeFiles/tcmu_static.dir/build.make CMakeFiles/tcmu_static.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num=28,29,30,31,32,33,34,35,36 "Built target tcmu_static"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num=28,29,30,31,32,33,34,35,36 "Built target tcmu_static"
 .PHONY : CMakeFiles/tcmu_static.dir/all
 
 # Include target in all.
@@ -113,9 +113,9 @@ all: CMakeFiles/tcmu_static.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/tcmu_static.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 9
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 9
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/tcmu_static.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 0
 .PHONY : CMakeFiles/tcmu_static.dir/rule
 
 # Convenience name for target.
@@ -140,7 +140,7 @@ clean: CMakeFiles/tcmu_static.dir/clean
 CMakeFiles/tcmu.dir/all:
 	$(MAKE) -f CMakeFiles/tcmu.dir/build.make CMakeFiles/tcmu.dir/depend
 	$(MAKE) -f CMakeFiles/tcmu.dir/build.make CMakeFiles/tcmu.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num=7,8,9,10,11,12,13,14,15,16,17 "Built target tcmu"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num=7,8,9,10,11,12,13,14,15,16,17 "Built target tcmu"
 .PHONY : CMakeFiles/tcmu.dir/all
 
 # Include target in all.
@@ -150,9 +150,9 @@ all: CMakeFiles/tcmu.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/tcmu.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 11
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 11
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/tcmu.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 0
 .PHONY : CMakeFiles/tcmu.dir/rule
 
 # Convenience name for target.
@@ -187,7 +187,7 @@ clean: CMakeFiles/tcmu.dir/clean
 CMakeFiles/tcmu-runner.dir/all: CMakeFiles/tcmu.dir/all
 	$(MAKE) -f CMakeFiles/tcmu-runner.dir/build.make CMakeFiles/tcmu-runner.dir/depend
 	$(MAKE) -f CMakeFiles/tcmu-runner.dir/build.make CMakeFiles/tcmu-runner.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num=18,19,20,21,22,23,24,25 "Built target tcmu-runner"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num=18,19,20,21,22,23,24,25 "Built target tcmu-runner"
 .PHONY : CMakeFiles/tcmu-runner.dir/all
 
 # Include target in all.
@@ -197,9 +197,9 @@ all: CMakeFiles/tcmu-runner.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/tcmu-runner.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 19
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 19
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/tcmu-runner.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 0
 .PHONY : CMakeFiles/tcmu-runner.dir/rule
 
 # Convenience name for target.
@@ -234,7 +234,7 @@ clean: CMakeFiles/tcmu-runner.dir/clean
 CMakeFiles/handler_alloc.dir/all:
 	$(MAKE) -f CMakeFiles/handler_alloc.dir/build.make CMakeFiles/handler_alloc.dir/depend
 	$(MAKE) -f CMakeFiles/handler_alloc.dir/build.make CMakeFiles/handler_alloc.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num=3,4 "Built target handler_alloc"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num=3,4 "Built target handler_alloc"
 .PHONY : CMakeFiles/handler_alloc.dir/all
 
 # Include target in all.
@@ -244,9 +244,9 @@ all: CMakeFiles/handler_alloc.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/handler_alloc.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/handler_alloc.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 0
 .PHONY : CMakeFiles/handler_alloc.dir/rule
 
 # Convenience name for target.
@@ -271,7 +271,7 @@ clean: CMakeFiles/handler_alloc.dir/clean
 CMakeFiles/handler_file.dir/all:
 	$(MAKE) -f CMakeFiles/handler_file.dir/build.make CMakeFiles/handler_file.dir/depend
 	$(MAKE) -f CMakeFiles/handler_file.dir/build.make CMakeFiles/handler_file.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num=5,6 "Built target handler_file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num=5,6 "Built target handler_file"
 .PHONY : CMakeFiles/handler_file.dir/all
 
 # Include target in all.
@@ -281,9 +281,9 @@ all: CMakeFiles/handler_file.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/handler_file.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/handler_file.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 0
 .PHONY : CMakeFiles/handler_file.dir/rule
 
 # Convenience name for target.
@@ -308,14 +308,14 @@ clean: CMakeFiles/handler_file.dir/clean
 CMakeFiles/cscope.dir/all:
 	$(MAKE) -f CMakeFiles/cscope.dir/build.make CMakeFiles/cscope.dir/depend
 	$(MAKE) -f CMakeFiles/cscope.dir/build.make CMakeFiles/cscope.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num= "Built target cscope"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num= "Built target cscope"
 .PHONY : CMakeFiles/cscope.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/cscope.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 0
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/cscope.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 0
 .PHONY : CMakeFiles/cscope.dir/rule
 
 # Convenience name for target.
@@ -340,7 +340,7 @@ clean: CMakeFiles/cscope.dir/clean
 CMakeFiles/consumer.dir/all: CMakeFiles/tcmu.dir/all
 	$(MAKE) -f CMakeFiles/consumer.dir/build.make CMakeFiles/consumer.dir/depend
 	$(MAKE) -f CMakeFiles/consumer.dir/build.make CMakeFiles/consumer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles --progress-num=1,2 "Built target consumer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lio/lio_project/tcmu-runner/CMakeFiles --progress-num=1,2 "Built target consumer"
 .PHONY : CMakeFiles/consumer.dir/all
 
 # Include target in all.
@@ -350,9 +350,9 @@ all: CMakeFiles/consumer.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/consumer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 13
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 13
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/consumer.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 0
 .PHONY : CMakeFiles/consumer.dir/rule
 
 # Convenience name for target.
