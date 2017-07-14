@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lio/lio_project/tcmu-runner
+CMAKE_SOURCE_DIR = /home/denis/Desktop/lio_project/tcmu-runner
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lio/lio_project/tcmu-runner
+CMAKE_BINARY_DIR = /home/denis/Desktop/lio_project/tcmu-runner
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -90,6 +90,17 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: install/strip
+
+.PHONY : install/strip/fast
+
 # Special rule for the target list_install_components
 list_install_components:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
@@ -113,9 +124,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles /home/lio/lio_project/tcmu-runner/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lio/lio_project/tcmu-runner/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/denis/Desktop/lio_project/tcmu-runner/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -182,11 +193,6 @@ tcmu/fast:
 	$(MAKE) -f CMakeFiles/tcmu.dir/build.make CMakeFiles/tcmu.dir/build
 .PHONY : tcmu/fast
 
-# Manual pre-install relink rule for target.
-tcmu/preinstall:
-	$(MAKE) -f CMakeFiles/tcmu.dir/build.make CMakeFiles/tcmu.dir/preinstall
-.PHONY : tcmu/preinstall
-
 #=============================================================================
 # Target rules for targets named tcmu-runner
 
@@ -199,11 +205,6 @@ tcmu-runner: cmake_check_build_system
 tcmu-runner/fast:
 	$(MAKE) -f CMakeFiles/tcmu-runner.dir/build.make CMakeFiles/tcmu-runner.dir/build
 .PHONY : tcmu-runner/fast
-
-# Manual pre-install relink rule for target.
-tcmu-runner/preinstall:
-	$(MAKE) -f CMakeFiles/tcmu-runner.dir/build.make CMakeFiles/tcmu-runner.dir/preinstall
-.PHONY : tcmu-runner/preinstall
 
 #=============================================================================
 # Target rules for targets named handler_alloc
@@ -727,6 +728,7 @@ help:
 	@echo "... tcmu"
 	@echo "... tcmu-runner"
 	@echo "... handler_alloc"
+	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... handler_file"
 	@echo "... cscope"
