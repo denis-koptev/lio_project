@@ -29,21 +29,12 @@
 #include "libtcmu.h"
 #include "version.h"
 #include "libtcmu_config.h"
+#include "libtcmu_log.h"
 
 typedef struct {
 	GIOChannel *gio;
 	int watcher_id;
 } syn_dev_t;
-
-static bool syn_check_config(const char *cfgstring, char **reason)
-{
-	tcmu_dbg("syn check config\n");
-	if (strcmp(cfgstring, "syn/null")) {
-		asprintf(reason, "invalid option");
-		return false;
-	}
-	return true;
-}
 
 static int syn_handle_cmd(struct tcmu_device *dev, uint8_t *cdb,
 			  struct iovec *iovec, size_t iov_cnt,
@@ -73,11 +64,11 @@ static int syn_handle_cmd(struct tcmu_device *dev, uint8_t *cdb,
 		break;
 	case MODE_SENSE:
 	case MODE_SENSE_10:
-		return tcmu_emulate_mode_sense(cdb, iovec, iov_cnt, sense);
+		return tcmu_emulate_mode_sense(dev, cdb, iovec, iov_cnt, sense);
 		break;
 	case MODE_SELECT:
 	case MODE_SELECT_10:
-		return tcmu_emulate_mode_select(cdb, iovec, iov_cnt, sense);
+		return tcmu_emulate_mode_select(dev, cdb, iovec, iov_cnt, sense);
 		break;
 	case READ_6:
 	case READ_10:
@@ -148,7 +139,6 @@ struct tcmulib_handler syn_handler = {
 	.cfg_desc = "valid options:\n"
 		    "null: a nop storage where R/W requests are completed "
 		    "immediately, like the null_blk device.",
-	.check_config = syn_check_config,
 	.added = syn_added,
 	.removed = syn_removed,
 };
@@ -211,11 +201,18 @@ int main(int argc, char **argv)
 		}
 	}
 
+	if (tcmu_setup_log()) {
+		fprintf(stderr, "Could not setup tcmu logger.\n");
+		exit(1);
+	}
+
 	ctx = tcmulib_initialize(&syn_handler, 1);
 	if (!ctx) {
 		tcmu_err("tcmulib_initialize failed\n");
+		tcmu_destroy_log();
 		exit(1);
 	}
+
 	tcmulib_register(ctx);
 	/* Set up event for libtcmu */
 	libtcmu_gio = g_io_channel_unix_new(tcmulib_get_master_fd(ctx));
@@ -223,5 +220,6 @@ int main(int argc, char **argv)
 	loop = g_main_loop_new(NULL, FALSE);
 	g_main_loop_run(loop);
 	g_main_loop_unref(loop);
+	tcmu_destroy_log();
 	return 0;
 }

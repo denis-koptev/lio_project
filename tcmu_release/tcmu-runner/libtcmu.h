@@ -30,7 +30,6 @@ extern "C" {
 #include <sys/uio.h>
 
 #include "libtcmu_common.h"
-#include "libtcmu_log.h"
 
 enum tcmulib_cfg_type {
 	TCMULIB_CFG_DEV_CFGSTR,
@@ -78,6 +77,7 @@ struct tcmulib_handler {
 	void (*removed)(struct tcmu_device *dev);
 
 	void *hm_private; /* private ptr for handler module */
+	void *connection; /* private, dbus connection for this subtype */
 };
 
 /*

@@ -48,35 +48,6 @@ struct file_state {
 	int fd;
 };
 
-static bool file_check_config(const char *cfgstring, char **reason)
-{
-	char *path;
-	int fd;
-
-	path = strchr(cfgstring, '/');
-	if (!path) {
-		if (asprintf(reason, "No path found") == -1)
-			*reason = NULL;
-		return false;
-	}
-	path += 1; /* get past '/' */
-
-	if (access(path, W_OK) != -1)
-		return true; /* File exists and is writable */
-
-	/* We also support creating the file, so see if we can create it */
-	fd = creat(path, S_IRUSR | S_IWUSR);
-	if (fd == -1) {
-		if (asprintf(reason, "Could not create file") == -1)
-			*reason = NULL;
-		return false;
-	}
-
-	unlink(path);
-
-	return true;
-}
-
 static int file_open(struct tcmu_device *dev)
 {
 	struct file_state *state;
@@ -94,6 +65,8 @@ static int file_open(struct tcmu_device *dev)
 		goto err;
 	}
 	config += 1; /* get past '/' */
+
+	tcmu_set_dev_write_cache_enabled(dev, 1);
 
 	state->fd = open(config, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
 	if (state->fd == -1) {
@@ -198,7 +171,12 @@ static int file_reconfig(struct tcmu_device *dev, struct tcmulib_cfg_info *cfg)
 {
 	switch (cfg->type) {
 	case TCMULIB_CFG_DEV_SIZE:
-		return tcmu_update_num_lbas(dev, cfg->data.dev_size);
+		/*
+		 * TODO - For open/reconfig we should make sure the FS the
+		 * file is on is large enough for the requested size. For
+		 * now assume we can grow the file and return 0.
+		 */
+		return 0;
 	case TCMULIB_CFG_DEV_CFGSTR:
 	case TCMULIB_CFG_WRITE_CACHE:
 	default:
@@ -212,7 +190,6 @@ static const char file_cfg_desc[] =
 static struct tcmur_handler file_handler = {
 	.cfg_desc = file_cfg_desc,
 
-	.check_config = file_check_config,
 	.reconfig = file_reconfig,
 
 	.open = file_open,

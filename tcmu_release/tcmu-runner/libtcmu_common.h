@@ -39,6 +39,10 @@ struct tcmulib_cmd;
 #define CFGFS_ROOT "/sys/kernel/config/target"
 #define CFGFS_CORE CFGFS_ROOT"/core"
 
+/* Temporarily limit this to 32M */
+#define VPD_MAX_UNMAP_LBA_COUNT            (32 * 1024 * 1024)
+#define VPD_MAX_UNMAP_BLOCK_DESC_COUNT     0x04
+
 #define max(a, b) ({			\
 	__typeof__ (a) _a = (a);	\
 	__typeof__ (b) _b = (b);	\
@@ -98,6 +102,14 @@ void tcmu_set_dev_block_size(struct tcmu_device *dev, uint32_t block_size);
 uint32_t tcmu_get_dev_block_size(struct tcmu_device *dev);
 void tcmu_set_dev_max_xfer_len(struct tcmu_device *dev, uint32_t len);
 uint32_t tcmu_get_dev_max_xfer_len(struct tcmu_device *dev);
+void tcmu_set_dev_opt_unmap_gran(struct tcmu_device *dev, uint32_t len);
+uint32_t tcmu_get_dev_opt_unmap_gran(struct tcmu_device *dev);
+void tcmu_set_dev_unmap_gran_align(struct tcmu_device *dev, uint32_t len);
+uint32_t tcmu_get_dev_unmap_gran_align(struct tcmu_device *dev);
+void tcmu_set_dev_write_cache_enabled(struct tcmu_device *dev, bool enabled);
+bool tcmu_get_dev_write_cache_enabled(struct tcmu_device *dev);
+void tcmu_set_dev_solid_state_media(struct tcmu_device *dev, bool solid_state);
+bool tcmu_get_dev_solid_state_media(struct tcmu_device *dev);
 struct tcmulib_handler *tcmu_get_dev_handler(struct tcmu_device *dev);
 struct tcmur_handler *tcmu_get_runner_handler(struct tcmu_device *dev);
 
@@ -118,6 +130,8 @@ void tcmu_zero_iovec(struct iovec *iovec, size_t iov_cnt);
 size_t tcmu_memcpy_into_iovec(struct iovec *iovec, size_t iov_cnt, void *src, size_t len);
 size_t tcmu_memcpy_from_iovec(void *dest, size_t len, struct iovec *iovec, size_t iov_cnt);
 size_t tcmu_iovec_length(struct iovec *iovec, size_t iov_cnt);
+bool char_to_hex(unsigned char *val, char c);
+void tcmu_copy_cmd_sense_data(struct tcmulib_cmd *tocmd, struct tcmulib_cmd *fromcmd);
 
 /* Basic implementations of mandatory SCSI commands */
 int tcmu_set_sense_data(uint8_t *sense_buf, uint8_t key, uint16_t asc_ascq, uint32_t *info);
@@ -128,10 +142,13 @@ int tcmu_emulate_read_capacity_10(uint64_t num_lbas, uint32_t block_size, uint8_
 				  struct iovec *iovec, size_t iov_cnt, uint8_t *sense);
 int tcmu_emulate_read_capacity_16(uint64_t num_lbas, uint32_t block_size, uint8_t *cdb,
 				  struct iovec *iovec, size_t iov_cnt, uint8_t *sense);
-int tcmu_emulate_mode_sense(uint8_t *cdb, struct iovec *iovec, size_t iov_cnt, uint8_t *sense);
-int tcmu_emulate_mode_select(uint8_t *cdb, struct iovec *iovec, size_t iov_cnt, uint8_t *sense);
+int tcmu_emulate_mode_sense(struct tcmu_device *dev, uint8_t *cdb,
+			    struct iovec *iovec, size_t iov_cnt, uint8_t *sense);
+int tcmu_emulate_mode_select(struct tcmu_device *dev, uint8_t *cdb,
+			     struct iovec *iovec, size_t iov_cnt,
+			     uint8_t *sense);
 /* SCSI helpers */
-void tcmu_cdb_debug_info(const struct tcmulib_cmd *cmd);
+void tcmu_cdb_debug_info(struct tcmu_device *dev, const struct tcmulib_cmd *cmd);
 
 #ifdef __cplusplus
 }

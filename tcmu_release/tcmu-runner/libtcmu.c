@@ -137,9 +137,8 @@ lookup_dev_by_name(struct tcmulib_context *ctx, char *dev_name, int *index)
 
 	darray_foreach(dev_ptr, ctx->devices) {
 		dev = *dev_ptr;
-		size_t len = strnlen(dev->dev_name, sizeof(dev->dev_name));
 
-		if (!strncmp(dev->dev_name, dev_name, len)) {
+		if (!strcmp(dev->dev_name, dev_name)) {
 			*index = i;
 			return dev;
 		}
@@ -311,15 +310,19 @@ static struct nl_sock *setup_netlink(struct tcmulib_context *ctx)
 	ret = genl_ops_resolve(sock, &tcmu_ops);
 	if (ret < 0) {
 		tcmu_err("couldn't resolve ops, is target_core_user.ko loaded?\n");
-		goto err_close;
+		goto err_unregister;
 	}
 
 	ret = genl_ctrl_resolve_grp(sock, "TCM-USER", "config");
+	if (ret < 0) {
+		tcmu_err("couldn't resolve netlink family group, is target_core_user.ko loaded?\n");
+		goto err_unregister;
+	}
 
 	ret = nl_socket_add_membership(sock, ret);
 	if (ret < 0) {
 		tcmu_err("couldn't add membership\n");
-		goto err_close;
+		goto err_unregister;
 	}
 
 	/*
@@ -330,6 +333,8 @@ static struct nl_sock *setup_netlink(struct tcmulib_context *ctx)
 
 	return sock;
 
+err_unregister:
+	genl_unregister_family(&tcmu_ops);
 err_close:
 	nl_close(sock);
 err_free:
@@ -340,6 +345,13 @@ err_free:
 
 static void teardown_netlink(struct nl_sock *sock)
 {
+	int ret;
+
+	ret = genl_unregister_family(&tcmu_ops);
+	if (ret != 0) {
+		tcmu_err("genl_unregister_family failed, %d\n", ret);
+	}
+
 	nl_close(sock);
 	nl_socket_free(sock);
 }
@@ -480,7 +492,7 @@ static int add_device(struct tcmulib_context *ctx,
 	dev->ctx = ctx;
 
 	ret = dev->handler->added(dev);
-	if (ret < 0) {
+	if (ret != 0) {
 		tcmu_err("handler open failed for %s\n", dev->dev_name);
 		goto err_munmap;
 	}
@@ -539,37 +551,62 @@ static void remove_device(struct tcmulib_context *ctx,
 	free(dev);
 }
 
-static int is_uio(const struct dirent *dirent)
+static int read_uio_name(const char *uio_dev, char **dev_name)
 {
 	int fd;
-	char tmp_path[64];
-	char buf[256];
-	ssize_t ret;
+	char *tmp_path;
+	int ret = -1;
+	char buf[PATH_MAX] = {'\0'};
+
+	if (asprintf(&tmp_path, "/sys/class/uio/%s/name", uio_dev) == -1)
+		return -1;
+
+	fd = open(tmp_path, O_RDONLY);
+	if (fd == -1) {
+		tcmu_err("could not open %s\n", tmp_path);
+		goto free_path;
+	}
+
+	ret = read(fd, buf, sizeof(buf));
+	if (ret <= 0 || ret >= sizeof(buf)) {
+		tcmu_err("read of %s had issues\n", tmp_path);
+		goto close;
+	}
+
+	buf[ret-1] = '\0'; /* null-terminate and chop off the \n */
+
+	*dev_name = strdup(buf);
+
+	ret = 0;
+
+close:
+	close(fd);
+free_path:
+	free(tmp_path);
+	return ret;
+}
+
+static int is_uio(const struct dirent *dirent)
+{
+	char *dev_name = NULL;
+	ssize_t ret = 0;
 
 	if (strncmp(dirent->d_name, "uio", 3))
 		return 0;
 
-	snprintf(tmp_path, sizeof(tmp_path), "/sys/class/uio/%s/name", dirent->d_name);
-
-	fd = open(tmp_path, O_RDONLY);
-	if (fd == -1)
-		return 0;
-
-	ret = read(fd, buf, sizeof(buf));
-	if (ret <= 0 || ret >= sizeof(buf))
-		goto not_uio;
-
-	buf[ret-1] = '\0'; /* null-terminate and chop off the \n */
+	if (read_uio_name(dirent->d_name, &dev_name))
+		goto out;
 
 	/* we only want uio devices whose name is a format we expect */
-	if (strncmp(buf, "tcm-user", 8))
-		goto not_uio;
+	if (strncmp(dev_name, "tcm-user", 8))
+		goto out;
 
-	close(fd);
-	return 1;
-not_uio:
-	close(fd);
-	return 0;
+	ret = 1;
+
+out:
+	if (dev_name)
+		free(dev_name);
+	return ret;
 }
 
 static int open_devices(struct tcmulib_context *ctx)
@@ -580,36 +617,20 @@ static int open_devices(struct tcmulib_context *ctx)
 	int i;
 
 	num_devs = scandir("/dev", &dirent_list, is_uio, alphasort);
-
 	if (num_devs == -1)
 		return -1;
 
 	for (i = 0; i < num_devs; i++) {
-		char tmp_path[64];
-		char buf[256];
-		int fd;
-		int ret;
+		char *dev_name = NULL;
 
-		snprintf(tmp_path, sizeof(tmp_path), "/sys/class/uio/%s/name",
-			 dirent_list[i]->d_name);
+		if (read_uio_name(dirent_list[i]->d_name, &dev_name))
+			continue;
 
-		fd = open(tmp_path, O_RDONLY);
-		if (fd == -1) {
-			tcmu_err("could not open %s!\n", tmp_path);
+		if (add_device(ctx, dirent_list[i]->d_name, dev_name) < 0) {
+			free (dev_name);
 			continue;
 		}
-
-		ret = read(fd, buf, sizeof(buf));
-		close(fd);
-		if (ret <= 0 || ret >= sizeof(buf)) {
-			tcmu_err("read of %s had issues\n", tmp_path);
-			continue;
-		}
-		buf[ret-1] = '\0'; /* null-terminate and chop off the \n */
-
-		ret = add_device(ctx, dirent_list[i]->d_name, buf);
-		if (ret < 0)
-			continue;
+		free(dev_name);
 
 		num_good_devs++;
 	}
@@ -619,6 +640,14 @@ static int open_devices(struct tcmulib_context *ctx)
 	free(dirent_list);
 
 	return num_good_devs;
+}
+
+static void release_resources(struct tcmulib_context *ctx)
+{
+	teardown_netlink(ctx->nl_sock);
+	darray_free(ctx->handlers);
+	darray_free(ctx->devices);
+	free(ctx);
 }
 
 struct tcmulib_context *tcmulib_initialize(
@@ -650,11 +679,7 @@ struct tcmulib_context *tcmulib_initialize(
 
 	ret = open_devices(ctx);
 	if (ret < 0) {
-		teardown_netlink(ctx->nl_sock);
-		darray_free(ctx->handlers);
-		darray_free(ctx->devices);
-		genl_unregister_family(&tcmu_ops);
-		free(ctx);
+		release_resources(ctx);
 		return NULL;
 	}
 
@@ -663,16 +688,8 @@ struct tcmulib_context *tcmulib_initialize(
 
 void tcmulib_close(struct tcmulib_context *ctx)
 {
-	int ret;
 	close_devices(ctx);
-	teardown_netlink(ctx->nl_sock);
-	darray_free(ctx->handlers);
-	darray_free(ctx->devices);
-	ret = genl_unregister_family(&tcmu_ops);
-	if (ret != 0) {
-		tcmu_err("genl_unregister_family failed, %d\n", ret);
-	}
-	free(ctx);
+	release_resources(ctx);
 }
 
 int tcmulib_get_master_fd(struct tcmulib_context *ctx)
@@ -752,6 +769,56 @@ void tcmu_set_dev_max_xfer_len(struct tcmu_device *dev, uint32_t len)
 uint32_t tcmu_get_dev_max_xfer_len(struct tcmu_device *dev)
 {
 	return dev->max_xfer_len;
+}
+
+/**
+ * tcmu_set/get_dev_opt_unmap_gran - set/get device's optimal unmap granularity
+ * @dev: tcmu device
+ * @len: optimal unmap granularity length in block_size sectors
+ */
+void tcmu_set_dev_opt_unmap_gran(struct tcmu_device *dev, uint32_t len)
+{
+	dev->opt_unmap_gran = len;
+}
+
+uint32_t tcmu_get_dev_opt_unmap_gran(struct tcmu_device *dev)
+{
+	return dev->opt_unmap_gran;
+}
+
+/**
+ * tcmu_set/get_dev_unmap_gran_align - set/get device's unmap granularity alignment
+ * @dev: tcmu device
+ * @len: unmap granularity alignment length in block_size sectors
+ */
+void tcmu_set_dev_unmap_gran_align(struct tcmu_device *dev, uint32_t len)
+{
+	dev->unmap_gran_align = len;
+}
+
+uint32_t tcmu_get_dev_unmap_gran_align(struct tcmu_device *dev)
+{
+	return dev->unmap_gran_align;
+}
+
+void tcmu_set_dev_write_cache_enabled(struct tcmu_device *dev, bool enabled)
+{
+	dev->write_cache_enabled = enabled;
+}
+
+bool tcmu_get_dev_write_cache_enabled(struct tcmu_device *dev)
+{
+	return dev->write_cache_enabled;
+}
+
+void tcmu_set_dev_solid_state_media(struct tcmu_device *dev, bool solid_state)
+{
+	dev->solid_state_media = solid_state;
+}
+
+bool tcmu_get_dev_solid_state_media(struct tcmu_device *dev)
+{
+	return dev->solid_state_media;
 }
 
 int tcmu_get_dev_fd(struct tcmu_device *dev)

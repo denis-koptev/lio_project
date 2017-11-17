@@ -33,6 +33,7 @@
 #include "libtcmu_log.h"
 #include "libtcmu_common.h"
 #include "libtcmu_priv.h"
+#include "target.h"
 #include "alua.h"
 
 int tcmu_get_cdb_length(uint8_t *cdb)
@@ -168,6 +169,14 @@ size_t tcmu_iovec_length(struct iovec *iovec, size_t iov_cnt)
 	return length;
 }
 
+void tcmu_copy_cmd_sense_data(struct tcmulib_cmd *tocmd, struct tcmulib_cmd *fromcmd)
+{
+	if (!tocmd || !fromcmd)
+		return;
+
+	memcpy(tocmd->sense_buf, fromcmd->sense_buf, 18);
+}
+
 int tcmu_set_sense_data(uint8_t *sense_buf, uint8_t key, uint16_t asc_ascq,
 			uint32_t *info)
 {
@@ -211,6 +220,7 @@ void tcmu_zero_iovec(struct iovec *iovec, size_t iov_cnt)
 		iov_cnt--;
 	}
 }
+
 /*
  * Copy data into an iovec, and consume the space in the iovec.
  *
@@ -309,7 +319,7 @@ int tcmu_emulate_std_inquiry(
 }
 
 /* This func from CCAN str/hex/hex.c. Public Domain */
-static bool char_to_hex(unsigned char *val, char c)
+bool char_to_hex(unsigned char *val, char c)
 {
 	if (c >= '0' && c <= '9') {
 		*val = c - '0';
@@ -334,22 +344,29 @@ int tcmu_emulate_evpd_inquiry(
 	size_t iov_cnt,
 	uint8_t *sense)
 {
+	struct tcmur_handler *rhandler = tcmu_get_runner_handler(dev);
+
 	switch (cdb[2]) {
 	case 0x0: /* Supported VPD pages */
 	{
-		char data[9];
+		char data[16];
 
 		memset(data, 0, sizeof(data));
 
 		/* data[1] (page code) already 0 */
+		/*
+		  *  spc4r22 7.7.13 The supported VPD page list shall contain
+		  *  a list of all VPD page codes (see 7.7) implemented by the
+		  *  logical unit in ascending order beginning with page code 00h
+		  */
+		data[4] = 0x00;
+		data[5] = 0x80;
+		data[6] = 0x83;
+		data[7] = 0xb0;
+		data[8] = 0xb1;
+		data[9] = 0xb2;
 
-		data[4] = 0x80;
-		data[5] = 0x83;
-		data[6] = 0xb0;
-		data[7] = 0xb1;
-		data[8] = 0xb2;
-
-		data[3] = 5;
+		data[3] = 6;
 
 		tcmu_memcpy_into_iovec(iovec, iov_cnt, data, sizeof(data));
 		return SAM_STAT_GOOD;
@@ -389,11 +406,12 @@ int tcmu_emulate_evpd_inquiry(
 	case 0x83: /* Device identification */
 	{
 		char data[512];
-		char *ptr;
-		size_t used = 0;
-		char *wwn;
-		size_t len;
+		char *ptr, *p, *wwn;
+		size_t len, used = 0;
 		uint16_t *tot_len = (uint16_t*) &data[2];
+		uint32_t padding;
+		bool next;
+		int i;
 
 		memset(data, 0, sizeof(data));
 
@@ -437,10 +455,8 @@ int tcmu_emulate_evpd_inquiry(
 		 * WWN, but this is what the kernel does, and it's nice for our
 		 * values to match.
 		 */
-		char *p = wwn;
-		bool next = true;
-		int i = 7;
-		for ( ; *p && i < 20; p++) {
+		next = true;
+		for (p = wwn, i = 7; *p && i < 20; p++) {
 			uint8_t val;
 
 			if (!char_to_hex(&val, *p))
@@ -495,6 +511,56 @@ int tcmu_emulate_evpd_inquiry(
 		ptr[6] = (port->grp->id >> 8) & 0xff;
 		ptr[7] = port->grp->id & 0xff;
 		used += 8;
+		ptr += 8;
+
+		/* SCSI name */
+		ptr[0] = port->proto_id << 4;
+		ptr[0] |= 0x3;	/* CODE SET = UTF-8 */
+		ptr[1] = 0x80;	/* PIV=1 */
+		ptr[1] |= 0x10; /* ASSOCIATION = target port: 01b */
+		ptr[1] |= 0x8;	/* DESIGNATOR TYPE = SCSI name string */
+		len = snprintf(&ptr[4], sizeof(data) - used - 4, "%s,t,0x%04x", port->wwn, port->tpgt);
+		len += 1;		/* Include  NULL terminator */
+		/*
+		 * The null-terminated, null-padded (see 4.4.2) SCSI
+		 * NAME STRING field contains a UTF-8 format string.
+		 * The number of bytes in the SCSI NAME STRING field
+		 * (i.e., the value in the DESIGNATOR LENGTH field)
+		 * shall be no larger than 256 and shall be a multiple
+		 * of four.
+		 */
+		padding = ((-len) & 3);
+		if (padding)
+			len += padding;
+		if (len > 256)
+			len=256;
+		ptr[3] = len;
+		used += len + 4;
+		ptr += len + 4;
+
+		/* Target device designator */
+		ptr[0] = port->proto_id << 4;
+		ptr[0] |= 0x3;	/* CODE SET = UTF-8 */
+		ptr[1] = 0x80;	/* PIV=1 */
+		ptr[1] |= 0x20;	/* ASSOCIATION = target device: 10b */
+		ptr[1] |= 0x8;	/* DESIGNATOR TYPE = SCSI name string */
+		len = snprintf(&ptr[4], sizeof(data) - used -4, "%s", port->wwn);
+		len +=1;		/* Include  NULL terminator */
+		/*
+		 * The null-terminated, null-padded (see 4.4.2) SCSI
+		 * NAME STRING field contains a UTF-8 format string.
+		 * The number of bytes in the SCSI NAME STRING field
+		 * (i.e., the value in the DESIGNATOR LENGTH field)
+		 * shall be no larger than 256 and shall be a multiple
+		 * of four.
+		 */
+		padding = ((-len) & 3);
+		if (padding)
+			len += padding;
+		if (len >256)
+			len = 256;
+		ptr[3] = len;
+		used += len + 4;
 
 finish_page83:
 		/* Done with descriptor list */
@@ -512,8 +578,9 @@ finish_page83:
 	case 0xb0: /* Block Limits */
 	{
 		char data[64];
-		int block_size;
-		int max_xfer_length;
+		uint32_t max_xfer_length;
+		uint32_t opt_unmap_gran;
+		uint32_t unmap_gran_align;
 		uint16_t val16;
 		uint32_t val32;
 		uint64_t val64;
@@ -544,33 +611,40 @@ finish_page83:
 		 */
 		data[5] = 0x01;
 
-		block_size = tcmu_get_attribute(dev, "hw_block_size");
-		if (block_size <= 0) {
-			return tcmu_set_sense_data(sense, ILLEGAL_REQUEST,
-						   ASC_INVALID_FIELD_IN_CDB, NULL);
-		}
-
 		/*
 		 * Daemons like runner may override the user requested
 		 * value due to device specific limits.
 		 */
-		if (dev->max_xfer_len) {
-			max_xfer_length = dev->max_xfer_len;
-		} else {
-			max_xfer_length = tcmu_get_attribute(dev,
-							     "hw_max_sectors");
-			if (max_xfer_length < 0) {
-				return tcmu_set_sense_data(sense,
-						HARDWARE_ERROR,
-						ASC_INTERNAL_TARGET_FAILURE, NULL);
-			}
-		}
+		max_xfer_length = tcmu_get_dev_max_xfer_len(dev);
 
 		val32 = htobe32(max_xfer_length);
 		/* Max xfer length */
 		memcpy(&data[8], &val32, 4);
 		/* Optimal xfer length */
 		memcpy(&data[12], &val32, 4);
+
+		if (rhandler->unmap) {
+			/* MAXIMUM UNMAP LBA COUNT */
+			val32 = htobe32(VPD_MAX_UNMAP_LBA_COUNT);
+			memcpy(&data[20], &val32, 4);
+
+			/* MAXIMUM UNMAP BLOCK DESCRIPTOR COUNT */
+			val32 = htobe32(VPD_MAX_UNMAP_BLOCK_DESC_COUNT);
+			memcpy(&data[24], &val32, 4);
+
+			/* OPTIMAL UNMAP GRANULARITY */
+			opt_unmap_gran = tcmu_get_dev_opt_unmap_gran(dev);
+			val32 = htobe32(opt_unmap_gran);
+			memcpy(&data[28], &val32, 4);
+
+			/* UNMAP GRANULARITY ALIGNMENT */
+			unmap_gran_align = tcmu_get_dev_unmap_gran_align(dev);
+			val32 = htobe32(unmap_gran_align);
+			memcpy(&data[32], &val32, 4);
+
+			/* UGAVALID: An unmap granularity alignment valid bit */
+			data[32] |= 0x80;
+		}
 
 		/* MAXIMUM WRITE SAME LENGTH */
 		val64 = htobe64(VPD_MAX_WRITE_SAME_LENGTH);
@@ -601,6 +675,11 @@ finish_page83:
 		val16 = htobe16(0x003c);
 		memcpy(&data[2], &val16, 2);
 
+		if (tcmu_get_dev_solid_state_media(dev)) {
+			val16 = htobe16(0x0001);
+			memcpy(&data[4], &val16, 2);
+		}
+
 		tcmu_memcpy_into_iovec(iovec, iov_cnt, data, sizeof(data));
 		return SAM_STAT_GOOD;
 	}
@@ -627,6 +706,22 @@ finish_page83:
 		 */
 		val16 = htobe16(0x0004);
 		memcpy(&data[2], &val16, 2);
+
+		/*
+		 * The logical block provisioning read zeros (LBPRZ) field.
+		 *
+		 * The logical block data represented by unmapped LBAs is set to zeros
+		 */
+		data[5] = 0x04;
+
+		/*
+		 * The logical block provisioning unmap (LBPU|LBPWS|LBPWS10) fields.
+		 *
+		 * This will enable the UNMAP command for the device server and write
+		 * same(10|16) command.
+		 */
+		if (rhandler->unmap)
+			data[5] |= 0xe0;
 
 		tcmu_memcpy_into_iovec(iovec, iov_cnt, data, sizeof(data));
 		return SAM_STAT_GOOD;
@@ -728,6 +823,22 @@ int tcmu_emulate_read_capacity_16(
 	val32 = htobe32(block_size);
 	memcpy(&buf[8], &val32, 4);
 
+	/*
+	 * Logical Block Provisioning Management Enabled (LBPME) bit
+	 *
+	 * The LBPME bit sets to one and then the logical unit implements
+	 * logical block provisioning management
+	 */
+	buf[14] = 0x80;
+
+	/*
+	 * The logical block provisioning read zeros (LBPRZ) bit shall be
+	 * set to one if the LBPRZ field is set to xx1b in VPD B2. The
+	 * LBPRZ bit shall be set to zero if the LBPRZ field is not set
+	 * to xx1b.
+	 */
+	buf[14] |= 0x40;
+
 	/* all else is zero */
 
 	tcmu_memcpy_into_iovec(iovec, iov_cnt, buf, sizeof(buf));
@@ -735,34 +846,61 @@ int tcmu_emulate_read_capacity_16(
 	return SAM_STAT_GOOD;
 }
 
-int handle_rwrecovery_page(uint8_t *buf, size_t buf_len)
+static void copy_to_response_buf(uint8_t *to_buf, size_t to_len,
+				 uint8_t *from_buf, size_t from_len)
 {
-	if (buf_len < 12)
-		return -1;
+	if (!to_buf)
+		return;
+	/*
+	 * SPC 4r37: 4.3.5.6 Allocation length:
+	 *
+	 * The device server shall terminate transfers to the Data-In Buffer
+	 * when the number of bytes or blocks specified by the ALLOCATION
+	 * LENGTH field have been transferred or when all available data
+	 * have been transferred, whichever is less.
+	 */
+	memcpy(to_buf, from_buf, to_len > from_len ? from_len : to_len);
+}
 
+static int handle_rwrecovery_page(struct tcmu_device *dev, uint8_t *ret_buf,
+			   size_t ret_buf_len)
+{
+	uint8_t buf[12];
+
+	memset(buf, 0, sizeof(buf));
 	buf[0] = 0x1;
 	buf[1] = 0xa;
 
+	copy_to_response_buf(ret_buf, ret_buf_len, buf, 12);
 	return 12;
 }
 
-int handle_cache_page(uint8_t *buf, size_t buf_len)
+static int handle_cache_page(struct tcmu_device *dev, uint8_t *ret_buf,
+		      size_t ret_buf_len)
 {
-	if (buf_len < 20)
-		return -1;
+	uint8_t buf[20];
 
+	memset(buf, 0, sizeof(buf));
 	buf[0] = 0x8;
 	buf[1] = 0x12;
-	buf[2] = 0x4; // WCE=1
 
+	/*
+	 * If device supports a writeback cache then set writeback
+	 * cache enable (WCE)
+	 */
+	if (tcmu_get_dev_write_cache_enabled(dev))
+		buf[2] = 0x4;
+
+	copy_to_response_buf(ret_buf, ret_buf_len, buf, 20);
 	return 20;
 }
 
-static int handle_control_page(uint8_t *buf, size_t buf_len)
+static int handle_control_page(struct tcmu_device *dev, uint8_t *ret_buf,
+			       size_t ret_buf_len)
 {
-	if (buf_len < 12)
-		return -1;
+	uint8_t buf[12];
 
+	memset(buf, 0, sizeof(buf));
 	buf[0] = 0x0a;
 	buf[1] = 0x0a;
 
@@ -809,19 +947,57 @@ static int handle_control_page(uint8_t *buf, size_t buf_len)
 	buf[8] = 0xff;
 	buf[9] = 0xff;
 
+	copy_to_response_buf(ret_buf, ret_buf_len, buf, 12);
 	return 12;
 }
 
 
-static struct {
+static struct mode_sense_handler {
 	uint8_t page;
 	uint8_t subpage;
-	int (*get)(uint8_t *buf, size_t buf_len);
+	int (*get)(struct tcmu_device *dev, uint8_t *buf, size_t buf_len);
 } modesense_handlers[] = {
 	{0x1, 0, handle_rwrecovery_page},
 	{0x8, 0, handle_cache_page},
 	{0xa, 0, handle_control_page},
 };
+
+static ssize_t handle_mode_sense(struct tcmu_device *dev,
+				 struct mode_sense_handler *handler,
+				 uint8_t **buf, size_t alloc_len,
+				 size_t *used_len, bool sense_ten)
+{
+	int ret;
+
+	ret = handler->get(dev, *buf, alloc_len - *used_len);
+
+	if  (!sense_ten && (*used_len + ret >= 255))
+		return -EINVAL;
+
+	/*
+	 * SPC 4r37: 4.3.5.6 Allocation length:
+	 *
+	 * If the information being transferred to the Data-In Buffer includes
+	 * fields containing counts of the number of bytes in some or all of
+	 * the data (e.g., the PARAMETER DATA LENGTH field, the PAGE LENGTH
+	 * field, the DESCRIPTOR LENGTH field, the AVAILABLE DATA field),
+	 * then the contents of these fields shall not be altered to reflect
+	 * the truncation, if any, that results from an insufficient
+	 * ALLOCATION LENGTH value
+	 */
+	/*
+	 * Setup the buffer so to still loop over the handlers, but just
+	 * increment the used_len so we can return the
+	 * final value.
+	 */
+	if (*buf && (*used_len + ret >= alloc_len))
+		*buf = NULL;
+
+	*used_len += ret;
+	if (*buf)
+		*buf += ret;
+	return ret;
+}
 
 /*
  * Handle MODE_SENSE(6) and MODE_SENSE(10).
@@ -829,6 +1005,7 @@ static struct {
  * For TYPE_DISK only.
  */
 int tcmu_emulate_mode_sense(
+	struct tcmu_device *dev,
 	uint8_t *cdb,
 	struct iovec *iovec,
 	size_t iov_cnt,
@@ -841,13 +1018,23 @@ int tcmu_emulate_mode_sense(
 	int i;
 	int ret;
 	size_t used_len;
-	uint8_t buf[512];
-	bool got_sense = false;
+	uint8_t *buf;
+	uint8_t *orig_buf = NULL;
 
-	memset(buf, 0, sizeof(buf));
+	if (!alloc_len)
+		return SAM_STAT_GOOD;
 
 	/* Mode parameter header. Mode data length filled in at the end. */
 	used_len = sense_ten ? 8 : 4;
+	if (used_len > alloc_len)
+		goto fail;
+
+	buf = calloc(1, alloc_len);
+	if (!buf)
+		return tcmu_set_sense_data(sense, HARDWARE_ERROR,
+					   ASC_INTERNAL_TARGET_FAILURE, NULL);
+	orig_buf = buf;
+	buf += used_len;
 
 	/* Don't fill in device-specific parameter */
 	/* This helper fn doesn't support sw write protect (SWP) */
@@ -855,58 +1042,48 @@ int tcmu_emulate_mode_sense(
 	/* Don't report block descriptors */
 
 	if (page_code == 0x3f) {
-		got_sense = true;
 		for (i = 0; i < ARRAY_SIZE(modesense_handlers); i++) {
-			ret = modesense_handlers[i].get(&buf[used_len], sizeof(buf) - used_len);
-			if (ret <= 0)
-				break;
-
-			if  (sense_ten && (used_len + ret >= 255))
-				break;
-
-			if (used_len + ret > alloc_len)
-				break;
-
-			used_len += ret;
+			ret = handle_mode_sense(dev, &modesense_handlers[i],
+						&buf, alloc_len, &used_len,
+						sense_ten);
+			if (ret < 0)
+				goto free_buf;
 		}
-	}
-	else {
+	} else {
+		ret = 0;
+
 		for (i = 0; i < ARRAY_SIZE(modesense_handlers); i++) {
-			if (page_code == modesense_handlers[i].page
-			    && subpage_code == modesense_handlers[i].subpage) {
-				ret = modesense_handlers[i].get(&buf[used_len],
-								sizeof(buf) - used_len);
-				if (ret <= 0)
-					break;
-
-				if  (!sense_ten && (used_len + ret >= 255))
-					break;
-
-				if (used_len + ret > alloc_len)
-					break;
-
-				used_len += ret;
-				got_sense = true;
+			if (page_code == modesense_handlers[i].page &&
+			    subpage_code == modesense_handlers[i].subpage) {
+				ret = handle_mode_sense(dev,
+							&modesense_handlers[i],
+							&buf, alloc_len,
+							&used_len, sense_ten);
 				break;
 			}
 		}
+
+		if (ret <= 0)
+			goto free_buf;
 	}
 
-	if (!got_sense)
-		return tcmu_set_sense_data(sense, ILLEGAL_REQUEST,
-				    ASC_INVALID_FIELD_IN_CDB, NULL);
-
 	if (sense_ten) {
-		uint16_t *ptr = (uint16_t*) buf;
+		uint16_t *ptr = (uint16_t*) orig_buf;
 		*ptr = htobe16(used_len - 2);
 	}
 	else {
-		buf[0] = used_len - 1;
+		orig_buf[0] = used_len - 1;
 	}
 
-	tcmu_memcpy_into_iovec(iovec, iov_cnt, buf, sizeof(buf));
-
+	tcmu_memcpy_into_iovec(iovec, iov_cnt, orig_buf, alloc_len);
+	free(orig_buf);
 	return SAM_STAT_GOOD;
+
+free_buf:
+	free(orig_buf);
+fail:
+	return tcmu_set_sense_data(sense, ILLEGAL_REQUEST,
+				   ASC_INVALID_FIELD_IN_CDB, NULL);
 }
 
 /*
@@ -915,6 +1092,7 @@ int tcmu_emulate_mode_sense(
  * For TYPE_DISK only.
  */
 int tcmu_emulate_mode_select(
+	struct tcmu_device *dev,
 	uint8_t *cdb,
 	struct iovec *iovec,
 	size_t iov_cnt,
@@ -947,7 +1125,7 @@ int tcmu_emulate_mode_select(
 	for (i = 0; i < ARRAY_SIZE(modesense_handlers); i++) {
 		if (page_code == modesense_handlers[i].page
 		    && subpage_code == modesense_handlers[i].subpage) {
-			ret = modesense_handlers[i].get(&buf[hdr_len],
+			ret = modesense_handlers[i].get(dev, &buf[hdr_len],
 							sizeof(buf) - hdr_len);
 			if (ret <= 0)
 				return tcmu_set_sense_data(sense, ILLEGAL_REQUEST,
@@ -1002,7 +1180,7 @@ int tcmu_emulate_start_stop(struct tcmu_device *dev, uint8_t *cdb,
 #define CDB_TO_BUF_SIZE(bytes) ((bytes) * 3 + 1)
 #define CDB_FIX_BYTES 64 /* 64 bytes for default */
 #define CDB_FIX_SIZE CDB_TO_BUF_SIZE(CDB_FIX_BYTES)
-void tcmu_cdb_debug_info(const struct tcmulib_cmd *cmd)
+void tcmu_cdb_debug_info(struct tcmu_device *dev, const struct tcmulib_cmd *cmd)
 {
 	int i, n, bytes;
 	char fix[CDB_FIX_SIZE], *buf;
@@ -1013,7 +1191,7 @@ void tcmu_cdb_debug_info(const struct tcmulib_cmd *cmd)
 	if (bytes > CDB_FIX_SIZE) {
 		buf = malloc(CDB_TO_BUF_SIZE(bytes));
 		if (!buf) {
-			tcmu_err("out of memory\n");
+			tcmu_dev_err(dev, "out of memory\n");
 			return;
 		}
 	}
@@ -1023,7 +1201,7 @@ void tcmu_cdb_debug_info(const struct tcmulib_cmd *cmd)
 	}
 	sprintf(buf + n, "\n");
 
-	tcmu_dbg_scsi_cmd(buf);
+	tcmu_dev_dbg_scsi_cmd(dev, buf);
 
 	if (bytes > CDB_FIX_SIZE)
 		free(buf);

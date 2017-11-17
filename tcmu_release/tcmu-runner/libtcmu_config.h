@@ -18,9 +18,17 @@
 # define __TCMU_CONFIG_H
 
 #include <stdbool.h>
+#include <pthread.h>
+
+#include "ccan/list/list.h"
 
 struct tcmu_config {
+	pthread_t thread_id;
+	char *path;
+
+	bool is_dynamic;
 	int log_level;
+	char *log_dir_path;
 };
 
 /*
@@ -51,6 +59,8 @@ typedef enum {
 } tcmu_option_type;
 
 struct tcmu_conf_option {
+	struct list_node list;
+
 	char *key;
 	tcmu_option_type type;
 	union {
@@ -60,7 +70,6 @@ struct tcmu_conf_option {
 	};
 };
 
-int tcmu_load_config(struct tcmu_config *cfg, const char *path);
-void tcmu_config_destroy(struct tcmu_config *cfg);
-struct tcmu_config * tcmu_config_new(void);
+void tcmu_destroy_config(struct tcmu_config *cfg);
+struct tcmu_config * tcmu_setup_config(const char *path);
 #endif /* __TCMU_CONFIG_H */

@@ -45,8 +45,6 @@ struct tcmulib_context {
 
 	struct nl_sock *nl_sock;
 
-	unsigned reg_count_down;
-
 	GDBusConnection *connection;
 };
 
@@ -61,11 +59,15 @@ struct tcmu_device {
 	uint64_t num_lbas;
 	uint32_t block_size;
 	uint32_t max_xfer_len;
+	uint32_t opt_unmap_gran;
+	uint32_t unmap_gran_align;
+	unsigned int write_cache_enabled:1;
+	unsigned int solid_state_media:1;
 
 	char dev_name[16]; /* e.g. "uio14" */
 	char tcm_hba_name[16]; /* e.g. "user_8" */
 	char tcm_dev_name[128]; /* e.g. "backup2" */
-	char cfgstring[256];
+	char cfgstring[PATH_MAX];
 
 	struct tcmulib_handler *handler;
 	struct tcmulib_context *ctx;

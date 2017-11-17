@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.8 FATAL_ERROR)
 project (tcmu-runner C)
-set(VERSION 1.2.0)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -std=c99")
+set(VERSION 1.3.0-rc4)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror -Wall -Wdeclaration-after-statement -std=c99")
 
 include(GNUInstallDirs)
 include(CheckIncludeFile)
@@ -43,7 +43,7 @@ add_library(tcmu
   )
 set_target_properties(tcmu
   PROPERTIES
-  SOVERSION "1"
+  SOVERSION "2"
   )
 target_include_directories(tcmu
   PUBLIC ${LIBNL_INCLUDE_DIR}
@@ -80,6 +80,8 @@ target_link_libraries(tcmu_static
 add_executable(tcmu-runner
   tcmur_cmd_handler.c
   tcmur_aio.c
+  tcmur_device.c
+  target.c
   alua.c
   main.c
   tcmuhandler-generated.c
@@ -145,7 +147,6 @@ target_include_directories(handler_file
   PUBLIC ${PROJECT_SOURCE_DIR}/ccan
   )
 
-
 # Stuff for building the alloc handler
 add_library(handler_alloc
   SHARED
@@ -158,14 +159,6 @@ set_target_properties(handler_alloc
 target_include_directories(handler_alloc
   PUBLIC ${PROJECT_SOURCE_DIR}/ccan
   )
-  
-
-# The minimal library consumer
-add_executable(consumer
-  consumer.c
-  )
-target_link_libraries(consumer tcmu)
-
 
 # stamp out a header file to pass some of the CMake settings
 # to the source code
@@ -174,11 +167,12 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/version.h"
   )
 
+configure_file (
+  "${PROJECT_SOURCE_DIR}/tcmu.conf_install.cmake.in"
+  "${PROJECT_SOURCE_DIR}/tcmu.conf_install.cmake"
+  )
+install(SCRIPT tcmu.conf_install.cmake)
 
-install(FILES libtcmu.h libtcmu_common.h tcmu-runner.h
-  DESTINATION include)
-install(FILES tcmu.conf
-  DESTINATION /etc/tcmu)
 install(FILES org.kernel.TCMUService1.service
   DESTINATION /usr/share/dbus-1/system-services)
 install(FILES tcmu-runner.conf DESTINATION /etc/dbus-1/system.d)

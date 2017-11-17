@@ -38,8 +38,17 @@ typedef int (*rw_fn_t)(struct tcmu_device *, struct tcmulib_cmd *,
 		       struct iovec *, size_t, size_t, off_t);
 typedef int (*flush_fn_t)(struct tcmu_device *, struct tcmulib_cmd *);
 typedef int (*handle_cmd_fn_t)(struct tcmu_device *, struct tcmulib_cmd *);
+typedef int (*unmap_fn_t)(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
+			  uint64_t off, uint64_t len);
 
 struct tcmulib_cfg_info;
+
+enum {
+	TCMUR_LOCK_SUCCESS,
+	TCMUR_LOCK_FAILED,
+	TCMUR_LOCK_BUSY,
+	TCMUR_LOCK_NOTCONN,
+};
 
 struct tcmur_handler {
 	const char *name;	/* Human-friendly name */
@@ -112,16 +121,29 @@ struct tcmur_handler {
 	rw_fn_t write;
 	rw_fn_t read;
 	flush_fn_t flush;
+	unmap_fn_t unmap;
+
+	/*
+	 * Must return a TCMUR_LOCK return value.
+	 */
 	int (*lock)(struct tcmu_device *dev);
-	int (*unlock)(struct tcmu_device *dev);
-	int (*has_lock)(struct tcmu_device *dev);
+
+	/*
+	 * internal field, don't touch this
+	 *
+	 * indicates to tcmu-runner whether this is an internal handler loaded
+	 * via dlopen or an external handler registered via dbus. In the
+	 * latter case opaque will point to a struct dbus_info.
+	 */
+	bool _is_dbus_handler;
 };
 
 /*
  * Each tcmu-runner (tcmur) handler plugin must export the
  * following. It usually just calls tcmur_register_handler.
+ *
+ * int handler_init(void);
  */
-void tcmur_handler_init(void);
 
 /*
  * APIs for tcmur only

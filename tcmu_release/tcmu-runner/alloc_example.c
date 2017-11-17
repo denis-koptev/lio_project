@@ -52,165 +52,193 @@
 #include "scsi_defs.h"
 #include "tcmu-runner.h"
 
-struct alloc_state {
-	char * buf;
-	ssize_t ptr;
-	ssize_t size;
+struct alloc_state 
+{
+    char * buf;
+    ssize_t ptr;
+    ssize_t size;
 };
 
 
 static bool alloc_check_config(const char *cfgstring, char **reason)
 {
-	/* 
-	 * We need no cfgstring path to any file
-	 * Because we operate with allocated memory inside this handler
-	 */
+    /* 
+     * We need no cfgstring path to any file
+     * Because we operate with allocated memory inside this handler
+     */
 
-	/*
-	 * Or maybe ask for buf size in config?
-	 */
+    /*
+     * Or maybe ask for buf size in config?
+     */
 
-	return true;
+    return true;
 }
 
 static int alloc_open(struct tcmu_device *dev)
 {
-	printf(">>> [ALLOC] alloc_open\n");
+    struct alloc_state * state;
 
-	struct alloc_state * state;
+    printf(">>> [ALLOC] alloc_open\n");
 
-	state = calloc(1, sizeof(*state));
-	if (!state)
-		return -ENOMEM;
+    state = calloc(1, sizeof(*state));
 
-	tcmu_set_dev_private(dev, state);
+    if (!state)
+    {
+        return -ENOMEM;
+    }
 
-	printf(">>> [ALLOC] dev size: %lli\n", tcmu_get_device_size(dev));
+    tcmu_set_dev_private(dev, state);
 
-	state->buf = malloc(sizeof(char) * tcmu_get_device_size(dev)); // just for a while
-	state->size = tcmu_get_device_size(dev);
-	state->ptr = 0;
+    printf(">>> [ALLOC] dev size: %lli\n", tcmu_get_device_size(dev));
 
-	if (!state->buf)
-		return -ENOMEM;
+    state->buf = malloc(sizeof(char) * tcmu_get_device_size(dev)); // just for a while
+    state->size = tcmu_get_device_size(dev);
+    state->ptr = 0;
 
-	/*
-	 * Need to allocate some memory at start??
-	 */
+    if (!state->buf)
+    {
+        return -ENOMEM;
+    }
 
-	return 0;
+    /*
+     * Need to allocate some memory at start??
+     */
+
+    return 0;
 }
 
 static void alloc_close(struct tcmu_device *dev)
 {
-	printf(">>> [ALLOC] alloc_close\n");
+    struct alloc_state *state;
 
-	struct alloc_state *state = tcmu_get_dev_private(dev);
+    printf(">>> [ALLOC] alloc_close\n");
 
-	if (state->buf != NULL)
-		free(state->buf); // clear memory
-	free(state);
+    state = tcmu_get_dev_private(dev);
+
+    if (state->buf != NULL)
+    {
+        free(state->buf); // clear memory
+    }
+
+    free(state);
 }
 
 static int alloc_read(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
-		     struct iovec *iov, size_t iov_cnt, size_t length,
-		     off_t offset)
+             struct iovec *iov, size_t iov_cnt, size_t length,
+             off_t offset)
 {
+    int bytes;
+    int i;
+    struct alloc_state *state;
+    int amount;
+    ssize_t ret;
 
-	printf(">>> [ALLOC] alloc_read\n");
-	printf(">>> [ALLOC] command: ");
-	int bytes = tcmu_get_cdb_length(cmd->cdb);
-	for (int i = 0; i < bytes; i++) {
-		printf("%x ", cmd->cdb[i]);
-	}
-	printf("\n");
+    printf(">>> [ALLOC] alloc_read\n");
+    printf(">>> [ALLOC] command: ");
 
-	printf(">>> [ALLOC] iov_len: %lu; iov_cnt: %lu; length: %lu; offset: %lu\n", 
-		iov->iov_len, iov_cnt, length, offset);
+    bytes = tcmu_get_cdb_length(cmd->cdb);
 
-	struct alloc_state *state = tcmu_get_dev_private(dev);
+    for (i = 0; i < bytes; i++) 
+    {
+        printf("%x ", cmd->cdb[i]);
+    }
+    printf("\n");
 
-	int amount = 0;
-	amount = iov->iov_len;
+    printf(">>> [ALLOC] iov_len: %lu; iov_cnt: %lu; length: %lu; offset: %lu\n", 
+        iov->iov_len, iov_cnt, length, offset);
 
-	memcpy(iov->iov_base, state->buf+offset, amount);
-	//tcmu_zero_iovec(iov, iov_cnt);
+    state = tcmu_get_dev_private(dev);
 
-	ssize_t ret;
-	ret = SAM_STAT_GOOD;
-	cmd->done(dev, cmd, ret);
-	return 0;
+    amount = iov->iov_len;
+
+    memcpy(iov->iov_base, state->buf+offset, amount);
+    //tcmu_zero_iovec(iov, iov_cnt);
+
+    ret = SAM_STAT_GOOD;
+    cmd->done(dev, cmd, ret);
+    return 0;
 }
 
 static int alloc_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
-		      struct iovec *iov, size_t iov_cnt, size_t length,
-		      off_t offset)
+              struct iovec *iov, size_t iov_cnt, size_t length,
+              off_t offset)
 {
+    int bytes;
+    int i;
+    struct alloc_state *state;
+    int amount;
+    ssize_t ret;
 
-	printf(">>> [ALLOC] alloc_write\n");
-	printf(">>> [ALLOC] command: ");
-	int bytes = tcmu_get_cdb_length(cmd->cdb);
-	for (int i = 0; i < bytes; i++) {
-		printf("%x ", cmd->cdb[i]);
-	}
-	printf("\n");
+    printf(">>> [ALLOC] alloc_write\n");
+    printf(">>> [ALLOC] command: ");
 
-	printf(">>> [ALLOC] iov_len: %lu; iov_cnt: %lu; length: %lu; offset: %lu\n", 
-		iov->iov_len, iov_cnt, length, offset);
+    bytes = tcmu_get_cdb_length(cmd->cdb);
 
-	struct alloc_state *state = tcmu_get_dev_private(dev);
+    for (i = 0; i < bytes; i++) 
+    {
+        printf("%x ", cmd->cdb[i]);
+    }
+    printf("\n");
 
-	int amount = 0;
-	amount = iov->iov_len;
+    printf(">>> [ALLOC] iov_len: %lu; iov_cnt: %lu; length: %lu; offset: %lu\n", 
+        iov->iov_len, iov_cnt, length, offset);
 
-	memcpy(state->buf, iov->iov_base, amount);
+    state = tcmu_get_dev_private(dev);
 
-	ssize_t ret;
-	ret = SAM_STAT_GOOD;
-	cmd->done(dev, cmd, ret);
-	return 0;
+    amount = iov->iov_len;
+
+    memcpy(state->buf, iov->iov_base, amount);
+
+    ret = SAM_STAT_GOOD;
+    cmd->done(dev, cmd, ret);
+    return 0;
 }
 
 static int alloc_flush(struct tcmu_device *dev, struct tcmulib_cmd *cmd)
 {
-	printf(">>> [ALLOC] alloc_flush\n");
-	printf("	command: 0x%x\n", cmd->cdb[0]);
+    int bytes;
+    int i;
+    ssize_t ret;
 
-	printf(">>> [ALLOC] command: ");
-	int bytes = tcmu_get_cdb_length(cmd->cdb);
-	for (int i = 0; i < bytes; i++) {
-		printf("%x ", cmd->cdb[i]);
-	}
-	printf("\n");
+    printf(">>> [ALLOC] alloc_flush\n");
+    printf("    command: 0x%x\n", cmd->cdb[0]);
+    printf(">>> [ALLOC] command: ");
 
-	int ret;
-	ret = SAM_STAT_GOOD;
-	cmd->done(dev, cmd, ret);
-	return 0;
+    bytes = tcmu_get_cdb_length(cmd->cdb);
+
+    for (i = 0; i < bytes; i++) 
+    {
+        printf("%x ", cmd->cdb[i]);
+    }
+    printf("\n");
+
+    ret = SAM_STAT_GOOD;
+    cmd->done(dev, cmd, ret);
+    return 0;
 }
 
 static const char alloc_cfg_desc[] =
-	"You don't need config for alloc handler";
+    "You don't need config for alloc handler";
 
 static struct tcmur_handler alloc_handler = {
-	.cfg_desc = alloc_cfg_desc,
+    .cfg_desc = alloc_cfg_desc,
 
-	.check_config = alloc_check_config,
+    .check_config = alloc_check_config,
 
-	.open = alloc_open,
-	.close = alloc_close,
-	.read = alloc_read,
-	.write = alloc_write,
-	.flush = alloc_flush,
-	.name = "Handler with allocated memory",
-	.subtype = "alloc",
-	.nr_threads = 1,
+    .open = alloc_open,
+    .close = alloc_close,
+    .read = alloc_read,
+    .write = alloc_write,
+    .flush = alloc_flush,
+    .name = "Handler with allocated memory",
+    .subtype = "alloc",
+    .nr_threads = 1,
 };
 
 /* Entry point must be named "handler_init". */
 int handler_init(void)
 {
-	printf(">>> [ALLOC] handler_init\n");
+    printf(">>> [ALLOC] handler_init\n");
 
-	return tcmur_register_handler(&alloc_handler);
+    return tcmur_register_handler(&alloc_handler);
 }

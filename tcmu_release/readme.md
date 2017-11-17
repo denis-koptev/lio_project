@@ -22,19 +22,26 @@ We removed unnecessary standard handlers (glfs, rbd, qcow)
 On the other hand, this tcmu-runner has new handler 'alloc'
 This handler works only with it's memory. Memory plays a device role in this case
 
-* Install all dependencies (you can use dependency.sh script)
-* To build it from project's folder run `cmake .`
-* Then `make`
-* Ensure, that target_core_user module is loaded (lsmod)
-* If not, load it from /lib/modules/<kernel version>/kernel/drivers/target
+___Next build instruction is DEPRECATED___
 
-*Note: otherwise, tcmu-runner should load it*
+	* Install all dependencies (you can use dependency.sh script)
+	* To build it from project's folder run `cmake .`
+	* Then `make`
+	* Ensure, that target_core_user module is loaded (lsmod)
+	* If not, load it from /lib/modules/<kernel version>/kernel/drivers/target
+	* Copy `tcmu-runner.conf` to `/etc/dbus-1/system.d/`. This allows tcmu-runner to be on the system bus, which is privileged.
+	* Copy tcmu-runner executable from tcmu-runner folder to /usr/bin/
+	* Create folder /etc/tcmu/ : `mkdir /etc/tcmu`
+	* Copy tcmu-runner/tcmu.conf to /etc/tcmu/ : `cp tcmu.conf /etc/tcmu/tcmu.conf`
+	* Run tcmu-runner using run.sh script from tcmu-runner directory (as root)
 
-* Copy `tcmu-runner.conf` to `/etc/dbus-1/system.d/`. This allows tcmu-runner to be on the system bus, which is privileged.
-* Copy tcmu-runner executable from tcmu-runner folder to /usr/bin/
-* Create folder /etc/tcmu/ : `mkdir /etc/tcmu`
-* Copy tcmu-runner/tcmu.conf to /etc/tcmu/ : `cp tcmu.conf /etc/tcmu/tcmu.conf`
-* Run tcmu-runner using run.sh script from tcmu-runner directory (as root)
+___Up-to-date instruction___
+
+New version of tcmu-runner has `install` directive for make.
+Moreover, we created scripts for automatical deployment.
+
+* To install dependencies run: `./install_dep.sh`
+* To build and run tcmu-runner: `./deploy.sh`
 
 As a result of this actions tcmu-runner runs in loop.
 Our alloc handler gives you some info from tcmu-runner console:

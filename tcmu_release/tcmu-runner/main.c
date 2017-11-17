@@ -34,10 +34,13 @@
 #include <pthread.h>
 #include <signal.h>
 #include <glib.h>
+#include <glib-unix.h>
 #include <gio/gio.h>
 #include <getopt.h>
 #include <poll.h>
 #include <scsi/scsi.h>
+#include <sys/time.h>
+#include <sys/resource.h>
 
 #include <libkmod.h>
 #include <sys/utsname.h>
@@ -54,21 +57,10 @@
 #include "libtcmu_log.h"
 
 static char *handler_path = DEFAULT_HANDLER_PATH;
-/* tcmu log dir path */
-extern char *tcmu_log_dir;
+
+static struct tcmu_config *tcmu_cfg;
 
 darray(struct tcmur_handler *) g_runner_handlers = darray_new();
-
-static struct tcmur_handler *find_handler_by_subtype(gchar *subtype)
-{
-	struct tcmur_handler **handler;
-
-	darray_foreach(handler, g_runner_handlers) {
-		if (strcmp((*handler)->subtype, subtype) == 0)
-			return *handler;
-	}
-	return NULL;
-}
 
 int tcmur_register_handler(struct tcmur_handler *handler)
 {
@@ -88,6 +80,12 @@ int tcmur_register_handler(struct tcmur_handler *handler)
 	return 0;
 }
 
+static int tcmur_register_dbus_handler(struct tcmur_handler *handler)
+{
+	assert(handler->_is_dbus_handler == true);
+	return tcmur_register_handler(handler);
+}
+
 bool tcmur_unregister_handler(struct tcmur_handler *handler)
 {
 	int i;
@@ -98,6 +96,28 @@ bool tcmur_unregister_handler(struct tcmur_handler *handler)
 		}
 	}
 	return false;
+}
+
+static void free_dbus_handler(struct tcmur_handler *handler)
+{
+	g_free((char*)handler->opaque);
+	g_free((char*)handler->subtype);
+	g_free((char*)handler->cfg_desc);
+	g_free(handler);
+}
+
+static bool tcmur_unregister_dbus_handler(struct tcmur_handler *handler)
+{
+	bool ret = false;
+	assert(handler->_is_dbus_handler == true);
+
+	ret = tcmur_unregister_handler(handler);
+
+	if (ret == true) {
+		free_dbus_handler(handler);
+	}
+
+	return ret;
 }
 
 static int is_handler(const struct dirent *dirent)
@@ -113,6 +133,7 @@ static int open_handlers(void)
 	struct dirent **dirent_list;
 	int num_handlers;
 	int num_good = 0;
+	char *error;
 	int i;
 
 	num_handlers = scandir(handler_path, &dirent_list, is_handler, alphasort);
@@ -139,14 +160,20 @@ static int open_handlers(void)
 			continue;
 		}
 
+		dlerror();
 		handler_init = dlsym(handle, "handler_init");
-		if (!handler_init) {
-			tcmu_err("dlsym failure on %s\n", path);
+		if ((error = dlerror())) {
+			tcmu_err("dlsym failure on %s: (%s)\n", path, error);
 			free(path);
 			continue;
 		}
 
 		ret = handler_init();
+		if (ret) {
+			tcmu_err("handler init failed on path %s\n", path);
+			free(path);
+			continue;
+		}
 
 		free(path);
 
@@ -161,16 +188,18 @@ static int open_handlers(void)
 	return num_good;
 }
 
-static void sighandler(int signal)
+static gboolean sighandler(gpointer user_data)
 {
+	/*
+	 * FIXME: this is broken if IO is running in runner when called.
+	 * IO could be running in the handler or runner and we could free
+	 * resources while in use.
+	 */
 	tcmulib_cleanup_all_cmdproc_threads();
-	tcmu_cancel_log_thread();
-	exit(1);
-}
+	g_main_loop_quit((GMainLoop*)user_data);
 
-static struct sigaction tcmu_sigaction = {
-	.sa_handler = sighandler,
-};
+	return G_SOURCE_CONTINUE;
+}
 
 gboolean tcmulib_callback(GIOChannel *source,
 			  GIOCondition condition,
@@ -312,7 +341,7 @@ on_handler_appeared(GDBusConnection *connection,
 
 	if (info->register_invocation) {
 		info->connection = connection;
-		tcmur_register_handler(handler);
+		tcmur_register_dbus_handler(handler);
 		dbus_export_handler(handler, G_CALLBACK(on_dbus_check_config));
 		g_dbus_method_invocation_return_value(info->register_invocation,
 			    g_variant_new("(bs)", TRUE, "succeeded"));
@@ -337,8 +366,9 @@ on_handler_vanished(GDBusConnection *connection,
 			    g_variant_new("(bs)", FALSE, reason));
 		g_free(reason);
 	}
-	tcmur_unregister_handler(handler);
 	dbus_unexport_handler(handler);
+	g_bus_unwatch_name(info->watcher_id);
+	tcmur_unregister_dbus_handler(handler);
 }
 
 static gboolean
@@ -363,6 +393,8 @@ on_register_handler(TCMUService1HandlerManager1 *interface,
 	handler->handle_cmd   = dbus_handler_handle_cmd;
 
 	info = g_new0(struct dbus_info, 1);
+	handler->opaque = info;
+	handler->_is_dbus_handler = 1;
 	info->register_invocation = invocation;
 	info->watcher_id = g_bus_watch_name(G_BUS_TYPE_SYSTEM,
 					    bus_name,
@@ -371,33 +403,15 @@ on_register_handler(TCMUService1HandlerManager1 *interface,
 					    on_handler_vanished,
 					    handler,
 					    NULL);
-	g_free(bus_name);
-	handler->opaque = info;
-	return TRUE;
-}
+	if (info->watcher_id == 0) {
+		// probably an invalid name, roll back and report an error
+		free_dbus_handler(handler);
 
-static gboolean
-on_unregister_handler(TCMUService1HandlerManager1 *interface,
-		      GDBusMethodInvocation *invocation,
-		      gchar *subtype,
-		      gpointer user_data)
-{
-	struct tcmur_handler *handler = find_handler_by_subtype(subtype);
-	struct dbus_info *info = handler->opaque;
-
-	if (!handler) {
 		g_dbus_method_invocation_return_value(invocation,
 			g_variant_new("(bs)", FALSE,
-				      "unknown subtype"));
-		return TRUE;
+				      "failed to watch for DBus handler name"));
 	}
-	dbus_unexport_handler(handler);
-	tcmur_unregister_handler(handler);
-	g_bus_unwatch_name(info->watcher_id);
-	g_free(info);
-	g_free(handler);
-	g_dbus_method_invocation_return_value(invocation,
-		g_variant_new("(bs)", TRUE, "succeeded"));
+	g_free(bus_name);
 	return TRUE;
 }
 
@@ -416,10 +430,6 @@ void dbus_handler_manager1_init(GDBusConnection *connection)
 	g_signal_connect(interface,
 			 "handle-register-handler",
 			 G_CALLBACK (on_register_handler),
-			 NULL);
-	g_signal_connect(interface,
-			 "handle-unregister-handler",
-			 G_CALLBACK (on_unregister_handler),
 			 NULL);
 	if (!ret)
 		tcmu_err("Handler manager export failed: %s\n",
@@ -464,9 +474,9 @@ static int load_our_module(void)
 {
 	struct kmod_list *list = NULL, *itr;
 	struct kmod_ctx *ctx;
-	int ret;
 	struct stat sb;
 	struct utsname u;
+	int ret;
 
 	ctx = kmod_new(NULL, NULL);
 	if (!ctx) {
@@ -549,32 +559,74 @@ static int load_our_module(void)
 	return ret;
 }
 
-static void cmdproc_thread_cleanup(void *arg)
+/*
+ * tcmur_stop_device - stop device for removal
+ * @arg: tcmu_device to stop
+ *
+ * Stop internal tcmur device operations like lock and recovery and close
+ * the device. Running IO must be stopped before calling this.
+ */
+static void tcmur_stop_device(void *arg)
 {
 	struct tcmu_device *dev = arg;
 	struct tcmur_handler *rhandler = tcmu_get_runner_handler(dev);
+	struct tcmur_device *rdev = tcmu_get_daemon_dev_private(dev);
+	bool is_open = false;
 
-	rhandler->close(dev);
+	pthread_mutex_lock(&rdev->state_lock);
+	/* check if this was already called due to thread cancelation */
+	if (rdev->flags & TCMUR_DEV_FLAG_STOPPED) {
+		pthread_mutex_unlock(&rdev->state_lock);
+		return;
+	}
+	rdev->flags |= TCMUR_DEV_FLAG_STOPPING;
+	pthread_mutex_unlock(&rdev->state_lock);
+
+	/*
+	 * The lock thread can fire off the recovery thread, so make sure
+	 * it is done first.
+	 */
+	tcmu_cancel_lock_thread(dev);
+	tcmu_cancel_recovery(dev);
+
+	pthread_mutex_lock(&rdev->state_lock);
+	if (rdev->flags & TCMUR_DEV_FLAG_IS_OPEN) {
+		rdev->flags &= ~TCMUR_DEV_FLAG_IS_OPEN;
+		is_open = true;
+	}
+	pthread_mutex_unlock(&rdev->state_lock);
+
+	if (is_open)
+		rhandler->close(dev);
+
+	pthread_mutex_lock(&rdev->state_lock);
+	rdev->flags |= TCMUR_DEV_FLAG_STOPPED;
+	pthread_mutex_unlock(&rdev->state_lock);
+
+	tcmu_dev_dbg(dev, "cmdproc cleanup done\n");
 }
 
 static void *tcmur_cmdproc_thread(void *arg)
 {
-        int ret;
 	struct tcmu_device *dev = arg;
 	struct tcmur_handler *rhandler = tcmu_get_runner_handler(dev);
+	struct tcmur_device *rdev = tcmu_get_daemon_dev_private(dev);
 	struct pollfd pfd;
+	int ret;
+	bool dev_stopping = false;
 
-	pthread_cleanup_push(cmdproc_thread_cleanup, dev);
+	pthread_cleanup_push(tcmur_stop_device, dev);
 
 	while (1) {
-                int completed = 0;
+		int completed = 0;
 		struct tcmulib_cmd *cmd;
 
 		tcmulib_processing_start(dev);
 
-		while ((cmd = tcmulib_get_next_command(dev)) != NULL) {
+		while (!dev_stopping && (cmd = tcmulib_get_next_command(dev)) != NULL) {
+
 			if (tcmu_get_log_level() == TCMU_LOG_DEBUG_SCSI_CMD)
-				tcmu_cdb_debug_info(cmd);
+				tcmu_cdb_debug_info(dev, cmd);
 
 			if (tcmur_handler_is_passthrough_only(rhandler))
 				ret = tcmur_cmd_passthrough_handler(dev, cmd);
@@ -582,7 +634,7 @@ static void *tcmur_cmdproc_thread(void *arg)
 				ret = tcmur_generic_handle_cmd(dev, cmd);
 
 			if (ret == TCMU_NOT_HANDLED)
-				tcmu_warn("Command 0x%x not supported\n", cmd->cdb[0]);
+				tcmu_dev_warn(dev, "Command 0x%x not supported\n", cmd->cdb[0]);
 
 			/*
 			 * command (processing) completion is called in the following
@@ -604,19 +656,76 @@ static void *tcmur_cmdproc_thread(void *arg)
 		pfd.events = POLLIN;
 		pfd.revents = 0;
 
-		poll(&pfd, 1, -1);
-
-		if (pfd.revents != POLLIN) {
-			tcmu_err("poll received unexpected revent: 0x%x\n", pfd.revents);
+		/* Use ppoll instead poll to avoid poll call reschedules during signal
+		 * handling. If we were removing a device, then the uio device's memory
+		 * could be freed, but the poll would be rescheduled and end up accessing
+		 * the released device. */
+		ret = ppoll(&pfd, 1, NULL, NULL);
+		if (ret == -1) {
+			tcmu_err("ppoll() returned %d\n", ret);
 			break;
 		}
+
+		if (pfd.revents != POLLIN) {
+			tcmu_err("ppoll received unexpected revent: 0x%x\n", pfd.revents);
+			break;
+		}
+
+		/*
+		 * LIO will wait for outstanding requests and prevent new ones
+		 * from being sent to runner during device removal, but if the
+		 * tcmu cmd_time_out has fired tcmu-runner may still be executing
+		 * requests that LIO has completed. We only need to wait for replies
+		 * for outstanding requests so throttle the cmdproc thread now.
+		 */
+		pthread_mutex_lock(&rdev->state_lock);
+		if (rdev->flags & TCMUR_DEV_FLAG_STOPPING)
+			dev_stopping = true;
+		pthread_mutex_unlock(&rdev->state_lock);
 	}
 
-	tcmu_err("thread terminating, should never happen\n");
-
-	pthread_cleanup_pop(1);
-
+	/*
+	 * If we are doing a clean shutdown via dev_removed the
+	 * removing thread will call the cleanup function when
+	 * it has stopped and flushed the device.
+	 */
+	pthread_cleanup_pop(0);
 	return NULL;
+}
+
+static int dev_resize(struct tcmu_device *dev, struct tcmulib_cfg_info *cfg)
+{
+	struct tcmur_handler *rhandler = tcmu_get_runner_handler(dev);
+	int ret;
+
+	if (tcmu_get_dev_num_lbas(dev) * tcmu_get_dev_block_size(dev) ==
+	    cfg->data.dev_size)
+		return 0;
+
+	ret = rhandler->reconfig(dev, cfg);
+	if (ret)
+		return ret;
+
+	ret = tcmu_update_num_lbas(dev, cfg->data.dev_size);
+	if (!ret)
+		tcmur_set_pending_ua(dev, TCMUR_UA_DEV_SIZE_CHANGED);
+
+	return ret;
+}
+
+static int dev_reconfig(struct tcmu_device *dev, struct tcmulib_cfg_info *cfg)
+{
+	struct tcmur_handler *rhandler = tcmu_get_runner_handler(dev);
+
+	if (!rhandler->reconfig)
+		return -EOPNOTSUPP;
+
+	switch (cfg->type) {
+	case TCMULIB_CFG_DEV_SIZE:
+		return dev_resize(dev, cfg);
+	default:
+		return rhandler->reconfig(dev, cfg);
+	}
 }
 
 static int dev_added(struct tcmu_device *dev)
@@ -624,6 +733,7 @@ static int dev_added(struct tcmu_device *dev)
 	struct tcmur_handler *rhandler = tcmu_get_runner_handler(dev);
 	struct tcmur_device *rdev;
 	int32_t block_size, max_sectors;
+	uint32_t max_xfer_length;
 	int64_t dev_size;
 	int ret;
 
@@ -631,6 +741,8 @@ static int dev_added(struct tcmu_device *dev)
 	if (!rdev)
 		return -ENOMEM;
 	tcmu_set_daemon_dev_private(dev, rdev);
+	list_node_init(&rdev->recovery_entry);
+	rdev->dev = dev;
 
 	ret = -EINVAL;
 	block_size = tcmu_get_attribute(dev, "hw_block_size");
@@ -667,9 +779,13 @@ static int dev_added(struct tcmu_device *dev)
 	if (ret != 0)
 		goto cleanup_caw_lock;
 
+	ret = pthread_mutex_init(&rdev->state_lock, NULL);
+	if (ret != 0)
+		goto cleanup_format_lock;
+
 	ret = setup_io_work_queue(dev);
 	if (ret < 0)
-		goto cleanup_format_lock;
+		goto cleanup_state_lock;
 
 	ret = setup_aio_tracking(rdev);
 	if (ret < 0)
@@ -678,6 +794,15 @@ static int dev_added(struct tcmu_device *dev)
 	ret = rhandler->open(dev);
 	if (ret)
 		goto cleanup_aio_tracking;
+	rdev->flags |= TCMUR_DEV_FLAG_IS_OPEN;
+
+	/*
+	 * Set the optimal unmap granularity to max xfer len. Optimal unmap
+	 * alignment starts at the begining of the device.
+	 */
+	max_xfer_length = tcmu_get_dev_max_xfer_len(dev);
+	tcmu_set_dev_opt_unmap_gran(dev, max_xfer_length);
+	tcmu_set_dev_unmap_gran_align(dev, 0);
 
 	ret = tcmulib_start_cmdproc_thread(dev, tcmur_cmdproc_thread);
 	if (ret < 0)
@@ -691,6 +816,8 @@ cleanup_aio_tracking:
 	cleanup_aio_tracking(rdev);
 cleanup_io_work_queue:
 	cleanup_io_work_queue(dev, true);
+cleanup_state_lock:
+	pthread_mutex_destroy(&rdev->state_lock);
 cleanup_format_lock:
 	pthread_mutex_destroy(&rdev->format_lock);
 cleanup_caw_lock:
@@ -707,6 +834,10 @@ static void dev_removed(struct tcmu_device *dev)
 	struct tcmur_device *rdev = tcmu_get_daemon_dev_private(dev);
 	int ret;
 
+	pthread_mutex_lock(&rdev->state_lock);
+	rdev->flags |= TCMUR_DEV_FLAG_STOPPING;
+	pthread_mutex_unlock(&rdev->state_lock);
+
 	/*
 	 * The order of cleaning up worker threads and calling ->removed()
 	 * is important: for sync handlers, the worker thread needs to be
@@ -715,10 +846,18 @@ static void dev_removed(struct tcmu_device *dev)
 	 * are getting invoked when shutting down the handler.
 	 */
 	cleanup_io_work_queue_threads(dev);
+
+	if (aio_wait_for_empty_queue(rdev))
+		tcmu_dev_err(dev, "could not flush queue.\n");
 	tcmulib_cleanup_cmdproc_thread(dev);
+	tcmur_stop_device(dev);
 
 	cleanup_io_work_queue(dev, false);
 	cleanup_aio_tracking(rdev);
+
+	ret = pthread_mutex_destroy(&rdev->state_lock);
+	if (ret != 0)
+		tcmu_err("could not cleanup state lock %d\n", ret);
 
 	ret = pthread_mutex_destroy(&rdev->format_lock);
 	if (ret != 0)
@@ -735,23 +874,47 @@ static void dev_removed(struct tcmu_device *dev)
 	free(rdev);
 }
 
-static bool tcmu_logdir_create(const char *path)
+#define TCMUR_MIN_OPEN_FD 65536
+#define TCMUR_MAX_OPEN_FD 1048576
+static int tcmu_set_max_fd_limit(const int nr_files)
 {
-	DIR* dir = opendir(path);
+	struct rlimit old_rlim, new_rlim;
+	int ret;
 
-	if (dir) {
-		closedir(dir);
-	} else if (errno == ENOENT) {
-		if (mkdir(path, 0755) == -1) {
-			tcmu_err("mkdir(%s) failed: %m\n", path);
-			return FALSE;
-		}
-	} else {
-		tcmu_err("opendir(%s) failed: %m\n", path);
-		return FALSE;
+	ret = getrlimit(RLIMIT_NOFILE, &old_rlim);
+	if (ret == -1) {
+		tcmu_err("failed to get max open fd limit: %m\n");
+		return ret;
 	}
 
-	return TRUE;
+	if (old_rlim.rlim_cur < nr_files) {
+		new_rlim.rlim_cur = nr_files;
+		if (old_rlim.rlim_max < nr_files) {
+			new_rlim.rlim_max = nr_files;
+		} else {
+			new_rlim.rlim_max = old_rlim.rlim_max;
+		}
+
+		ret = setrlimit(RLIMIT_NOFILE, &new_rlim);
+		if (ret == -1) {
+			tcmu_err("failed to set max open fd to [soft: %lld hard: %lld] %m\n",
+				  (long long int)new_rlim.rlim_cur,
+				  (long long int)new_rlim.rlim_max);
+			return ret;
+		}
+
+		tcmu_info("max open fd set to [soft: %lld hard: %lld]\n",
+	                  (long long int)new_rlim.rlim_cur,
+			  (long long int)new_rlim.rlim_max);
+
+		return 0;
+	}
+
+	tcmu_info("max open fd remain [soft: %lld hard: %lld]\n",
+	          (long long int)old_rlim.rlim_cur,
+		  (long long int)old_rlim.rlim_max);
+
+	return 0;
 }
 
 static void usage(void) {
@@ -761,6 +924,8 @@ static void usage(void) {
 	printf("\t-h, --help: print this message and exit\n");
 	printf("\t-V, --version: print version and exit\n");
 	printf("\t-d, --debug: enable debug messages\n");
+	printf("\t-f, --nofile: set maximum file number could be opened\n");
+	printf("\t\tdefault will be as the systemd or the shell's limitation\n");
 	printf("\t--handler-path: set path to search for handler modules\n");
 	printf("\t\tdefault is %s\n", DEFAULT_HANDLER_PATH);
 	printf("\t-l, --tcmu-log-dir: tcmu log dir\n");
@@ -772,6 +937,7 @@ static struct option long_options[] = {
 	{"debug", no_argument, 0, 'd'},
 	{"handler-path", required_argument, 0, 0},
 	{"tcmu-log-dir", required_argument, 0, 'l'},
+	{"nofile", required_argument, 0, 'f'},
 	{"help", no_argument, 0, 'h'},
 	{"version", no_argument, 0, 'V'},
 	{0, 0, 0, 0},
@@ -779,70 +945,88 @@ static struct option long_options[] = {
 
 int main(int argc, char **argv)
 {
-	int ret;
+	darray(struct tcmulib_handler) handlers = darray_new();
+	struct tcmulib_context *tcmulib_context;
+	struct tcmur_handler **tmp_r_handler;
 	GMainLoop *loop;
 	GIOChannel *libtcmu_gio;
 	guint reg_id;
-	int c;
-	struct tcmulib_context *tcmulib_context;
-	darray(struct tcmulib_handler) handlers = darray_new();
-	struct tcmur_handler **tmp_r_handler;
-	struct tcmu_config *cfg;
-
-	cfg = tcmu_config_new();
-	if (!cfg)
-		exit(1);
-	tcmu_load_config(cfg, NULL);
-	tcmu_set_log_level(cfg->log_level);
+	bool new_path = false;
+	int ret;
 
 	while (1) {
 		int option_index = 0;
+		int c, nr_files;
 
-		c = getopt_long(argc, argv, "dhlV",
+		c = getopt_long(argc, argv, "df:hl:V",
 				long_options, &option_index);
 		if (c == -1)
 			break;
 
 		switch (c) {
 		case 0:
-			if (option_index == 1)
+			if (option_index == 1) {
 				handler_path = strdup(optarg);
+				new_path = true;
+			}
 			break;
 		case 'l':
-			if (strlen(optarg) > PATH_MAX - TCMU_LOG_FILENAME_MAX) {
-				tcmu_err("--tcmu-log-dir='%s' cannot exceed %d characters\n",
-				         optarg, PATH_MAX - TCMU_LOG_FILENAME_MAX);
+			if (!tcmu_logdir_create(optarg))
+				goto free_opt;
+			break;
+		case 'f':
+			nr_files = atol(optarg);
+			if (nr_files < TCMUR_MIN_OPEN_FD || nr_files > TCMUR_MAX_OPEN_FD) {
+				tcmu_err("--nofile=%d should be in [%lu, %lu]\n", nr_files,
+					(unsigned long)TCMUR_MIN_OPEN_FD,
+					(unsigned long)TCMUR_MAX_OPEN_FD);
+				goto free_opt;
 			}
-			if (!tcmu_logdir_create(optarg)) {
-				exit(1);
-			}
-			tcmu_log_dir = strdup(optarg);
+
+			ret = tcmu_set_max_fd_limit(nr_files);
+			if (ret)
+				goto free_opt;
 			break;
 		case 'd':
 			tcmu_set_log_level(TCMU_CONF_LOG_DEBUG_SCSI_CMD);
 			break;
 		case 'V':
-			printf("tcmu-runner %s\n", TCMUR_VERSION);
-			exit(1);
+			tcmu_info("tcmu-runner %s\n", TCMUR_VERSION);
+			goto free_opt;
 		default:
 		case 'h':
 			usage();
-			exit(1);
+			goto free_opt;
 		}
 	}
+
+	if (!tcmu_logdir_getenv())
+		goto free_opt;
+
+	/*
+	 * The order of setting up config and logger is important, because
+	 * the log directory may be configured via the system config file
+	 * which will be used in logger setting up.
+	 */
+	tcmu_cfg = tcmu_setup_config(NULL);
+	if (!tcmu_cfg)
+		goto free_opt;
+
+	if (tcmu_setup_log())
+		goto destroy_config;
 
 	tcmu_dbg("handler path: %s\n", handler_path);
 
 	ret = load_our_module();
 	if (ret < 0) {
 		tcmu_err("couldn't load module\n");
-		exit(1);
+		goto destroy_log;
 	}
 
 	ret = open_handlers();
 	if (ret < 0) {
 		tcmu_err("couldn't open handlers\n");
-		exit(1);
+		goto destroy_log;
 	}
 	tcmu_dbg("%d runner handlers found\n", ret);
 
@@ -857,7 +1041,7 @@ int main(int argc, char **argv)
 		tmp_handler.subtype = (*tmp_r_handler)->subtype;
 		tmp_handler.cfg_desc = (*tmp_r_handler)->cfg_desc;
 		tmp_handler.check_config = (*tmp_r_handler)->check_config;
-		tmp_handler.reconfig = (*tmp_r_handler)->reconfig;
+		tmp_handler.reconfig = dev_reconfig;
 		tmp_handler.added = dev_added;
 		tmp_handler.removed = dev_removed;
 
@@ -874,14 +1058,17 @@ int main(int argc, char **argv)
 	tcmulib_context = tcmulib_initialize(handlers.item, handlers.size);
 	if (!tcmulib_context) {
 		tcmu_err("tcmulib_initialize failed\n");
-		exit(1);
+		goto err_free_handlers;
 	}
 
-	ret = sigaction(SIGINT, &tcmu_sigaction, NULL);
-	if (ret) {
-		tcmu_err("couldn't set sigaction\n");
-		exit(1);
+	loop = g_main_loop_new(NULL, FALSE);
+	if (g_unix_signal_add(SIGINT, sighandler, loop) <= 0 ||
+	    g_unix_signal_add(SIGTERM, sighandler, loop) <= 0) {
+		tcmu_err("couldn't setup signal handlers\n");
+		goto err_tcmulib_close;
 	}
+
+	darray_free(handlers);
 
 	/* Set up event for libtcmu */
 	libtcmu_gio = g_io_channel_unix_new(tcmulib_get_master_fd(tcmulib_context));
@@ -898,13 +1085,31 @@ int main(int argc, char **argv)
 				NULL  // user date free func
 		);
 
-	loop = g_main_loop_new(NULL, FALSE);
 	g_main_loop_run(loop);
 
 	tcmu_dbg("Exiting...\n");
 	g_bus_unown_name(reg_id);
 	g_main_loop_unref(loop);
-	tcmu_config_destroy(cfg);
+	g_io_channel_shutdown(libtcmu_gio, TRUE, NULL);
+	tcmulib_close(tcmulib_context);
+
+	tcmu_destroy_config(tcmu_cfg);
+	tcmu_destroy_log();
 
 	return 0;
+
+err_tcmulib_close:
+	tcmulib_close(tcmulib_context);
+err_free_handlers:
+	darray_free(handlers);
+destroy_log:
+	tcmu_destroy_log();
+destroy_config:
+	tcmu_destroy_config(tcmu_cfg);
+free_opt:
+	if (new_path)
+		free(handler_path);
+	tcmu_logdir_destroy();
+
+	exit(1);
 }
