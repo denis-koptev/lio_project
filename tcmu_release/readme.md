@@ -146,3 +146,17 @@ Result can be seen via targetcli
 Now we can dd to and from this devices. In case of sdb all data will be stored in handler's memory. In case of sdc - in special file created by handler in tcmu-runner folder.
 
 * Logout: `iscsiadm -m session -u`
+
+## tcmu-runner as a daemon
+
+To start tcmu-runner as a daemon follow these steps:
+
+* Copy `.so` files of handlers to a standard handler path
+
+    In this example it is: `/usr/local/lib/tcmu-runner`
+    
+    If folder tcmu-runner is not presented, create it: `mkdir`
+    
+* Copy `tcmu-runner.service` to `/lib/systemd/system/`
+* Copy `tcmu-runner` binary to `/usr/bin`
+* Run `service tcmu-runner start`
