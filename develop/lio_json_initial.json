@@ -1,0 +1,56 @@
+{
+	"target" : {
+		"name" : "tgt1"
+	},
+
+	"devices" : [
+		{
+			"name" : "file1",
+			"type" : "user_file",
+			"size" : "1M"
+		},
+		{
+			"name" : "file2",
+			"type" : "fileio",
+			"size" : "2M"
+		},
+		{
+			"name" : "alloc1",
+			"type" : "user_alloc",
+			"size" : "10M"
+		}
+	],
+
+	"initiators" : [
+		{
+			"name" : "init1"
+		},
+		{
+			"name" : "init2"
+		}
+	],
+
+	"io" : [
+		{
+			"initiator" : "init1",
+			"device" : "alloc1",
+			"size" : "1M"
+		},
+		{
+			"initiator" : "init1",
+			"device" : "file2",
+			"size" : "500K"
+		},
+		{
+			"initiator" : "init2",
+			"device" : "file1",
+			"size" : "1M"
+		},
+		{
+			"initiator" : "init1",
+			"device" : "alloc1",
+			"size" : "5M"
+		}
+	]
+
+}
