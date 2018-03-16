@@ -4,45 +4,46 @@ import sys
 import argparse
 from jsonschema import validate
 
-#-- Scheme for JSON validation
+# -- Scheme for JSON validation
 
 schema = {
-	"type" : "object",
-	"properties" : {
-		"target" : {
-			"type" : "object",
-			"properties" : {
-				"name" : {"type" : "string"},
-			},
-			"required" : ["name"]
-		},
-		"devices" : {
-			"type" : "array",
-			"items" : {
-				"type" : "object",
-				"properties" : {
-					"name" : {"type" : "string"},
-					"type" : {"type" : "string"},
-					"size" : {"type" : "string"}
-				},
-				"required" : ["name","type","size"]
-			},
-		},
-		"initiators" : {
-			"type" : "array",
-			"items" : {
-				"type" : "object",
-				"properties" : {
-					"name" : {"type" : "string"},
-				},
-				"required" : ["name"]
-			},
-		},
-	},
-	"required": ["target", "devices", "initiators"]
+    "type": "object",
+    "properties": {
+        "target": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string"},
+            },
+            "required": ["name"]
+        },
+        "devices": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "type": {"type": "string"},
+                    "size": {"type": "string"}
+                },
+                "required": ["name", "type", "size"]
+            },
+        },
+        "initiators": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                },
+                "required": ["name"]
+            },
+        },
+    },
+    "required": ["target", "devices", "initiators"]
 }
 
-#-- Overriden --show_scheme flag action (acts like help, not requirin config)
+
+# -- Overriden --show_scheme flag action (acts like help, not requirin config)
 
 class _SchemeAction(argparse.Action):
     def __init__(self,
@@ -61,7 +62,8 @@ class _SchemeAction(argparse.Action):
         print(json.dumps(schema, indent=4))
         parser.exit()
 
-#-- Arguments parsing
+
+# -- Arguments parsing
 
 parser = argparse.ArgumentParser()
 parser.add_argument('config', help='path to a config file with JSON object')
@@ -70,7 +72,7 @@ parser.add_argument('--print', action='store_true', help='print config')
 parser.add_argument('--show_scheme', action=_SchemeAction, help='show correct build scheme for a config')
 args = parser.parse_args()
 
-#-- Reading and validating initial JSON
+# -- Reading and validating initial JSON
 
 json_file = open(sys.argv[1])
 json_data = json.load(json_file)
@@ -81,12 +83,12 @@ init_json = json_data["initiators"]
 dev_json = json_data["devices"]
 io_json = json_data["io"]
 
-#-- Internal config generation
+# -- Internal config generation
 
 idx = 0
 for dev in dev_json:
-	dev['lun'] = 'lun' + str(idx)
-	idx = idx + 1
+    dev['lun'] = 'lun' + str(idx)
+    idx = idx + 1
 
 now = datetime.datetime.now()
 tgt_json['iqn'] = "iqn." + now.strftime('%Y-%m') + ".com.lio_project:tgt-" + tgt_json['name']
@@ -95,21 +97,21 @@ tgt_json['devices'] = dev_json
 tgt_json['acl'] = []
 
 for init in init_json:
-	init['target_iqn'] = tgt_json['iqn']
-	init['iqn'] = "iqn." + now.strftime('%Y-%m') + ".com.lio_project:init-" + init['name']
-	tgt_json['acl'].append(init['iqn'])
-	init['devices'] = dev_json
-	init['io'] = [ io for io in io_json if io['initiator'] == init['name']]
+    init['target_iqn'] = tgt_json['iqn']
+    init['iqn'] = "iqn." + now.strftime('%Y-%m') + ".com.lio_project:init-" + init['name']
+    tgt_json['acl'].append(init['iqn'])
+    init['devices'] = dev_json
+    init['io'] = [io for io in io_json if io['initiator'] == init['name']]
 
 if not args.nosave:
-	init_file = open('init_config.json', 'w')
-	init_file.write(json.dumps(init_json, indent=4))
-	init_file.close()
+    init_file = open('init_config.json', 'w')
+    init_file.write(json.dumps(init_json, indent=4))
+    init_file.close()
 
-	tgt_file = open('tgt_config.json', 'w')
-	tgt_file.write(json.dumps(tgt_json, indent=4))
-	tgt_file.close()
+    tgt_file = open('tgt_config.json', 'w')
+    tgt_file.write(json.dumps(tgt_json, indent=4))
+    tgt_file.close()
 
 if args.print:
-	print(json.dumps(tgt_json, indent=4))
-	print(json.dumps(init_json, indent=4))
+    print(json.dumps(tgt_json, indent=4))
+    print(json.dumps(init_json, indent=4))
