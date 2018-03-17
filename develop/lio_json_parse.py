@@ -74,7 +74,7 @@ args = parser.parse_args()
 
 # -- Reading and validating initial JSON
 
-json_file = open(sys.argv[1])
+json_file = open(args.config)
 json_data = json.load(json_file)
 validate(json_data, schema)
 

@@ -1,0 +1,76 @@
+[
+    {
+        "name": "init1",
+        "target_iqn": "iqn.2018-03.com.lio_project:tgt-tgt1",
+        "iqn": "iqn.2018-03.com.lio_project:init-init1",
+        "devices": [
+            {
+                "name": "file1",
+                "type": "user_file",
+                "size": "1M",
+                "lun": "lun0"
+            },
+            {
+                "name": "file2",
+                "type": "fileio",
+                "size": "2M",
+                "lun": "lun1"
+            },
+            {
+                "name": "alloc1",
+                "type": "user_alloc",
+                "size": "10M",
+                "lun": "lun2"
+            }
+        ],
+        "io": [
+            {
+                "initiator": "init1",
+                "device": "alloc1",
+                "size": "1M"
+            },
+            {
+                "initiator": "init1",
+                "device": "file2",
+                "size": "500K"
+            },
+            {
+                "initiator": "init1",
+                "device": "alloc1",
+                "size": "5M"
+            }
+        ]
+    },
+    {
+        "name": "init2",
+        "target_iqn": "iqn.2018-03.com.lio_project:tgt-tgt1",
+        "iqn": "iqn.2018-03.com.lio_project:init-init2",
+        "devices": [
+            {
+                "name": "file1",
+                "type": "user_file",
+                "size": "1M",
+                "lun": "lun0"
+            },
+            {
+                "name": "file2",
+                "type": "fileio",
+                "size": "2M",
+                "lun": "lun1"
+            },
+            {
+                "name": "alloc1",
+                "type": "user_alloc",
+                "size": "10M",
+                "lun": "lun2"
+            }
+        ],
+        "io": [
+            {
+                "initiator": "init2",
+                "device": "file1",
+                "size": "1M"
+            }
+        ]
+    }
+]
