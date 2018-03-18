@@ -69,6 +69,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('config', help='path to a config file with JSON object')
 parser.add_argument('--nosave', action='store_true', help='discard saving config to standard files')
 parser.add_argument('--print', action='store_true', help='print config')
+parser.add_argument('--workdir', help='location for new configs')
 parser.add_argument('--show_scheme', action=_SchemeAction, help='show correct build scheme for a config')
 args = parser.parse_args()
 
@@ -103,12 +104,16 @@ for init in init_json:
     init['devices'] = dev_json
     init['io'] = [io for io in io_json if io['initiator'] == init['name']]
 
+wdir = ""
+if args.workdir:
+    wdir = args.workdir + "/"
+
 if not args.nosave:
-    init_file = open('init_config.json', 'w')
+    init_file = open(wdir + 'init_config.json', 'w')
     init_file.write(json.dumps(init_json, indent=4))
     init_file.close()
 
-    tgt_file = open('tgt_config.json', 'w')
+    tgt_file = open(wdir + 'tgt_config.json', 'w')
     tgt_file.write(json.dumps(tgt_json, indent=4))
     tgt_file.close()
 
