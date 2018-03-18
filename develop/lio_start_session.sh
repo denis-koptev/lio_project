@@ -35,15 +35,22 @@ fi
 
 echo "[INFO] Waiting for target docker container to start..."
 echo "[INFO] Mounted folders: /sys/kernel/config, /etc/target, `pwd`/session"
-docker run --privileged -v /sys/kernel/config:/sys/kernel/config -v /etc/target:/etc/target -v `pwd`:/lio_project -it deniskoptev/lio_target 
+docker run --privileged -v /sys/kernel/config:/sys/kernel/config -v /etc/target:/etc/target -v `pwd`:/lio_project -d deniskoptev/lio_target ./lio_project/lio_start_target.sh
 
 RETRIES=10
-while [ ! -f session/tgt_ip && $RETRIES -ne 0 ];
+while [ ! -f "session/target_ip" ] && [ $RETRIES -ne 0 ];
 do
     echo "[INFO] Waiting for docker target container to start: $RETRIES"
-    # insert sleep
-    # insert math expr
+    RETRIES=$(( $RETRIES - 1 ))
+    sleep 3
 done
+
+if [ ! -f session/target_ip ]; then
+    echo "[ERROR] Failed to start target container"
+    exit 1
+fi
+
+echo "[INFO] Target IP address: `cat session/target_ip`"
 
 # When all work will be finished
 # rm -rf ./session
