@@ -8,7 +8,7 @@ fi
 echo "[INFO] Running docker container with targetcli"
 echo "=============================================="
 
-docker run --privileged -v /sys/kernel/config:/sys/kernel/config -v /etc/target:/etc/target -it ubuntu_lio targetcli
+docker run --privileged -v /sys/kernel/config:/sys/kernel/config -v /etc/target:/etc/target -v `pwd`:/lio_project -it deniskoptev/lio_target
 
 echo "=============================================="
 echo "[INFO] Docker session ended"
