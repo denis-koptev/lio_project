@@ -55,6 +55,19 @@ else:
 log.write('[INFO] Enabling target\n')
 open(tpg_dir + 'enable', 'w').write('1')
 
+# Set no auth
+
+log.write('[INFO] Switching auth off\n')
+
+attrib_dir = tpg_dir + 'attrib/'
+param_dir = tpg_dir + 'param/'
+if not os.path.isdir(attrib_dir) or not os.path.isdir(param_dir):
+    log.write('[ERROR] No sysfs entries for AUTH configuration\n')
+    sys.exit(1)
+else:
+    open(attrib_dir + 'authentication', 'w').write('0')
+    open(param_dir + 'AuthMethod', 'w').write('None')
+
 # Fill ACL
 
 log.write('[INFO] Creating ACL\n')
@@ -71,11 +84,27 @@ for iqn in config['acl']:
         log.write('[INFO] Creating entry in sysfs: ' + acl_dir + iqn + '\n')
         os.makedirs(acl_dir + iqn)
 
+# Create portal
+
+ipaddr = socket.gethostbyname(socket.gethostname())
+log.write('[INFO] Creating portal using IP: ' + ipaddr + '\n')
+
+portal_dir = tpg_dir + 'np/'
+ip_dir = portal_dir + ipaddr + ':3260/'
+if not os.path.isdir(portal_dir):
+    log.write('[ERROR] No sysfs entry for portal created\n')
+    sys.exit(1)
+else:
+    if os.path.isdir(ip_dir):
+        log.write('[WARNING] Portal ' + ipaddr + ':3260 already presented\n')
+    else:
+        log.write('[INFO] Creating entry in sysfs: ' + ip_dir + '\n')
+        os.makedirs(ip_dir)
+
 
 # To let host know that target started and to inform
 # initiators about its IP we will create file in mounted folder
 
-ipaddr = socket.gethostbyname(socket.gethostname())
 ip_file = open('/lio_project/session/target_ip', 'w')
 ip_file.write(ipaddr)
 ip_file.close()
