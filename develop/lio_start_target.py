@@ -1,3 +1,4 @@
+import os
 import sys
 import socket
 import json
@@ -21,6 +22,56 @@ log.write('[INFO] JSON config was successfully read\n')
 log.write('[INFO] Creating target with following parameters:\n')
 log.write(json.dumps(config, indent=4) + '\n')
 
+# Create target itself via sysfs
+
+iscsi_dir = '/sys/kernel/config/target/iscsi/'
+tgt_dir = iscsi_dir + config['iqn'] + '/'
+
+log.write('[INFO] Creating Target: ' + config['iqn'] + '\n')
+
+if not os.path.isdir(iscsi_dir):
+    log.write('[ERROR] Directory for target configuration does not exist\n')
+    sys.exit(1)
+
+if os.path.isdir(tgt_dir):
+    log.write('[WARNING] Target with such iqn exists: ' + config['iqn'] + '\n')
+else:
+    log.write('[INFO] Creating entry in sysfs: ' + tgt_dir + '\n')
+    os.makedirs(tgt_dir)
+
+# Create target portal group
+
+log.write('[INFO] Creating Target Portal Group: tpgt_1\n')
+
+tpg_dir = tgt_dir + 'tpgt_1/'
+if os.path.isdir(tpg_dir):
+    log.write('[WARNING] Target Portal Group already exists\n')
+else:
+    os.makedirs(tpg_dir)
+    log.write('[INFO] Creating entry in sysfs: ' + tpg_dir + '\n')
+
+# Enable target
+
+log.write('[INFO] Enabling target\n')
+open(tpg_dir + 'enable', 'w').write('1')
+
+# Fill ACL
+
+log.write('[INFO] Creating ACL\n')
+
+acl_dir = tpg_dir + 'acls/'
+if not os.path.isdir(acl_dir):
+    log.write('[ERROR] No sysfs entry for ACLs created\n')
+    sys.exit(1)
+
+for iqn in config['acl']:
+    if os.path.isdir(acl_dir + iqn):
+        log.write('[WARNING] IQN ' + iqn + ' already presented in ACL\n')
+    else:
+        log.write('[INFO] Creating entry in sysfs: ' + acl_dir + iqn + '\n')
+        os.makedirs(acl_dir + iqn)
+
+
 # To let host know that target started and to inform
 # initiators about its IP we will create file in mounted folder
 
@@ -28,6 +79,7 @@ ipaddr = socket.gethostbyname(socket.gethostname())
 ip_file = open('/lio_project/session/target_ip', 'w')
 ip_file.write(ipaddr)
 ip_file.close()
+log.write('Target IP was written to session/target_ip : ' + ipaddr + '\n')
 
 log.close()
 

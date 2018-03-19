@@ -92,14 +92,14 @@ for dev in dev_json:
     idx = idx + 1
 
 now = datetime.datetime.now()
-tgt_json['iqn'] = "iqn." + now.strftime('%Y-%m') + ".com.lio_project:tgt-" + tgt_json['name']
+tgt_json['iqn'] = "iqn." + now.strftime('%Y-%m') + ".com.lio-project:tgt-" + tgt_json['name']
 
 tgt_json['devices'] = dev_json
 tgt_json['acl'] = []
 
 for init in init_json:
     init['target_iqn'] = tgt_json['iqn']
-    init['iqn'] = "iqn." + now.strftime('%Y-%m') + ".com.lio_project:init-" + init['name']
+    init['iqn'] = "iqn." + now.strftime('%Y-%m') + ".com.lio-project:init-" + init['name']
     tgt_json['acl'].append(init['iqn'])
     init['devices'] = dev_json
     init['io'] = [io for io in io_json if io['initiator'] == init['name']]
