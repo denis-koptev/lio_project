@@ -7,17 +7,17 @@
 		{
 			"name" : "file1",
 			"type" : "user_file",
-			"size" : "1M"
+			"size" : "1024"
 		},
 		{
 			"name" : "file2",
 			"type" : "file",
-			"size" : "2M"
+			"size" : "2048"
 		},
 		{
 			"name" : "alloc1",
 			"type" : "user_alloc",
-			"size" : "10M"
+			"size" : "10240"
 		}
 	],
 
@@ -34,17 +34,17 @@
 		{
 			"initiator" : "init1",
 			"device" : "alloc1",
-			"size" : "1M"
+			"size" : "1024"
 		},
 		{
 			"initiator" : "init1",
 			"device" : "file2",
-			"size" : "500K"
+			"size" : "512"
 		},
 		{
 			"initiator" : "init2",
 			"device" : "file1",
-			"size" : "1M"
+			"size" : "1024"
 		},
 		{
 			"initiator" : "init1",

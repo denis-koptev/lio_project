@@ -88,7 +88,7 @@ io_json = json_data["io"]
 
 idx = 0
 for dev in dev_json:
-    dev['lun'] = 'lun' + str(idx)
+    dev['lun'] = 'lun_' + str(idx)
     idx = idx + 1
 
 now = datetime.datetime.now()
