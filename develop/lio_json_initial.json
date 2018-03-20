@@ -11,7 +11,7 @@
 		},
 		{
 			"name" : "file2",
-			"type" : "fileio",
+			"type" : "file",
 			"size" : "2M"
 		},
 		{

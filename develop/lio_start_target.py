@@ -2,6 +2,7 @@ import os
 import sys
 import socket
 import json
+import glob
 
 # We can confirm that target started only if all configuration will be successfully created
 
@@ -101,6 +102,18 @@ else:
         log.write('[INFO] Creating entry in sysfs: ' + ip_dir + '\n')
         os.makedirs(ip_dir)
 
+# Add devices if exist
+
+log.write('[INFO] Binding backstores with target\n')
+
+lun_dir = tpg_dir + 'lun/'
+if not os.path.isdir(lun_dir):
+    log.write('[ERROR] No sysfs entry for luns created\n')
+    sys.exit(1)
+
+for dev in config['devices']:
+    # dev_paths = [ dev for dev in glob.glob('')]
+    # TODO: Finish this
 
 # To let host know that target started and to inform
 # initiators about its IP we will create file in mounted folder

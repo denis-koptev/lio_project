@@ -117,6 +117,11 @@ if not args.nosave:
     tgt_file.write(json.dumps(tgt_json, indent=4))
     tgt_file.close()
 
+    dev_file = open(wdir + 'dev_config.json', 'w')
+    dev_file.write(json.dumps(dev_json, indent=4))
+    dev_file.close()
+
 if args.print:
     print(json.dumps(tgt_json, indent=4))
     print(json.dumps(init_json, indent=4))
+    print(json.dumps(dev_json, indent=4))
