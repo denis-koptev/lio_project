@@ -1,0 +1,9 @@
+{
+	tcmur_register_handler;
+	tcmur_handle_caw;
+	tcmur_handle_writesame;
+	tcmu_notify_lock_lost;
+	tcmu_notify_conn_lost;
+	tcmu_cancel_thread;
+	tcmur_dev_update_size;
+};
