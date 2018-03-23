@@ -52,5 +52,13 @@ fi
 
 echo "[INFO] Target IP address: `cat session/target_ip`"
 
+# Run Initiators which will be doing IO
+
+for config in session/initconf*.json; do
+    # Need to think how to pass iqn and other staff to docker
+    # docker run -v `pwd`:/lio_project -d deniskoptev/lio_initiator ./lio_project/lio_start_initiator.sh $config
+done
+
+
 # When all work will be finished
 # rm -rf ./session

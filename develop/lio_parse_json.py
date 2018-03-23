@@ -109,9 +109,10 @@ if args.workdir:
     wdir = args.workdir + "/"
 
 if not args.nosave:
-    init_file = open(wdir + 'init_config.json', 'w')
-    init_file.write(json.dumps(init_json, indent=4))
-    init_file.close()
+    for init in init_json:
+        init_file = open(wdir + 'initconf_' + init['name'] + '.json', 'w')
+        init_file.write(json.dumps(init, indent=4))
+        init_file.close()
 
     tgt_file = open(wdir + 'tgt_config.json', 'w')
     tgt_file.write(json.dumps(tgt_json, indent=4))

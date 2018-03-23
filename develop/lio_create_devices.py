@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import glob
 
 # Create log file in shared session folder
 log = open('/lio_project/session/dev_log', 'w')
@@ -27,6 +28,15 @@ if not os.path.isdir(core_dir):
 
 for dev in config:
     if dev['type'] == 'file':
+
+        type_dir = core_dir + 'fileio_';
+        dev_paths = [ dev for dev in glob.glob(type_dir + '*/' + dev['name']) ]
+
+        if len(dev_paths) != 0:
+            log.write('[WARNING] There is another device with name: ' + dev['name'] + '\n')
+            log.write('[WARNING] Skipping...\n')
+            continue
+
         log.write('[INFO] Creating file device with name: ' + dev['name'] + '\n')
         type_dir = core_dir + 'fileio_'
         idx = 0
