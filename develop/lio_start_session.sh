@@ -33,9 +33,10 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "[INFO] Waiting for target docker container to start..."
-echo "[INFO] Mounted folders: /sys/kernel/config, /etc/target, `pwd`/session"
-docker run --privileged -v /sys/kernel/config:/sys/kernel/config -v /etc/target:/etc/target -v `pwd`:/lio_project -d deniskoptev/lio_target ./lio_project/lio_start_target.sh
+echo "[INFO] Waiting for target to start..."
+#echo "[INFO] Mounted folders: /sys/kernel/config, /etc/target, `pwd`/session"
+#docker run --privileged -v /sys/kernel/config:/sys/kernel/config -v /etc/target:/etc/target -v `pwd`:/lio_project -d deniskoptev/lio_target ./lio_project/lio_start_target.sh
+./lio_start_target.sh # Simply without docker
 
 RETRIES=10
 while [ ! -f "session/target_ip" ] && [ $RETRIES -ne 0 ];
@@ -46,7 +47,7 @@ do
 done
 
 if [ ! -f session/target_ip ]; then
-    echo "[ERROR] Failed to start target container"
+    echo "[ERROR] Failed to start target"
     exit 1
 fi
 
@@ -54,7 +55,9 @@ echo "[INFO] Target IP address: `cat session/target_ip`"
 
 # Run Initiators which will be doing IO
 
+echo "[INFO] Launching initiators..."
 for config in session/initconf*.json; do
+    echo config
     # Need to think how to pass iqn and other staff to docker
     # docker run -v `pwd`:/lio_project -d deniskoptev/lio_initiator ./lio_project/lio_start_initiator.sh $config
 done

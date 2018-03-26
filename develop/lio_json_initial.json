@@ -6,17 +6,27 @@
 	"devices" : [
 		{
 			"name" : "file1",
-			"type" : "user_file",
+			"type" : "file",
 			"size" : "1024"
 		},
 		{
 			"name" : "file2",
-			"type" : "file",
+			"type" : "fileio",
 			"size" : "2048"
 		},
 		{
 			"name" : "alloc1",
-			"type" : "user_alloc",
+			"type" : "alloc",
+			"size" : "10240"
+		},
+		{
+			"name" : "alloc2",
+			"type" : "alloc",
+			"size" : "1024"
+		},
+		{
+			"name" : "file3",
+			"type" : "fileio",
 			"size" : "10240"
 		}
 	],
@@ -27,6 +37,9 @@
 		},
 		{
 			"name" : "init2"
+		},
+		{
+			"name" : "init3"
 		}
 	],
 

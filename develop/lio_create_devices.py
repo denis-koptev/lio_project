@@ -4,7 +4,7 @@ import json
 import glob
 
 # Create log file in shared session folder
-log = open('/lio_project/session/dev_log', 'w')
+log = open('session/dev_log', 'w')
 
 if len(sys.argv) < 2:
     log.write('[ERROR] Config file with JSON was not specified\n')
@@ -27,46 +27,50 @@ if not os.path.isdir(core_dir):
     log.write('[ERROR] No sysfs entry created for devices')
 
 for dev in config:
-    if dev['type'] == 'file':
-
-        type_dir = core_dir + 'fileio_';
-        dev_paths = [ dev for dev in glob.glob(type_dir + '*/' + dev['name']) ]
-
-        if len(dev_paths) != 0:
-            log.write('[WARNING] There is another device with name: ' + dev['name'] + '\n')
-            log.write('[WARNING] Skipping...\n')
-            continue
-
-        log.write('[INFO] Creating file device with name: ' + dev['name'] + '\n')
+    if dev['type'] == 'fileio':
+        log.write('[INFO] Configuring fileio device ' + dev['name'] + '  and creating storage\n')
         type_dir = core_dir + 'fileio_'
-        idx = 0
-
-        while os.path.isdir(type_dir + str(idx)):
-            idx = idx + 1
-
-        # TODO: Insert checks for existing directories
-        # TODO: Script must be able to create some parts of device with existing ones
-
-        type_dir = type_dir + str(idx) + '/'
-        log.write('[INFO] Creating entry in sysfs: ' + type_dir + '\n')
-        os.makedirs(type_dir)
-
-        dev_dir = type_dir + dev['name'] + '/'
-        log.write('[INFO] Creating entry in sysfs: ' + dev_dir + '\n')
-        os.makedirs(dev_dir)
-        log.write('[INFO] Creating storage object: /' + dev['name'] + '\n')
-
+        # Create file itself
         storage = open('/' + dev['name'], 'w')
         storage.truncate(int(dev['size']))
         storage.close()
-
-        log.write('[INFO] Configuring device ' + dev['name'] + '\n')
-        open(dev_dir + 'control', 'w').write('fd_dev_name=/' + dev['name'] + ',fd_dev_size=' + dev['size'])
-        log.write('[INFO] Enabling device ' + dev['name'] + '\n')
-        open(dev_dir + 'enable', 'w').write('1')
+        control = 'fd_dev_name=/' + dev['name'] + ',fd_dev_size=' + dev['size'] 
+    elif dev['type'] == 'alloc' or dev['type'] == 'file':
+        log.write('[INFO] Configuring user device ' + dev['type'] + '/' + dev['name'] + '\n')
+        type_dir = core_dir + 'user_'
+        control = 'dev_size=' + dev['size'] + ',dev_config=' + dev['type'] + '/' + dev['name']
     else:
-        log.write('[WARNING] ' + dev['type'] + ' device type is not supported\n')
+        log.write('[WARNING] Device type ' + dev['type'] + ' is not supported\n')
         continue
+
+    dev_paths = [ dev for dev in glob.glob(type_dir + '*/' + dev['name']) ]
+
+    if len(dev_paths) != 0:
+        log.write('[WARNING] There is another device with name: ' + dev['name'] + '\n')
+        log.write('[WARNING] Skipping...\n')
+        continue
+
+    log.write('[INFO] Creating ' + dev['type'] + ' device with name: ' + dev['name'] + '\n')
+    idx = 0
+
+    while os.path.isdir(type_dir + str(idx)):
+        idx = idx + 1
+
+    # TODO: Insert checks for existing directories
+    # TODO: Script must be able to create some parts of device with existing ones
+
+    type_dir = type_dir + str(idx) + '/'
+    log.write('[INFO] Creating entry in sysfs: ' + type_dir + '\n')
+    os.makedirs(type_dir)
+
+    dev_dir = type_dir + dev['name'] + '/'
+    log.write('[INFO] Creating entry in sysfs: ' + dev_dir + '\n')
+    os.makedirs(dev_dir)
+
+    log.write('[INFO] Configuring params of device ' + dev['name'] + '\n')
+    open(dev_dir + 'control', 'w').write(control)
+    log.write('[INFO] Enabling device ' + dev['name'] + '\n')
+    open(dev_dir + 'enable', 'w').write('1')
 
 log.write('[INFO] Finished creating devices\n')
 log.close()

@@ -9,8 +9,8 @@
 
 # Create target devices
 
-python3 /lio_project/lio_create_devices.py /lio_project/session/dev_config.json
+python3 lio_create_devices.py session/dev_config.json
 
 # Create target itself and notify host script
 
-python3 /lio_project/lio_start_target.py /lio_project/session/tgt_config.json
+python3 lio_start_target.py session/tgt_config.json
