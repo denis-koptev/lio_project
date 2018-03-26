@@ -56,9 +56,6 @@ for dev in config:
     while os.path.isdir(type_dir + str(idx)):
         idx = idx + 1
 
-    # TODO: Insert checks for existing directories
-    # TODO: Script must be able to create some parts of device with existing ones
-
     type_dir = type_dir + str(idx) + '/'
     log.write('[INFO] Creating entry in sysfs: ' + type_dir + '\n')
     os.makedirs(type_dir)

@@ -18,3 +18,4 @@ cp tcmu-runner.service /lib/systemd/system
 
 echo "Starting service..."
 service tcmu-runner start
+systemctl daemon-reload

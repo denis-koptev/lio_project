@@ -12,9 +12,12 @@ apt-get upgrade
 apt-get install -y python3 python3-pip
 pip3 install --upgrade pip
 pip3 install -r requirements.txt
-apt-get install -y targetcli-fb # if no targetcli presented
-# apt-get install targetcli
-# apt-get install -y git
+
+apt-get install -y targetcli-fb
+
+if [ $? -ne 0 ]; then
+    apt-get install -y targetcli
+fi
 
 # Deal with tcmu-runner
 
@@ -34,12 +37,10 @@ add-apt-repository \
    $(lsb_release -cs) \
    stable"
 apt-get update
-apt-get install docker-ce
+apt-get install -y docker-ce
 
 # Finish installing docker
 
 # Pull docker images
-
-# docker pull deniskoptev/lio_target
 
 
