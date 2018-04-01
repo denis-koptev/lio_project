@@ -39,5 +39,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-lsscsi
+lsscsi > session/initdev
 
+python3 parse_dev.py session/initdev # Only for host initiator TODO: modify it for container
+
+iscsiadm -m session -u
