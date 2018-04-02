@@ -15,8 +15,7 @@ config_file = open(sys.argv[1], 'r')
 config = json.load(config_file)
 config_file.close()
 
-print('[INFO] Creating initiator with the following config:')
-print(json.dumps(config, indent=4))
+print('[INFO] Creating initiator ' + config['name'])
 
 iqn = config['iqn']
 

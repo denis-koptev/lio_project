@@ -45,7 +45,7 @@ mkdir ./session
 # Configs will be placed in session directory
 
 echo "[INFO] Creating internal configs for target and initiators in ./session"
-python3 lio_parse_json.py $CONFIG --workdir ./session
+python3 parse_json.py $CONFIG --workdir ./session
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to create JSON configs. Exiting..."
@@ -57,7 +57,7 @@ fi
 # Configuration (corresponding to JSON) will be deployed
 # Creation of file with IP address indicates, that target started normally
 
-./lio_start_target.sh
+./start_target.sh
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to start target. Exiting..."
@@ -76,12 +76,15 @@ echo "[INFO] Target IP address: `cat session/target_ip`"
 # So, they all can be found and collected
 # For each config new docker container will be started
 
-echo "[INFO] Launching initiators."
-for config in session/initconf*.json; do
-    echo $config
-    # Need to think how to pass iqn and other staff to docker
-    # docker run -v `pwd`:/lio_project -d deniskoptev/lio_initiator ./lio_project/lio_start_initiator.sh $config
-done
+#echo "[INFO] Launching initiators."
+#for config in session/initconf*.json; do
+#    echo $config
+# Need to think how to pass iqn and other staff to docker
+# docker run -v `pwd`:/lio_project -d deniskoptev/lio_initiator ./lio_project/lio_start_initiator.sh $config
+#done
+
+echo "[INFO] Launching host-initiator"
+./start_initiator.sh session/initconf_init1.json
 
 echo "[INFO] LIO SESSION ENDED NORMALLY"
 

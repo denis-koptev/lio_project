@@ -14,7 +14,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 # Registering initiator IQN
-python3 lio_start_initiator.py $1
+python3 start_initiator.py $1
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to register Initiator IQN"

@@ -6,10 +6,10 @@ echo "----- ENTERING START_TARGET SCRIPT -----"
 
 # Run tcmu-runner
 
+echo "[INFO] Building and starting tcmu-runner daemon"
+
 cd tcmu-runner
-stty -echo
-./deploy.sh
-stty echo
+./deploy.sh > /dev/null
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to start tcmu-runner daemon. Exiting..."
@@ -20,18 +20,16 @@ cd ..
 
 # Verify that propper modules are loaded
 
-stty -echo
-modinfo target_core_mod
-stty echo
+echo "[INFO] Verifying that propper modules are loaded"
+
+modinfo target_core_mod > /dev/null
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] target module is not loaded. Exiting..."
     exit 1
 fi
 
-stty -echo
-modinfo target_core_user
-stty echo
+modinfo target_core_user > /dev/null
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] target_core_user module is not loaded. Exiting..."
@@ -42,7 +40,7 @@ fi
 
 echo "[INFO] Creating devices."
 
-python3 lio_create_devices.py session/dev_config.json
+python3 create_devices.py session/dev_config.json
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to create devices. Exiting..."
@@ -55,7 +53,7 @@ echo "[INFO] Devices created successfully."
 
 echo "[INFO] Creating target."
 
-python3 lio_start_target.py session/tgt_config.json
+python3 start_target.py session/tgt_config.json
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to create target. Exiting..."
