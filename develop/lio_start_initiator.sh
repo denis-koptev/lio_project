@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Arg: path/to/config.json
 
@@ -21,7 +21,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "[INFO] Attempting to descover targets and log in"
+echo "[INFO] Attempting to discover targets and log in"
 
 TARGET_IP=`cat session/target_ip`
 
@@ -39,8 +39,38 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-lsscsi > session/initdev
+EMPTY=""
+INITCONF=$1
+DEVCONF=${INITCONF/.json/$EMPTY}_dev
 
-python3 parse_dev.py session/initdev # Only for host initiator TODO: modify it for container
+echo "[INFO] Creating a file with the list of iSCSI devices: $DEVCONF"
+
+lsscsi > $DEVCONF
+
+if [ $? -ne 0 ]; then
+    echo "[ERROR] Error creating device file. Maybe you don't have lsscsi tool installed"
+    iscsiadm -m session -u
+    exit 1
+fi
+
+echo "[INFO] Starting IO operations to devices"
+
+python3 run_io.py $DEVCONF $1
+
+if [ $? -ne 0 ]; then
+    echo "[ERROR] Failed to proceed IO"
+    iscsiadm -m session -u
+    exit 1
+fi
+
+echo "[INFO] IO operations finished normally"
+echo "[INFO] Logging out of session"
 
 iscsiadm -m session -u
+
+if [ $? -ne 0 ]; then
+    echo "[ERROR] Failed to log out of session"
+    echo "[WARNING] You probably should reboot your system"
+    exit 1
+fi
+

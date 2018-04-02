@@ -13,6 +13,7 @@ if not os.path.isfile(sys.argv[1]):
 
 config_file = open(sys.argv[1], 'r')
 config = json.load(config_file)
+config_file.close()
 
 print('[INFO] Creating initiator with the following config:')
 print(json.dumps(config, indent=4))
