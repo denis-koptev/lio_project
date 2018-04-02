@@ -27,5 +27,7 @@ initiatorname = open('/etc/iscsi/initiatorname.iscsi', 'w')
 initiatorname.write('InitiatorName=' + iqn + '\n')
 initiatorname.close()
 
+os.system('service iscsid restart')
+
 print('[INFO] Successfully registered initiator IQN')
 

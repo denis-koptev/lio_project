@@ -7,27 +7,27 @@
 		{
 			"name" : "file1",
 			"type" : "file",
-			"size" : "1024"
+			"size" : "536870912"
 		},
 		{
 			"name" : "file2",
 			"type" : "fileio",
-			"size" : "2048"
+			"size" : "536870912"
 		},
 		{
 			"name" : "alloc1",
 			"type" : "alloc",
-			"size" : "10240"
+			"size" : "536870912"
 		},
 		{
 			"name" : "alloc2",
 			"type" : "alloc",
-			"size" : "1024"
+			"size" : "536870912"
 		},
 		{
 			"name" : "file3",
 			"type" : "fileio",
-			"size" : "10240"
+			"size" : "536870912"
 		}
 	],
 
