@@ -57,9 +57,9 @@ def main():
 
         with open('/dev/' + dev_name, 'wb') as f:
             start_time = time.time()
-            for i in range(500):
+            for i in range(1000):
                 try:
-                    f.write(os.urandom(1024*1024))
+                    f.write(os.urandom(512*1024))
                 except Exception as e:
                     print('[ERROR] ' + str(e))
                     break

@@ -13,8 +13,13 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
+EMPTY=""
+INITCONF=$1
+DEVCONF=${INITCONF/.json/$EMPTY}_dev
+LOG=${INITCONF/.json/$EMPTY}_log
+
 # Registering initiator IQN
-python3 start_initiator.py $1
+python3 start_initiator.py $INITCONF --log $LOG
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to register Initiator IQN"
@@ -38,10 +43,6 @@ if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to log in to target"
     exit 1
 fi
-
-EMPTY=""
-INITCONF=$1
-DEVCONF=${INITCONF/.json/$EMPTY}_dev
 
 echo "[INFO] Creating a file with the list of iSCSI devices: $DEVCONF"
 
