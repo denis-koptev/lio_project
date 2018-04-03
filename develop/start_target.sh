@@ -53,7 +53,7 @@ echo "[INFO] Devices created successfully."
 
 echo "[INFO] Creating target."
 
-python3 start_target.py session/tgt_config.json
+python3 start_target.py session/tgt_config.json --log session/target_log
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to create target. Exiting..."

@@ -5,7 +5,7 @@ import argparse
 
 # START_INITIATOR SCRIPT
 # Registers initiator IQN in /etc/iscsi/initiatorname.iscsi and reloads iscsid
-# Takes unnecessary /path/to/log argumentm, and necessary /path/to/config argument
+# Takes unnecessary /path/to/log argument, and necessary /path/to/config argument
 
 
 logfile = None
