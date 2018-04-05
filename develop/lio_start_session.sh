@@ -86,5 +86,10 @@ echo "[INFO] Target IP address: `cat session/target_ip`"
 echo "[INFO] Launching host-initiator"
 ./start_initiator.sh session/initconf_init1.json
 
+if [ $? -ne 0 ]; then
+    echo "[WARNING] There were errors in initiators' work"
+    exit 1
+fi
+
 echo "[INFO] LIO SESSION ENDED NORMALLY"
 

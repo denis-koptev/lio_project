@@ -3,10 +3,41 @@ import os
 import sys
 import time
 import json
+import argparse
 
-# FIND_DEV SCRIPT
+# RUN_IO SCRIPT
 # Parses file with device list using regular expressions
-# Returns LUN and device name in /dev
+# Makes IO operations to propper devices
+
+
+logfile = None
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('dev_list', help='path to a file with list of devices from lsscsi call')
+    parser.add_argument('init_config', help='path to an interanl initiator JSON config')
+    parser.add_argument('--log', help='path where log file will be created')
+    parser.add_argument('--bs', help='block size in bytes for IO operations', default=4096)
+    return parser.parse_args()
+
+def log(msg):
+    if logfile:
+        logfile.write(msg + '\n')
+    else:
+        print(msg)
+
+
+def get_json_from_file(path):
+    if not os.path.isfile(path):
+        log('[ERROR] JSON config for initiator not found')
+        sys.exit(1)
+    else:
+        config_file = open(path, 'r')
+        config = json.load(config_file)
+        config_file.close()
+        return config
+
 
 def parse_lio_dev(filename):
     re_lun = r'(\d+(?=].*LIO))'
@@ -25,48 +56,79 @@ def parse_lio_dev(filename):
 
     return devices
 
+def write_random(dev_path, size, bs):
+    success = 1
+    message = 'OK'
+    total_time = 0
+    speed = 0
+
+    if (bs > size):
+        log('[WARNING] Specified block size is larger that total io size. Reducing')
+        bs = size
+        message = 'OK. Block size reduced.'
+    bc = int(size / bs) # Rude assumption (rounding)
+
+    try:
+        with open(dev_path, 'wb') as f:
+            start_time = time.time()
+            for i in range(bc):
+                f.write(os.urandom(bs))
+            end_time = time.time()
+            total_time = end_time - start_time
+            speed = size / (total_time*1024*1024)
+            log('[INFO] Time: %.2f s; Speed: %.2f MB/s' % (total_time, speed))
+    except Exception as e:
+        success = 0
+        message = 'ERROR: ' + str(e)
+
+    return {
+        'success' : success,
+        'message' : message,
+        'total_time' : total_time,
+        'speed' : speed
+    }
+
 
 def main():
+    global logfile
+    common_success = True
+    args = parse_args()
+    if args.log:
+        logfile = open(args.log, 'w')
+    config = get_json_from_file(args.init_config)
 
-    if len(sys.argv) != 3:
-        print('[ERROR] Not enough arguments provided')
-        print('[INFO] Usage: run_io.py /path/to/dev/list /path/to/init/config')
+    if args.bs:
+        bs = args.bs
+    else:
+        bs = 4096 # 4Kb
+
+    if not os.path.isfile(args.dev_list):
+        log('[ERROR] File with list of devices not found')
         sys.exit(1)
 
-    # TODO: Insert checks
-    dev_path = sys.argv[1]
-    config_file = open(sys.argv[2], 'r')
-    config = json.load(config_file)
-    config_file.close()
+    devices = parse_lio_dev(args.dev_list)
+    log('[INFO] Found following devices: ' + str(devices))
 
-    devices = parse_lio_dev(dev_path)
-    print('[INFO] Found following devices: ' + str(devices))
-
-    # This is just for testing purposes
     for dev in config['devices']:
-        print('[INFO] Starting random IO to %s with %s type and lun=%s' % (dev['name'], dev['type'], dev['lun']))
+        log('[INFO] Starting random IO to %s with %s type and lun=%s' % (dev['name'], dev['type'], dev['lun']))
 
         # Search device name in /dev
         dev_names = [item['dev'] for item in devices if item['lun'] == dev['lun']]
         if len(dev_names) == 0:
-            print('[WARNING] Device was not found in /dev. Skipping.')
+            log('[WARNING] Device was not found in /dev. Skipping.')
             continue
         if len(dev_names) > 1:
-            print('[WARNING] More than 1 device with such lun found. Taking first.')
+            log('[WARNING] More than 1 device with such lun found. Taking first.')
         dev_name = dev_names[0]
 
-        with open('/dev/' + dev_name, 'wb') as f:
-            start_time = time.time()
-            for i in range(1000):
-                try:
-                    f.write(os.urandom(512*1024))
-                except Exception as e:
-                    print('[ERROR] ' + str(e))
-                    break
-            end_time = time.time()
-            total_time = end_time - start_time
-            speed = 500 / total_time
-            print('[INFO] Time: %.2f s; Speed: %.2f MB/s' % (total_time, speed))
+        result = write_random('/dev/' + dev_name, int(dev['size']), bs)
+        if result['success'] == 0:
+            common_success = False
+        log('[INFO] Result: ' + str(result))
+
+    if not common_success:
+        log('[WARNING] IO ended with errors. Check logs for details.')
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()

@@ -2,6 +2,8 @@
 
 # Arg: path/to/config.json
 
+echo "----- ENTERING START_INITIATOR SCRIPT -----"
+
 if [ "$(id -u)" != "0" ]; then
     echo "[ERROR] This script must be run as root" 1>&2
     exit 1
@@ -17,6 +19,7 @@ EMPTY=""
 INITCONF=$1
 DEVCONF=${INITCONF/.json/$EMPTY}_dev
 LOG=${INITCONF/.json/$EMPTY}_log
+IO=${INITCONF/.json/$EMPTY}_io
 
 # Registering initiator IQN
 python3 start_initiator.py $INITCONF --log $LOG
@@ -56,7 +59,7 @@ fi
 
 echo "[INFO] Starting IO operations to devices"
 
-python3 run_io.py $DEVCONF $1
+python3 run_io.py $DEVCONF $1 #--log $IO
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to proceed IO"
