@@ -2,73 +2,108 @@ import os
 import sys
 import json
 import glob
-
-# Create log file in shared session folder
-log = open('session/dev_log', 'w')
-
-if len(sys.argv) < 2:
-    log.write('[ERROR] Config file with JSON was not specified\n')
-    sys.exit(1)
+import argparse
 
 
-log.write('[INFO] Reading JSON config\n')
+# CREATE_DEVICES SCRIPT
+# Creates sysfs entries and backstores for devices
+# Rakes unnecessary /path/to/log argument and necessary /path/to/config argument
 
-config_file = open(sys.argv[1], 'r')
-config = json.load(config_file)
-config_file.close()
 
-log.write('[INFO] JSON config was successfully read\n')
-log.write('[INFO] Creating devices with following parameters:\n')
-log.write(json.dumps(config, indent=4) + '\n')
-
+logfile = None
 core_dir = '/sys/kernel/config/target/core/'
 
-if not os.path.isdir(core_dir):
-    log.write('[ERROR] No sysfs entry created for devices')
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('config', help='path to an internal devices JSON config')
+    parser.add_argument('--log', help='path where log file will be created')
+    return parser.parse_args()
 
-for dev in config:
-    if dev['type'] == 'fileio':
-        log.write('[INFO] Configuring fileio device ' + dev['name'] + '  and creating storage\n')
-        type_dir = core_dir + 'fileio_'
-        # Create file itself
-        storage = open('/' + dev['name'], 'w')
-        storage.truncate(int(dev['size']))
-        storage.close()
-        control = 'fd_dev_name=/' + dev['name'] + ',fd_dev_size=' + dev['size'] 
-    elif dev['type'] == 'alloc' or dev['type'] == 'file':
-        log.write('[INFO] Configuring user device ' + dev['type'] + '/' + dev['name'] + '\n')
-        type_dir = core_dir + 'user_'
-        control = 'dev_size=' + dev['size'] + ',dev_config=' + dev['type'] + '/' + dev['name']
+
+def log(msg):
+    if logfile:
+        logfile.write(msg + '\n')
     else:
-        log.write('[WARNING] Device type ' + dev['type'] + ' is not supported\n')
-        continue
+        print(msg)
 
-    dev_paths = [ dev for dev in glob.glob(type_dir + '*/' + dev['name']) ]
+
+def get_json_from_file(path):
+    if not os.path.isfile(path):
+        log('[ERROR] JSON config for devices not found')
+        sys.exit(1)
+    else:
+        config_file = open(path, 'r')
+        config = json.load(config_file)
+        config_file.close()
+        return config
+
+
+def create_device(config):
+    if config['type'] == 'fileio':
+        log('[INFO] Configuring fileio device ' + config['name'] + ' and creating storage')
+        type_dir = core_dir + 'fileio_'
+        log('[INFO] Creating backstore for device ' + config['name'])
+        storage = open('/' + config['name'], 'w')
+        storage.truncate(int(config['size']))
+        storage.close()
+        # Config string for sysfs entry
+        control = 'fd_dev_name=/' + config['name'] + ',fd_dev_size=' + config['size'] 
+    elif config['type'] == 'alloc' or config['type'] == 'file':
+        log('[INFO] Configuring user device ' + config['type'] + '/' + config['name'])
+        type_dir = core_dir + 'user_'
+        control = 'dev_size=' + config['size'] + ',dev_config=' + config['type'] + '/' + config['name']
+    else:
+        log('[WARNING] Device type ' + config['type'] + ' is not supported')
+        return
+
+    # Discover existing paths for devices
+    dev_paths = [ dev for dev in glob.glob(type_dir + '*/' + config['name']) ]
 
     if len(dev_paths) != 0:
-        log.write('[WARNING] There is another device with name: ' + dev['name'] + '\n')
-        log.write('[WARNING] Skipping...\n')
-        continue
+        log('[WARNING] There is another device with name: ' + config['name'])
+        log('[WARNING] Skipping...')
+        return
 
-    log.write('[INFO] Creating ' + dev['type'] + ' device with name: ' + dev['name'] + '\n')
+    log('[INFO] Creating ' + config['type'] + ' device with name: ' + config['name'])
     idx = 0
 
     while os.path.isdir(type_dir + str(idx)):
         idx = idx + 1
 
     type_dir = type_dir + str(idx) + '/'
-    log.write('[INFO] Creating entry in sysfs: ' + type_dir + '\n')
+    log('[INFO] Creating entry in sysfs: ' + type_dir)
     os.makedirs(type_dir)
 
-    dev_dir = type_dir + dev['name'] + '/'
-    log.write('[INFO] Creating entry in sysfs: ' + dev_dir + '\n')
+    dev_dir = type_dir + config['name'] + '/'
+    log('[INFO] Creating entry in sysfs: ' + dev_dir)
     os.makedirs(dev_dir)
 
-    log.write('[INFO] Configuring params of device ' + dev['name'] + '\n')
+    log('[INFO] Configuring params of device ' + config['name'])
     open(dev_dir + 'control', 'w').write(control)
-    log.write('[INFO] Enabling device ' + dev['name'] + '\n')
+    log('[INFO] Enabling device ' + config['name'])
     open(dev_dir + 'enable', 'w').write('1')
 
-log.write('[INFO] Finished creating devices\n')
-log.close()
+
+def main():
+    global logfile
+    args = parse_args()
+    if args.log:
+        logfile = open(args.log, 'w')
+    config = get_json_from_file(args.config)
+
+    log('[INFO] JSON config was successfully read')
+    log('[INFO] Creating devices')
+
+    if not os.path.isdir(core_dir):
+        log('[ERROR] No sysfs entry created for devices')
+        sys.exit(1)
+
+    for dev in config:
+        create_device(dev)
+
+    log('[INFO] Finished creating devices')
+    logfile.close()
+
+if __name__ == '__main__':
+    main()
 

@@ -40,7 +40,7 @@ fi
 
 echo "[INFO] Creating devices."
 
-python3 create_devices.py session/dev_config.json
+python3 create_devices.py session/dev_config.json --log session/dev_log
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to create devices. Exiting..."
