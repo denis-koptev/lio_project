@@ -33,19 +33,21 @@ echo "[INFO] Attempting to discover targets and log in"
 
 TARGET_IP=`cat session/target_ip`
 
-iscsiadm -m discovery -t sendtargets -p $TARGET_IP
+iscsiadm -m discovery -t sendtargets -p $TARGET_IP --login
 
 if [ $? -ne 0 ]; then
-    echo "[ERROR] Failed to discover targets"
+    echo "[ERROR] Failed to discover targets and log in"
     exit 1
 fi
 
-iscsiadm -m node --login -p $TARGET_IP:3260
+#iscsiadm -m node --login -p $TARGET_IP:3260
 
-if [ $? -ne 0 ]; then
-    echo "[ERROR] Failed to log in to target"
-    exit 1
-fi
+#if [ $? -ne 0 ]; then
+#    echo "[ERROR] Failed to log in to target"
+#    exit 1
+#fi
+
+sleep 1 # Sometimes devices can be created slowly and we need to wait
 
 echo "[INFO] Creating a file with the list of iSCSI devices: $DEVCONF"
 

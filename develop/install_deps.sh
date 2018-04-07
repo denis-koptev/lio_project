@@ -8,7 +8,7 @@ fi
 # This script works only with apt package manager
 
 apt-get update
-apt-get upgrade
+apt-get upgrade -y
 apt-get install -y python3 python3-pip
 pip3 install --upgrade pip
 pip3 install -r requirements.txt
@@ -23,24 +23,7 @@ fi
 
 ./tcmu-runner/install_dep.sh
 
-# Start installing docker
-
-apt-get install -y \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-apt-key fingerprint 0EBFCD88
-add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
-apt-get update
-apt-get install -y docker-ce
-
-# Finish installing docker
-
-# Pull docker images
-
+# Temp initiator deps
+apt-get install -y open-iscsi
+apt-get install -y lsscsi
 
