@@ -18,6 +18,10 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
+echo "================================================="
+echo "====== WELCOME TO LIO-SESSION START SCRIPT ======"
+echo "================================================="
+
 # User-side configuration file with JSON
 
 CONFIG=$1
