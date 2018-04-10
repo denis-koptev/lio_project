@@ -1,0 +1,44 @@
+{
+    "name": "init2",
+    "target_iqn": "iqn.2018-04.com.lio-project:tgt-tgt1",
+    "iqn": "iqn.2018-04.com.lio-project:init-init2",
+    "devices": [
+        {
+            "name": "file1",
+            "type": "file",
+            "size": "536870912",
+            "lun": "lun_0"
+        },
+        {
+            "name": "file2",
+            "type": "fileio",
+            "size": "536870912",
+            "lun": "lun_1"
+        },
+        {
+            "name": "alloc1",
+            "type": "alloc",
+            "size": "536870912",
+            "lun": "lun_2"
+        },
+        {
+            "name": "alloc2",
+            "type": "alloc",
+            "size": "536870912",
+            "lun": "lun_3"
+        },
+        {
+            "name": "file3",
+            "type": "fileio",
+            "size": "536870912",
+            "lun": "lun_4"
+        }
+    ],
+    "io": [
+        {
+            "initiator": "init2",
+            "device": "file1",
+            "size": "1024"
+        }
+    ]
+}

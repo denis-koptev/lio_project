@@ -1,0 +1,35 @@
+[INFO] JSON config was successfully read
+[INFO] Creating devices
+[INFO] Configuring user device file/file1
+[INFO] Creating file device with name: file1
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_0/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_0/file1/
+[INFO] Configuring params of device file1
+[INFO] Enabling device file1
+[INFO] Configuring fileio device file2 and creating storage
+[INFO] Creating backstore for device file2
+[INFO] Creating fileio device with name: file2
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_0/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_0/file2/
+[INFO] Configuring params of device file2
+[INFO] Enabling device file2
+[INFO] Configuring user device alloc/alloc1
+[INFO] Creating alloc device with name: alloc1
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_1/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_1/alloc1/
+[INFO] Configuring params of device alloc1
+[INFO] Enabling device alloc1
+[INFO] Configuring user device alloc/alloc2
+[INFO] Creating alloc device with name: alloc2
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_2/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_2/alloc2/
+[INFO] Configuring params of device alloc2
+[INFO] Enabling device alloc2
+[INFO] Configuring fileio device file3 and creating storage
+[INFO] Creating backstore for device file3
+[INFO] Creating fileio device with name: file3
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_1/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_1/file3/
+[INFO] Configuring params of device file3
+[INFO] Enabling device file3
+[INFO] Finished creating devices

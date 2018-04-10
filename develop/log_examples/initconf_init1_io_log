@@ -1,0 +1,16 @@
+[INFO] Found following devices: [{'lun': 'lun_0', 'dev': 'sdb'}, {'lun': 'lun_1', 'dev': 'sdf'}, {'lun': 'lun_2', 'dev': 'sde'}, {'lun': 'lun_3', 'dev': 'sdd'}, {'lun': 'lun_4', 'dev': 'sdc'}]
+[INFO] Starting random IO to file1 with file type and lun=lun_0
+[INFO] Time: 3.76 s; Speed: 136.27 MB/s
+[INFO] Result: {'success': 1, 'message': 'OK', 'dev_path': '/dev/sdb', 'dev_size': 536870912, 'bs': 4096, 'total_time': '3.76', 'speed': '136.27', 'dev_name': 'file1', 'dev_type': 'file', 'dev_lun': 'lun_0'}
+[INFO] Starting random IO to file2 with fileio type and lun=lun_1
+[INFO] Time: 3.62 s; Speed: 141.25 MB/s
+[INFO] Result: {'success': 1, 'message': 'OK', 'dev_path': '/dev/sdf', 'dev_size': 536870912, 'bs': 4096, 'total_time': '3.62', 'speed': '141.25', 'dev_name': 'file2', 'dev_type': 'fileio', 'dev_lun': 'lun_1'}
+[INFO] Starting random IO to alloc1 with alloc type and lun=lun_2
+[INFO] Time: 4.08 s; Speed: 125.51 MB/s
+[INFO] Result: {'success': 1, 'message': 'OK', 'dev_path': '/dev/sde', 'dev_size': 536870912, 'bs': 4096, 'total_time': '4.08', 'speed': '125.51', 'dev_name': 'alloc1', 'dev_type': 'alloc', 'dev_lun': 'lun_2'}
+[INFO] Starting random IO to alloc2 with alloc type and lun=lun_3
+[INFO] Time: 3.54 s; Speed: 144.55 MB/s
+[INFO] Result: {'success': 1, 'message': 'OK', 'dev_path': '/dev/sdd', 'dev_size': 536870912, 'bs': 4096, 'total_time': '3.54', 'speed': '144.55', 'dev_name': 'alloc2', 'dev_type': 'alloc', 'dev_lun': 'lun_3'}
+[INFO] Starting random IO to file3 with fileio type and lun=lun_4
+[INFO] Time: 3.54 s; Speed: 144.65 MB/s
+[INFO] Result: {'success': 1, 'message': 'OK', 'dev_path': '/dev/sdc', 'dev_size': 536870912, 'bs': 4096, 'total_time': '3.54', 'speed': '144.65', 'dev_name': 'file3', 'dev_type': 'fileio', 'dev_lun': 'lun_4'}

@@ -1,0 +1,8 @@
+[2:0:0:0]    disk    VMware,  VMware Virtual S 1.0   /dev/sda 
+[3:0:0:0]    cd/dvd  NECVMWar VMware SATA CD00 1.00  /dev/sr0 
+[4:0:0:0]    cd/dvd  NECVMWar VMware SATA CD01 1.00  /dev/sr1 
+[33:0:0:0]   disk    LIO-ORG  TCMU device      0002  /dev/sdb 
+[33:0:0:1]   disk    LIO-ORG  FILEIO           4.0   /dev/sdf 
+[33:0:0:2]   disk    LIO-ORG  TCMU device      0002  /dev/sde 
+[33:0:0:3]   disk    LIO-ORG  TCMU device      0002  /dev/sdd 
+[33:0:0:4]   disk    LIO-ORG  FILEIO           4.0   /dev/sdc 
