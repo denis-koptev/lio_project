@@ -19,7 +19,8 @@ EMPTY=""
 INITCONF=$1
 DEVCONF=${INITCONF/.json/$EMPTY}_dev
 LOG=${INITCONF/.json/$EMPTY}_log
-IO=${INITCONF/.json/$EMPTY}_io
+IO=${INITCONF/.json/$EMPTY}_io_log
+IORESULT=${INITCONF/.json/$EMPTY}_io_result
 
 # Registering initiator IQN
 python3 start_initiator.py $INITCONF --log $LOG
@@ -61,7 +62,7 @@ fi
 
 echo "[INFO] Starting IO operations to devices"
 
-python3 run_io.py $DEVCONF $1 #--log $IO
+python3 run_io.py $DEVCONF $1 --result_path $IORESULT #--log $IO
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to proceed IO"

@@ -18,6 +18,7 @@ def parse_args():
     parser.add_argument('dev_list', help='path to a file with list of devices from lsscsi call')
     parser.add_argument('init_config', help='path to an interanl initiator JSON config')
     parser.add_argument('--log', help='path where log file will be created')
+    parser.add_argument('--result_path', help='path where file with IO results will be created')
     parser.add_argument('--bs', help='block size in bytes for IO operations', default=4096)
     return parser.parse_args()
 
@@ -84,8 +85,11 @@ def write_random(dev_path, size, bs):
     return {
         'success' : success,
         'message' : message,
-        'total_time' : total_time,
-        'speed' : speed
+        'dev_path' : dev_path,
+        'dev_size' : size,
+        'bs' : bs,
+        'total_time' : '%.2f' % total_time,
+        'speed' : '%.2f' % speed
     }
 
 
@@ -109,6 +113,8 @@ def main():
     devices = parse_lio_dev(args.dev_list)
     log('[INFO] Found following devices: ' + str(devices))
 
+    results = []
+
     for dev in config['devices']:
         log('[INFO] Starting random IO to %s with %s type and lun=%s' % (dev['name'], dev['type'], dev['lun']))
 
@@ -122,9 +128,18 @@ def main():
         dev_name = dev_names[0]
 
         result = write_random('/dev/' + dev_name, int(dev['size']), bs)
+        result['dev_name'] = dev['name']
+        result['dev_type'] = dev['type']
+        result['dev_lun'] = dev['lun']
+        results.append(result)
         if result['success'] == 0:
             common_success = False
         log('[INFO] Result: ' + str(result))
+
+    if (args.result_path):
+        result_file = open(args.result_path, 'w')
+        result_file.write(json.dumps(results, indent=4))
+        result_file.close()
 
     if not common_success:
         log('[WARNING] IO ended with errors. Check logs for details.')
