@@ -62,7 +62,7 @@ fi
 
 echo "[INFO] Starting IO operations to devices"
 
-python3 run_io.py $DEVCONF $1 --result_path $IORESULT #--log $IO
+python3 run_io.py $DEVCONF $1 --result $IORESULT #--log $IO
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to proceed IO"

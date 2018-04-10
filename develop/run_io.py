@@ -18,7 +18,7 @@ def parse_args():
     parser.add_argument('dev_list', help='path to a file with list of devices from lsscsi call')
     parser.add_argument('init_config', help='path to an interanl initiator JSON config')
     parser.add_argument('--log', help='path where log file will be created')
-    parser.add_argument('--result_path', help='path where file with IO results will be created')
+    parser.add_argument('--result', help='path where file with IO results will be created')
     parser.add_argument('--bs', help='block size in bytes for IO operations', default=4096)
     return parser.parse_args()
 
@@ -102,7 +102,7 @@ def main():
     config = get_json_from_file(args.init_config)
 
     if args.bs:
-        bs = args.bs
+        bs = int(args.bs)
     else:
         bs = 4096 # 4Kb
 
@@ -136,8 +136,8 @@ def main():
             common_success = False
         log('[INFO] Result: ' + str(result))
 
-    if (args.result_path):
-        result_file = open(args.result_path, 'w')
+    if (args.result):
+        result_file = open(args.result, 'w')
         result_file.write(json.dumps(results, indent=4))
         result_file.close()
 
