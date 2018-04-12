@@ -4,13 +4,15 @@ import sys
 import time
 import json
 import argparse
+from logger import Logger
+
 
 # RUN_IO SCRIPT
 # Parses file with device list using regular expressions
 # Makes IO operations to propper devices
 
 
-logfile = None
+log = Logger()
 
 
 def parse_args():
@@ -22,16 +24,10 @@ def parse_args():
     parser.add_argument('--bs', help='block size in bytes for IO operations', default=4096)
     return parser.parse_args()
 
-def log(msg):
-    if logfile:
-        logfile.write(msg + '\n')
-    else:
-        print(msg)
-
 
 def get_json_from_file(path):
     if not os.path.isfile(path):
-        log('[ERROR] JSON config for initiator not found')
+        log.error('JSON config for initiator not found')
         sys.exit(1)
     else:
         config_file = open(path, 'r')
@@ -64,7 +60,7 @@ def write_random(dev_path, size, bs):
     speed = 0
 
     if (bs > size):
-        log('[WARNING] Specified block size is larger that total io size. Reducing')
+        log.warning('Specified block size is larger that total io size. Reducing')
         bs = size
         message = 'OK. Block size reduced.'
     bc = int(size / bs) # Rude assumption (rounding)
@@ -77,7 +73,7 @@ def write_random(dev_path, size, bs):
             end_time = time.time()
             total_time = end_time - start_time
             speed = size / (total_time*1024*1024)
-            log('[INFO] Time: %.2f s; Speed: %.2f MB/s' % (total_time, speed))
+            log.info('Time: %.2f s; Speed: %.2f MB/s' % (total_time, speed))
     except Exception as e:
         success = 0
         message = 'ERROR: ' + str(e)
@@ -94,11 +90,11 @@ def write_random(dev_path, size, bs):
 
 
 def main():
-    global logfile
+    global log
     common_success = True
     args = parse_args()
     if args.log:
-        logfile = open(args.log, 'w')
+        log = Logger(filename=args.log)
     config = get_json_from_file(args.init_config)
 
     if args.bs:
@@ -107,24 +103,24 @@ def main():
         bs = 4096 # 4Kb
 
     if not os.path.isfile(args.dev_list):
-        log('[ERROR] File with list of devices not found')
+        log.error('File with list of devices not found')
         sys.exit(1)
 
     devices = parse_lio_dev(args.dev_list)
-    log('[INFO] Found following devices: ' + str(devices))
+    log.info('Found following devices: ' + str(devices))
 
     results = []
 
     for dev in config['devices']:
-        log('[INFO] Starting random IO to %s with %s type and lun=%s' % (dev['name'], dev['type'], dev['lun']))
+        log.info('Starting random IO to %s with %s type and lun=%s' % (dev['name'], dev['type'], dev['lun']))
 
         # Search device name in /dev
         dev_names = [item['dev'] for item in devices if item['lun'] == dev['lun']]
         if len(dev_names) == 0:
-            log('[WARNING] Device was not found in /dev. Skipping.')
+            log.warning('Device was not found in /dev. Skipping.')
             continue
         if len(dev_names) > 1:
-            log('[WARNING] More than 1 device with such lun found. Taking first.')
+            log.warning('More than 1 device with such lun found. Taking first.')
         dev_name = dev_names[0]
 
         result = write_random('/dev/' + dev_name, int(dev['size']), bs)
@@ -134,7 +130,7 @@ def main():
         results.append(result)
         if result['success'] == 0:
             common_success = False
-        log('[INFO] Result: ' + str(result))
+        log.info('Result: %s' % str(result))
 
     if (args.result):
         result_file = open(args.result, 'w')
@@ -142,7 +138,7 @@ def main():
         result_file.close()
 
     if not common_success:
-        log('[WARNING] IO ended with errors. Check logs for details.')
+        log.warning('IO ended with errors. Check logs for details.')
         sys.exit(1)
 
 if __name__ == '__main__':

@@ -3,6 +3,7 @@ import sys
 import json
 import glob
 import argparse
+from logger import Logger
 
 
 # CREATE_DEVICES SCRIPT
@@ -10,7 +11,7 @@ import argparse
 # Rakes unnecessary /path/to/log argument and necessary /path/to/config argument
 
 
-logfile = None
+log = Logger()
 core_dir = '/sys/kernel/config/target/core/'
 
 def parse_args():
@@ -20,16 +21,9 @@ def parse_args():
     return parser.parse_args()
 
 
-def log(msg):
-    if logfile:
-        logfile.write(msg + '\n')
-    else:
-        print(msg)
-
-
 def get_json_from_file(path):
     if not os.path.isfile(path):
-        log('[ERROR] JSON config for devices not found')
+        log.error('JSON config for devices not found')
         sys.exit(1)
     else:
         config_file = open(path, 'r')
@@ -40,69 +34,71 @@ def get_json_from_file(path):
 
 def create_device(config):
     if config['type'] == 'fileio':
-        log('[INFO] Configuring fileio device ' + config['name'] + ' and creating storage')
+        log.info('Configuring fileio device %s and creaing storage' % config['name'])
         type_dir = core_dir + 'fileio_'
-        log('[INFO] Creating backstore for device ' + config['name'])
+        log.info('Creating backstore for device %s' % config['name'])
         storage = open('/' + config['name'], 'w')
         storage.truncate(int(config['size']))
         storage.close()
         # Config string for sysfs entry
         control = 'fd_dev_name=/' + config['name'] + ',fd_dev_size=' + config['size'] 
     elif config['type'] == 'alloc' or config['type'] == 'file':
-        log('[INFO] Configuring user device ' + config['type'] + '/' + config['name'])
+        log.info('Configuring user device %s/%s' % (config['type'], config['name']))
         type_dir = core_dir + 'user_'
         control = 'dev_size=' + config['size'] + ',dev_config=' + config['type'] + '/' + config['name']
     else:
-        log('[WARNING] Device type ' + config['type'] + ' is not supported')
+        log.warning('Device type %s is not supported' % config['type'])
         return
 
     # Discover existing paths for devices
     dev_paths = [ dev for dev in glob.glob(type_dir + '*/' + config['name']) ]
 
     if len(dev_paths) != 0:
-        log('[WARNING] There is another device with name: ' + config['name'])
-        log('[WARNING] Skipping...')
+        log.warning('There is another device with name: %s. Skipping...' % config['name'])
         return
 
-    log('[INFO] Creating ' + config['type'] + ' device with name: ' + config['name'])
+    log.info('Creating %s device with name: %s' % (config['type'], config['name']))
     idx = 0
 
     while os.path.isdir(type_dir + str(idx)):
         idx = idx + 1
 
     type_dir = type_dir + str(idx) + '/'
-    log('[INFO] Creating entry in sysfs: ' + type_dir)
+    log.info('Creating entry in sysfs: %s' % type_dir)
     os.makedirs(type_dir)
 
     dev_dir = type_dir + config['name'] + '/'
-    log('[INFO] Creating entry in sysfs: ' + dev_dir)
+    log.info('Creating entry in sysfs: %s' % dev_dir)
     os.makedirs(dev_dir)
 
-    log('[INFO] Configuring params of device ' + config['name'])
+    log.info('Configuring params of device %s' % config['name'])
     open(dev_dir + 'control', 'w').write(control)
-    log('[INFO] Enabling device ' + config['name'])
+    log.info('Enabling device %s' % config['name'])
     open(dev_dir + 'enable', 'w').write('1')
 
 
 def main():
-    global logfile
+    global log
     args = parse_args()
     if args.log:
-        logfile = open(args.log, 'w')
+        log = Logger(filename=args.log)
     config = get_json_from_file(args.config)
 
-    log('[INFO] JSON config was successfully read')
-    log('[INFO] Creating devices')
+    log.info('JSON config was successfully read')
+    log.info('Creating devices')
 
     if not os.path.isdir(core_dir):
-        log('[ERROR] No sysfs entry created for devices')
+        log.error('No sysfs entry created for devices')
         sys.exit(1)
 
     for dev in config:
         create_device(dev)
 
-    log('[INFO] Finished creating devices')
-    logfile.close()
+    log.info('Finished creating devices')
+
+    if args.log:
+        log.close()
+
 
 if __name__ == '__main__':
     main()
