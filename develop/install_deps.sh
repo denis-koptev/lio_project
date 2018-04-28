@@ -10,9 +10,10 @@ fi
 apt-get update
 apt-get upgrade -y
 apt-get install -y python3 python3-pip
-pip3 install --upgrade pip
-pip3 install -r requirements.txt
-pip3 install jsonschema # dirty hack
+sudo -H pip3 install --upgrade pip # Hack
+sudo -H pip3 install -r requirements.txt # Hack
+sudo -H pip3 install --upgrade pip # Hack
+sudo -H pip3 install jsonschema # Hack
 
 apt-get install -y targetcli-fb
 
