@@ -6,7 +6,6 @@ import json
 import argparse
 from logger import Logger
 
-
 # RUN_IO SCRIPT
 # Parses file with device list using regular expressions
 # Makes IO operations to propper devices
@@ -49,9 +48,10 @@ def parse_lio_dev(filename):
     devices = []
 
     for dev in pattern.findall(data):
-        devices.append({'lun':'lun_'+dev[0],'dev':dev[1]})
+        devices.append({'lun': 'lun_' + dev[0], 'dev': dev[1]})
 
     return devices
+
 
 def write_random(dev_path, size, bs):
     success = 1
@@ -63,7 +63,7 @@ def write_random(dev_path, size, bs):
         log.warning('Specified block size is larger that total io size. Reducing')
         bs = size
         message = 'OK. Block size reduced.'
-    bc = int(size / bs) # Rude assumption (rounding)
+    bc = int(size / bs)  # Rude assumption (rounding)
 
     try:
         with open(dev_path, 'wb') as f:
@@ -72,20 +72,20 @@ def write_random(dev_path, size, bs):
                 f.write(os.urandom(bs))
             end_time = time.time()
             total_time = end_time - start_time
-            speed = size / (total_time*1024*1024)
+            speed = size / (total_time * 1024 * 1024)
             log.info('Time: %.2f s; Speed: %.2f MB/s' % (total_time, speed))
     except Exception as e:
         success = 0
         message = 'ERROR: ' + str(e)
 
     return {
-        'success' : success,
-        'message' : message,
-        'dev_path' : dev_path,
-        'dev_size' : size,
-        'bs' : bs,
-        'total_time' : '%.2f' % total_time,
-        'speed' : '%.2f' % speed
+        'success': success,
+        'message': message,
+        'dev_path': dev_path,
+        'dev_size': size,
+        'bs': bs,
+        'total_time': '%.2f' % total_time,
+        'speed': '%.2f' % speed
     }
 
 
@@ -100,7 +100,7 @@ def main():
     if args.bs:
         bs = int(args.bs)
     else:
-        bs = 4096 # 4Kb
+        bs = 4096  # 4Kb
 
     if not os.path.isfile(args.dev_list):
         log.error('File with list of devices not found')
@@ -141,6 +141,6 @@ def main():
         log.warning('IO ended with errors. Check logs for details.')
         sys.exit(1)
 
+
 if __name__ == '__main__':
     main()
-

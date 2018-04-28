@@ -1,175 +1,170 @@
 {
-	"target" : {
-		"name" : "tgt1"
-	},
-
-	"devices" : [
-		{
-			"name" : "fileio1",
-			"type" : "fileio",
-			"size" : "536870912"
-		},
-		{
-			"name" : "fileio2",
-			"type" : "fileio",
-			"size" : "536870912"
-		},
-		{
-			"name" : "fileio3",
-			"type" : "fileio",
-			"size" : "536870912"
-		},
-		{
-			"name" : "fileio4",
-			"type" : "fileio",
-			"size" : "536870912"
-		},
-		{
-			"name" : "fileio5",
-			"type" : "fileio",
-			"size" : "536870912"
-		},
-		{
-			"name" : "fileio6",
-			"type" : "fileio",
-			"size" : "536870912"
-		},
-		{
-			"name" : "fileio7",
-			"type" : "fileio",
-			"size" : "536870912"
-		},
-		{
-			"name" : "file1",
-			"type" : "file",
-			"size" : "536870912"
-		},
-		{
-			"name" : "file2",
-			"type" : "file",
-			"size" : "536870912"
-		},
-		{
-			"name" : "file3",
-			"type" : "file",
-			"size" : "536870912"
-		},
-		{
-			"name" : "file4",
-			"type" : "file",
-			"size" : "536870912"
-		},
-		{
-			"name" : "file5",
-			"type" : "file",
-			"size" : "536870912"
-		},
-		{
-			"name" : "file6",
-			"type" : "file",
-			"size" : "536870912"
-		},
-		{
-			"name" : "file7",
-			"type" : "file",
-			"size" : "536870912"
-		},
-		{
-			"name" : "alloc1",
-			"type" : "alloc",
-			"size" : "536870912"
-		},
-		{
-			"name" : "alloc2",
-			"type" : "alloc",
-			"size" : "536870912"
-		},
-		{
-			"name" : "alloc3",
-			"type" : "alloc",
-			"size" : "536870912"
-		},
-		{
-			"name" : "alloc4",
-			"type" : "alloc",
-			"size" : "536870912"
-		},
-		{
-			"name" : "alloc5",
-			"type" : "alloc",
-			"size" : "536870912"
-		},
-		{
-			"name" : "alloc6",
-			"type" : "alloc",
-			"size" : "536870912"
-		},
-		{
-			"name" : "alloc7",
-			"type" : "alloc",
-			"size" : "536870912"
-		}
-
-	],
-
-	"initiators" : [
-		{
-			"name" : "init1"
-		},
-		{
-			"name" : "init2"
-		},
-		{
-			"name" : "init3"
-		}
-	],
-
-	"io" : [
-		{
-			"initiator" : "init1",
-			"device" : "alloc1",
-			"size" : "1024"
-		},
-		{
-			"initiator" : "init1",
-			"device" : "file2",
-			"size" : "512"
-		},
-		{
-			"initiator" : "init2",
-			"device" : "file1",
-			"size" : "1024"
-		},
-		{
-			"initiator" : "init1",
-			"device" : "alloc2",
-			"size" : "5M"
-		},
-		{
-			"initiator" : "init1",
-			"device" : "alloc3",
-			"size" : "5M"
-		},
-		{
-			"initiator" : "init1",
-			"device" : "alloc4",
-			"size" : "5M"
-		},
-		{
-			"initiator" : "init1",
-			"device" : "alloc5",
-			"size" : "5M"
-		},
-		{
-			"initiator" : "init1",
-			"device" : "alloc6",
-			"size" : "5M"
-		},
-		{
-			"initiator" : "init1",
-			"device" : "alloc7",
-			"size" : "5M"
-		}
-	]
-
+  "target": {
+    "name": "tgt1"
+  },
+  "devices": [
+    {
+      "name": "fileio1",
+      "type": "fileio",
+      "size": "536870912"
+    },
+    {
+      "name": "fileio2",
+      "type": "fileio",
+      "size": "536870912"
+    },
+    {
+      "name": "fileio3",
+      "type": "fileio",
+      "size": "536870912"
+    },
+    {
+      "name": "fileio4",
+      "type": "fileio",
+      "size": "536870912"
+    },
+    {
+      "name": "fileio5",
+      "type": "fileio",
+      "size": "536870912"
+    },
+    {
+      "name": "fileio6",
+      "type": "fileio",
+      "size": "536870912"
+    },
+    {
+      "name": "fileio7",
+      "type": "fileio",
+      "size": "536870912"
+    },
+    {
+      "name": "file1",
+      "type": "file",
+      "size": "536870912"
+    },
+    {
+      "name": "file2",
+      "type": "file",
+      "size": "536870912"
+    },
+    {
+      "name": "file3",
+      "type": "file",
+      "size": "536870912"
+    },
+    {
+      "name": "file4",
+      "type": "file",
+      "size": "536870912"
+    },
+    {
+      "name": "file5",
+      "type": "file",
+      "size": "536870912"
+    },
+    {
+      "name": "file6",
+      "type": "file",
+      "size": "536870912"
+    },
+    {
+      "name": "file7",
+      "type": "file",
+      "size": "536870912"
+    },
+    {
+      "name": "alloc1",
+      "type": "alloc",
+      "size": "536870912"
+    },
+    {
+      "name": "alloc2",
+      "type": "alloc",
+      "size": "536870912"
+    },
+    {
+      "name": "alloc3",
+      "type": "alloc",
+      "size": "536870912"
+    },
+    {
+      "name": "alloc4",
+      "type": "alloc",
+      "size": "536870912"
+    },
+    {
+      "name": "alloc5",
+      "type": "alloc",
+      "size": "536870912"
+    },
+    {
+      "name": "alloc6",
+      "type": "alloc",
+      "size": "536870912"
+    },
+    {
+      "name": "alloc7",
+      "type": "alloc",
+      "size": "536870912"
+    }
+  ],
+  "initiators": [
+    {
+      "name": "init1"
+    },
+    {
+      "name": "init2"
+    },
+    {
+      "name": "init3"
+    }
+  ],
+  "io": [
+    {
+      "initiator": "init1",
+      "device": "alloc1",
+      "size": "1024"
+    },
+    {
+      "initiator": "init1",
+      "device": "file2",
+      "size": "512"
+    },
+    {
+      "initiator": "init2",
+      "device": "file1",
+      "size": "1024"
+    },
+    {
+      "initiator": "init1",
+      "device": "alloc2",
+      "size": "5M"
+    },
+    {
+      "initiator": "init1",
+      "device": "alloc3",
+      "size": "5M"
+    },
+    {
+      "initiator": "init1",
+      "device": "alloc4",
+      "size": "5M"
+    },
+    {
+      "initiator": "init1",
+      "device": "alloc5",
+      "size": "5M"
+    },
+    {
+      "initiator": "init1",
+      "device": "alloc6",
+      "size": "5M"
+    },
+    {
+      "initiator": "init1",
+      "device": "alloc7",
+      "size": "5M"
+    }
+  ]
 }

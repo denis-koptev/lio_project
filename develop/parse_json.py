@@ -5,7 +5,6 @@ import sys
 import argparse
 from jsonschema import validate
 
-
 # -- Scheme for JSON validation
 
 schema = {
@@ -88,7 +87,7 @@ def get_json_from_file(path):
 
 
 def validate_json(json_data):
-        validate(json_data, schema)
+    validate(json_data, schema)
 
 
 def generate_target_iqn(tgt_name):
@@ -119,9 +118,9 @@ def get_internal_jsons(tgt_json, inits_json, devs_json, io_json):
         tgt_json['acl'].append(init['iqn'])
 
     return {
-        'tgt_json' : tgt_json,
-        'inits_json' : inits_json,
-        'devs_json' : devs_json
+        'tgt_json': tgt_json,
+        'inits_json': inits_json,
+        'devs_json': devs_json
     }
 
 
@@ -165,5 +164,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-

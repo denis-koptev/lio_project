@@ -4,7 +4,6 @@ import json
 import argparse
 from logger import Logger
 
-
 # START_INITIATOR SCRIPT
 # Registers initiator IQN in /etc/iscsi/initiatorname.iscsi and reloads iscsid
 # Takes unnecessary /path/to/log argument, and necessary /path/to/config argument
@@ -62,4 +61,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

@@ -32,7 +32,7 @@ def get_json_from_file(path):
         return config
 
 
-# This function needs to be splitted
+# This function needs to be split
 def create_target(config):
     log.info('JSON config was successfully read')
     log.info('Creating target with name:  %s' % config['name'])
@@ -138,7 +138,7 @@ def create_target(config):
         else:
             log.warning('%s device type is not supported' % dev['type'])
 
-        dev_paths = [ dev for dev in glob.glob(type_path + dev['name']) ]
+        dev_paths = [dev for dev in glob.glob(type_path + dev['name'])]
         if len(dev_paths) == 0:
             log.error('Device ' + dev['name'] + ' not found')
             sys.exit(1)
@@ -191,4 +191,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

@@ -5,14 +5,14 @@ import glob
 import argparse
 from logger import Logger
 
-
 # CREATE_DEVICES SCRIPT
 # Creates sysfs entries and backstores for devices
-# Rakes unnecessary /path/to/log argument and necessary /path/to/config argument
+# Takes unnecessary /path/to/log argument and necessary /path/to/config argument
 
 
 log = Logger()
 core_dir = '/sys/kernel/config/target/core/'
+
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -41,7 +41,7 @@ def create_device(config):
         storage.truncate(int(config['size']))
         storage.close()
         # Config string for sysfs entry
-        control = 'fd_dev_name=/' + config['name'] + ',fd_dev_size=' + config['size'] 
+        control = 'fd_dev_name=/' + config['name'] + ',fd_dev_size=' + config['size']
     elif config['type'] == 'alloc' or config['type'] == 'file':
         log.info('Configuring user device %s/%s' % (config['type'], config['name']))
         type_dir = core_dir + 'user_'
@@ -51,7 +51,7 @@ def create_device(config):
         return
 
     # Discover existing paths for devices
-    dev_paths = [ dev for dev in glob.glob(type_dir + '*/' + config['name']) ]
+    dev_paths = [dev for dev in glob.glob(type_dir + '*/' + config['name'])]
 
     if len(dev_paths) != 0:
         log.warning('There is another device with name: %s. Skipping...' % config['name'])
@@ -102,4 +102,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
