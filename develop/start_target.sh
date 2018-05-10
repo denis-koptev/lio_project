@@ -22,14 +22,14 @@ cd ..
 
 echo "[INFO] Verifying that propper modules are loaded"
 
-modinfo target_core_mod > /dev/null
+#modinfo target_core_mod > /dev/null
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] target module is not loaded. Exiting..."
     exit 1
 fi
 
-modinfo target_core_user > /dev/null
+#modinfo target_core_user > /dev/null
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] target_core_user module is not loaded. Exiting..."
