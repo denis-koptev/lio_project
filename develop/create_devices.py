@@ -44,14 +44,12 @@ def create_device(config):
         storage.truncate(int(config['size']))
         storage.close()
         # Config string for sysfs entry
-        control = 'fd_dev_name=/' + config['name'] +
-        ',fd_dev_size=' + config['size']
+        control = 'fd_dev_name=/' + config['name'] + ',fd_dev_size=' + config['size']
     elif config['type'] == 'alloc' or config['type'] == 'file':
         log.info('Configuring user device %s/%s' %
                  (config['type'], config['name']))
         type_dir = core_dir + 'user_'
-        control = 'dev_size=' + config['size'] + ',dev_config=' +
-        config['type'] + '/' + config['name']
+        control = 'dev_size=' + config['size'] + ',dev_config=' + config['type'] + '/' + config['name']
     else:
         log.warning('Device type %s is not supported' % config['type'])
         return
