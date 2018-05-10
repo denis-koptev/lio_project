@@ -7,7 +7,8 @@ from logger import Logger
 
 # CREATE_DEVICES SCRIPT
 # Creates sysfs entries and backstores for devices
-# Takes unnecessary /path/to/log argument and necessary /path/to/config argument
+# Takes unnecessary /path/to/log argument
+# Takes necessary /path/to/config argument
 
 
 log = Logger()
@@ -16,7 +17,8 @@ core_dir = '/sys/kernel/config/target/core/'
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('config', help='path to an internal devices JSON config')
+    parser.add_argument('config', help='path to an internal'
+                        'devices JSON config')
     parser.add_argument('--log', help='path where log file will be created')
     return parser.parse_args()
 
@@ -34,18 +36,22 @@ def get_json_from_file(path):
 
 def create_device(config):
     if config['type'] == 'fileio':
-        log.info('Configuring fileio device %s and creaing storage' % config['name'])
+        log.info('Configuring fileio device %s '
+                 'and creaing storage' % config['name'])
         type_dir = core_dir + 'fileio_'
         log.info('Creating backstore for device %s' % config['name'])
         storage = open('/' + config['name'], 'w')
         storage.truncate(int(config['size']))
         storage.close()
         # Config string for sysfs entry
-        control = 'fd_dev_name=/' + config['name'] + ',fd_dev_size=' + config['size']
+        control = 'fd_dev_name=/' + config['name'] +
+        ',fd_dev_size=' + config['size']
     elif config['type'] == 'alloc' or config['type'] == 'file':
-        log.info('Configuring user device %s/%s' % (config['type'], config['name']))
+        log.info('Configuring user device %s/%s' %
+                 (config['type'], config['name']))
         type_dir = core_dir + 'user_'
-        control = 'dev_size=' + config['size'] + ',dev_config=' + config['type'] + '/' + config['name']
+        control = 'dev_size=' + config['size'] + ',dev_config=' +
+        config['type'] + '/' + config['name']
     else:
         log.warning('Device type %s is not supported' % config['type'])
         return
@@ -54,10 +60,12 @@ def create_device(config):
     dev_paths = [dev for dev in glob.glob(type_dir + '*/' + config['name'])]
 
     if len(dev_paths) != 0:
-        log.warning('There is another device with name: %s. Skipping...' % config['name'])
+        log.warning('There is another device with name: %s. Skipping...'
+                    % config['name'])
         return
 
-    log.info('Creating %s device with name: %s' % (config['type'], config['name']))
+    log.info('Creating %s device with name: %s'
+             % (config['type'], config['name']))
     idx = 0
 
     while os.path.isdir(type_dir + str(idx)):
