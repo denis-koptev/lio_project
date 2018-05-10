@@ -1,9 +1,0 @@
-[
-  "develop/create_devices.py",
-  "develop/logger.py",
-  "develop/parse_json.py",
-  "develop/run_io.py",
-  "develop/start_initiator.py",
-  "develop/start_target.py",
-  "develop/verify_io.py"
-]
