@@ -49,6 +49,7 @@ def main():
     config = get_json_from_file(args.result_file)
     success, error_reports = verify_io_success(config)
     assert success, '\n'.join(error_reports)
+    log.info('IO operations finished successfully')
 
 
 if __name__ == '__main__':

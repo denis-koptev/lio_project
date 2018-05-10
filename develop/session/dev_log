@@ -1,0 +1,136 @@
+[INFO] JSON config was successfully read
+[INFO] Creating devices
+[INFO] Configuring fileio device fileio1 and creaing storage
+[INFO] Creating backstore for device fileio1
+[INFO] Creating fileio device with name: fileio1
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_0/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_0/fileio1/
+[INFO] Configuring params of device fileio1
+[INFO] Enabling device fileio1
+[INFO] Configuring fileio device fileio2 and creaing storage
+[INFO] Creating backstore for device fileio2
+[INFO] Creating fileio device with name: fileio2
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_1/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_1/fileio2/
+[INFO] Configuring params of device fileio2
+[INFO] Enabling device fileio2
+[INFO] Configuring fileio device fileio3 and creaing storage
+[INFO] Creating backstore for device fileio3
+[INFO] Creating fileio device with name: fileio3
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_2/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_2/fileio3/
+[INFO] Configuring params of device fileio3
+[INFO] Enabling device fileio3
+[INFO] Configuring fileio device fileio4 and creaing storage
+[INFO] Creating backstore for device fileio4
+[INFO] Creating fileio device with name: fileio4
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_3/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_3/fileio4/
+[INFO] Configuring params of device fileio4
+[INFO] Enabling device fileio4
+[INFO] Configuring fileio device fileio5 and creaing storage
+[INFO] Creating backstore for device fileio5
+[INFO] Creating fileio device with name: fileio5
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_4/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_4/fileio5/
+[INFO] Configuring params of device fileio5
+[INFO] Enabling device fileio5
+[INFO] Configuring fileio device fileio6 and creaing storage
+[INFO] Creating backstore for device fileio6
+[INFO] Creating fileio device with name: fileio6
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_5/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_5/fileio6/
+[INFO] Configuring params of device fileio6
+[INFO] Enabling device fileio6
+[INFO] Configuring fileio device fileio7 and creaing storage
+[INFO] Creating backstore for device fileio7
+[INFO] Creating fileio device with name: fileio7
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_6/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/fileio_6/fileio7/
+[INFO] Configuring params of device fileio7
+[INFO] Enabling device fileio7
+[INFO] Configuring user device file/file1
+[INFO] Creating file device with name: file1
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_0/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_0/file1/
+[INFO] Configuring params of device file1
+[INFO] Enabling device file1
+[INFO] Configuring user device file/file2
+[INFO] Creating file device with name: file2
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_1/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_1/file2/
+[INFO] Configuring params of device file2
+[INFO] Enabling device file2
+[INFO] Configuring user device file/file3
+[INFO] Creating file device with name: file3
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_2/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_2/file3/
+[INFO] Configuring params of device file3
+[INFO] Enabling device file3
+[INFO] Configuring user device file/file4
+[INFO] Creating file device with name: file4
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_3/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_3/file4/
+[INFO] Configuring params of device file4
+[INFO] Enabling device file4
+[INFO] Configuring user device file/file5
+[INFO] Creating file device with name: file5
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_4/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_4/file5/
+[INFO] Configuring params of device file5
+[INFO] Enabling device file5
+[INFO] Configuring user device file/file6
+[INFO] Creating file device with name: file6
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_5/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_5/file6/
+[INFO] Configuring params of device file6
+[INFO] Enabling device file6
+[INFO] Configuring user device file/file7
+[INFO] Creating file device with name: file7
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_6/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_6/file7/
+[INFO] Configuring params of device file7
+[INFO] Enabling device file7
+[INFO] Configuring user device alloc/alloc1
+[INFO] Creating alloc device with name: alloc1
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_7/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_7/alloc1/
+[INFO] Configuring params of device alloc1
+[INFO] Enabling device alloc1
+[INFO] Configuring user device alloc/alloc2
+[INFO] Creating alloc device with name: alloc2
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_8/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_8/alloc2/
+[INFO] Configuring params of device alloc2
+[INFO] Enabling device alloc2
+[INFO] Configuring user device alloc/alloc3
+[INFO] Creating alloc device with name: alloc3
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_9/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_9/alloc3/
+[INFO] Configuring params of device alloc3
+[INFO] Enabling device alloc3
+[INFO] Configuring user device alloc/alloc4
+[INFO] Creating alloc device with name: alloc4
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_10/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_10/alloc4/
+[INFO] Configuring params of device alloc4
+[INFO] Enabling device alloc4
+[INFO] Configuring user device alloc/alloc5
+[INFO] Creating alloc device with name: alloc5
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_11/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_11/alloc5/
+[INFO] Configuring params of device alloc5
+[INFO] Enabling device alloc5
+[INFO] Configuring user device alloc/alloc6
+[INFO] Creating alloc device with name: alloc6
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_12/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_12/alloc6/
+[INFO] Configuring params of device alloc6
+[INFO] Enabling device alloc6
+[INFO] Configuring user device alloc/alloc7
+[INFO] Creating alloc device with name: alloc7
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_13/
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/core/user_13/alloc7/
+[INFO] Configuring params of device alloc7
+[INFO] Enabling device alloc7
+[INFO] Finished creating devices

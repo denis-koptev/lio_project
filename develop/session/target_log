@@ -1,0 +1,247 @@
+[INFO] JSON config was successfully read
+[INFO] Creating target with name:  tgt1
+[INFO] Creating Target IQN: iqn.2018-05.com.lio-project:tgt-tgt1
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/
+[INFO] Creating Target Portal Group: tpgt_1
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/
+[INFO] Enabling target
+[INFO] Switching auth off
+[INFO] Creating ACL
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3
+[INFO] Creating portal using IP: 127.0.1.1
+[INFO] Creating entry in sysfs: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/np/127.0.1.1:3260/
+[INFO] Binding backstores with target
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_0/
+[INFO] Creating symlink to /sys/kernel/config/target/core/fileio_0/fileio1
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> fileio1
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_0/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_0/lun_0 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_0/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> fileio1
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_0/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_0/lun_0 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_0/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> fileio1
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_0/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_0/lun_0 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_0/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_1/
+[INFO] Creating symlink to /sys/kernel/config/target/core/fileio_1/fileio2
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> fileio2
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_1/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_1/lun_1 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_1/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> fileio2
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_1/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_1/lun_1 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_1/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> fileio2
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_1/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_1/lun_1 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_1/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_2/
+[INFO] Creating symlink to /sys/kernel/config/target/core/fileio_2/fileio3
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> fileio3
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_2/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_2/lun_2 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_2/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> fileio3
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_2/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_2/lun_2 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_2/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> fileio3
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_2/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_2/lun_2 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_2/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_3/
+[INFO] Creating symlink to /sys/kernel/config/target/core/fileio_3/fileio4
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> fileio4
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_3/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_3/lun_3 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_3/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> fileio4
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_3/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_3/lun_3 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_3/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> fileio4
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_3/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_3/lun_3 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_3/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_4/
+[INFO] Creating symlink to /sys/kernel/config/target/core/fileio_4/fileio5
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> fileio5
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_4/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_4/lun_4 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_4/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> fileio5
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_4/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_4/lun_4 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_4/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> fileio5
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_4/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_4/lun_4 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_4/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_5/
+[INFO] Creating symlink to /sys/kernel/config/target/core/fileio_5/fileio6
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> fileio6
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_5/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_5/lun_5 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_5/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> fileio6
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_5/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_5/lun_5 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_5/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> fileio6
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_5/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_5/lun_5 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_5/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_6/
+[INFO] Creating symlink to /sys/kernel/config/target/core/fileio_6/fileio7
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> fileio7
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_6/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_6/lun_6 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_6/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> fileio7
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_6/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_6/lun_6 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_6/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> fileio7
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_6/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_6/lun_6 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_6/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_7/
+[INFO] Creating symlink to /sys/kernel/config/target/core/user_0/file1
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> file1
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_7/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_7/lun_7 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_7/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> file1
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_7/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_7/lun_7 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_7/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> file1
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_7/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_7/lun_7 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_7/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_8/
+[INFO] Creating symlink to /sys/kernel/config/target/core/user_1/file2
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> file2
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_8/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_8/lun_8 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_8/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> file2
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_8/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_8/lun_8 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_8/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> file2
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_8/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_8/lun_8 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_8/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_9/
+[INFO] Creating symlink to /sys/kernel/config/target/core/user_2/file3
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> file3
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_9/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_9/lun_9 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_9/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> file3
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_9/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_9/lun_9 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_9/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> file3
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_9/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_9/lun_9 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_9/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_10/
+[INFO] Creating symlink to /sys/kernel/config/target/core/user_3/file4
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> file4
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_10/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_10/lun_10 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_10/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> file4
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_10/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_10/lun_10 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_10/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> file4
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_10/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_10/lun_10 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_10/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_11/
+[INFO] Creating symlink to /sys/kernel/config/target/core/user_4/file5
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> file5
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_11/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_11/lun_11 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_11/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> file5
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_11/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_11/lun_11 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_11/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> file5
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_11/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_11/lun_11 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_11/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_12/
+[INFO] Creating symlink to /sys/kernel/config/target/core/user_5/file6
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> file6
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_12/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_12/lun_12 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_12/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> file6
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_12/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_12/lun_12 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_12/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> file6
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_12/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_12/lun_12 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_12/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_13/
+[INFO] Creating symlink to /sys/kernel/config/target/core/user_6/file7
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> file7
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_13/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_13/lun_13 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_13/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> file7
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_13/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_13/lun_13 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_13/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> file7
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_13/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_13/lun_13 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_13/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_14/
+[INFO] Creating symlink to /sys/kernel/config/target/core/user_7/alloc1
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> alloc1
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_14/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_14/lun_14 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_14/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> alloc1
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_14/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_14/lun_14 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_14/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> alloc1
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_14/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_14/lun_14 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_14/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_15/
+[INFO] Creating symlink to /sys/kernel/config/target/core/user_8/alloc2
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> alloc2
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_15/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_15/lun_15 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_15/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> alloc2
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_15/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_15/lun_15 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_15/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> alloc2
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_15/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_15/lun_15 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_15/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_16/
+[INFO] Creating symlink to /sys/kernel/config/target/core/user_9/alloc3
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> alloc3
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_16/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_16/lun_16 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_16/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> alloc3
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_16/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_16/lun_16 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_16/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> alloc3
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_16/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_16/lun_16 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_16/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_17/
+[INFO] Creating symlink to /sys/kernel/config/target/core/user_10/alloc4
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> alloc4
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_17/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_17/lun_17 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_17/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> alloc4
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_17/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_17/lun_17 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_17/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> alloc4
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_17/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_17/lun_17 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_17/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_18/
+[INFO] Creating symlink to /sys/kernel/config/target/core/user_11/alloc5
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> alloc5
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_18/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_18/lun_18 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_18/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> alloc5
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_18/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_18/lun_18 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_18/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> alloc5
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_18/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_18/lun_18 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_18/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_19/
+[INFO] Creating symlink to /sys/kernel/config/target/core/user_12/alloc6
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> alloc6
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_19/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_19/lun_19 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_19/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> alloc6
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_19/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_19/lun_19 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_19/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> alloc6
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_19/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_19/lun_19 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_19/
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_20/
+[INFO] Creating symlink to /sys/kernel/config/target/core/user_13/alloc7
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init1 -> alloc7
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_20/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init1/lun_20/lun_20 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_20/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init2 -> alloc7
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_20/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init2/lun_20/lun_20 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_20/
+[INFO] Creating lun mapping: iqn.2018-05.com.lio-project:init-init3 -> alloc7
+[INFO] Creating sysfs entry: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_20/
+[INFO] Creating symlink: /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/acls/iqn.2018-05.com.lio-project:init-init3/lun_20/lun_20 -> /sys/kernel/config/target/iscsi/iqn.2018-05.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_20/
+[INFO] Target IP was written to session/target_ip: 127.0.1.1
