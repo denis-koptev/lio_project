@@ -17,5 +17,5 @@ cp org.kernel.TCMUService1.service /usr/share/dbus-1/system-services/
 cp tcmu-runner.service /lib/systemd/system
 
 echo "Starting service..."
-#service tcmu-runner start
-#systemctl daemon-reload
+service tcmu-runner start
+systemctl daemon-reload
