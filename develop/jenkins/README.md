@@ -6,7 +6,7 @@
 * Pull the following image: `docker pull deniskoptev/lio_jenkins`
 * Run: `docker run -p 8080:8080 -p 50000:50000 -d lio_jenkins`
 
-## Additional lio_jenjins_pure image
+## Additional lio_jenkins_pure image
 
 * All dependencies are installed
 * No jobs created
