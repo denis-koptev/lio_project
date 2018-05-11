@@ -36,7 +36,7 @@ Alloc stores all data in the program memory and uses simple and fast C operation
 Further instructions are definitely correct for Ubuntu 16.04, 17.10 and 18.04.
 
 * Clone this repo: `git clone https://github.com/denis-koptev/lio_project`
-* As this project is in develop stage go to `develop` folder: `cd lio_project/develop`
+* `cd lio_project`
 * Run `instal_deps` script: `sudo ./install_deps.sh`
 This script will install all needed dependencies for LIO Project testing system and for tcmu-runner daemon (see below).
 
@@ -77,7 +77,7 @@ Main results are displayed in console.
 ### Typical displayed results:
 
 ```
-denis@ubuntu:~/lio_project/develop$ sudo ./lio_start_session.sh lio_json_initial.json 
+denis@ubuntu:~/lio_project$ sudo ./lio_start_session.sh lio_json_initial.json 
 =================================================
 ====== WELCOME TO LIO-SESSION START SCRIPT ======
 =================================================
@@ -136,8 +136,8 @@ You can have errors with `iovec` structure during compilation.
 The best way for now - is to replace `#include <linux/uio.h>` with `#include <sys/uio.h>` in target_core_user_local.h
 
 ```
-In file included from /home/denis/lio_project/develop/tcmu-runner/target_core_user_local.h:7:0,
-                 from /home/denis/lio_project/develop/tcmu-runner/libtcmu.c:36:
+In file included from /home/denis/lio_project/tcmu-runner/target_core_user_local.h:7:0,
+                 from /home/denis/lio_project/tcmu-runner/libtcmu.c:36:
 /usr/include/linux/uio.h:17:8: error: redefinition of ‘struct iovec’
 ```
 
@@ -205,4 +205,4 @@ Example: `sudo python3 get_type_average.py session/initconf_init1_io_result`
 
 #### Jenkins
 
-Jenkins is used to run some tests. Description can be found in [jenkins](https://github.com/denis-koptev/lio_project/tree/master/develop/jenkins) folder.
+Jenkins is used to run some tests. Description can be found in [jenkins](https://github.com/denis-koptev/lio_project/tree/master/jenkins) folder.
