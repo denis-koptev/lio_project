@@ -51,6 +51,7 @@ def get_average_results(io_res_array):
         avg_dict[key]['speed'] = float(avg_dict[key]['speed']) / int(avg_dict[key]['records'])
     return avg_dict
 
+
 def main():
     global LOG
     args = parse_args()
