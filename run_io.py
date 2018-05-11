@@ -1,3 +1,11 @@
+'''
+
+RUN_IO SCRIPT
+Parses file with device list using regular expressions
+Makes IO operations to propper devices
+
+'''
+
 import re
 import os
 import sys
@@ -6,19 +14,15 @@ import json
 import argparse
 from logger import Logger
 
-# RUN_IO SCRIPT
-# Parses file with device list using regular expressions
-# Makes IO operations to propper devices
 
-
-log = Logger()
+LOG = Logger()
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('dev_list', help='path to a file with list of devices from lsscsi call')
     parser.add_argument('init_config', help='path to an interanl initiator JSON config')
-    parser.add_argument('--log', help='path where log file will be created')
+    parser.add_argument('--log', help='path where LOG file will be created')
     parser.add_argument('--result', help='path where file with IO results will be created')
     parser.add_argument('--bs', help='block size in bytes for IO operations', default=4096)
     return parser.parse_args()
@@ -26,7 +30,7 @@ def parse_args():
 
 def get_json_from_file(path):
     if not os.path.isfile(path):
-        log.error('JSON config for initiator not found')
+        LOG.error('JSON config for initiator not found')
         sys.exit(1)
     else:
         config_file = open(path, 'r')
@@ -59,8 +63,8 @@ def write_random(dev_path, size, bs):
     total_time = 0
     speed = 0
 
-    if (bs > size):
-        log.warning('Specified block size is larger that total io size. Reducing')
+    if bs > size:
+        LOG.warning('Specified block size is larger that total io size. Reducing')
         bs = size
         message = 'OK. Block size reduced.'
     bc = int(size / bs)  # Rude assumption (rounding)
@@ -73,7 +77,7 @@ def write_random(dev_path, size, bs):
             end_time = time.time()
             total_time = end_time - start_time
             speed = size / (total_time * 1024 * 1024)
-            log.info('Time: %.2f s; Speed: %.2f MB/s' % (total_time, speed))
+            LOG.info('Time: %.2f s; Speed: %.2f MB/s' % (total_time, speed))
     except Exception as e:
         success = 0
         message = 'ERROR: ' + str(e)
@@ -90,11 +94,11 @@ def write_random(dev_path, size, bs):
 
 
 def main():
-    global log
+    global LOG
     common_success = True
     args = parse_args()
     if args.log:
-        log = Logger(filename=args.log)
+        LOG = Logger(filename=args.log)
     config = get_json_from_file(args.init_config)
 
     if args.bs:
@@ -103,24 +107,24 @@ def main():
         bs = 4096  # 4Kb
 
     if not os.path.isfile(args.dev_list):
-        log.error('File with list of devices not found')
+        LOG.error('File with list of devices not found')
         sys.exit(1)
 
     devices = parse_lio_dev(args.dev_list)
-    log.info('Found following devices: ' + str(devices))
+    LOG.info('Found following devices: ' + str(devices))
 
     results = []
 
     for dev in config['devices']:
-        log.info('Starting random IO to %s with %s type and lun=%s' % (dev['name'], dev['type'], dev['lun']))
+        LOG.info('Starting random IO to %s with %s type and lun=%s' % (dev['name'], dev['type'], dev['lun']))
 
         # Search device name in /dev
         dev_names = [item['dev'] for item in devices if item['lun'] == dev['lun']]
-        if len(dev_names) == 0:
-            log.warning('Device was not found in /dev. Skipping.')
+        if not dev_names:
+            LOG.warning('Device was not found in /dev. Skipping.')
             continue
         if len(dev_names) > 1:
-            log.warning('More than 1 device with such lun found. Taking first.')
+            LOG.warning('More than 1 device with such lun found. Taking first.')
         dev_name = dev_names[0]
 
         result = write_random('/dev/' + dev_name, int(dev['size']), bs)
@@ -130,16 +134,19 @@ def main():
         results.append(result)
         if result['success'] == 0:
             common_success = False
-        log.info('Result: %s' % str(result))
+        LOG.info('Result: %s' % str(result))
 
-    if (args.result):
+    if args.result:
         result_file = open(args.result, 'w')
         result_file.write(json.dumps(results, indent=4))
         result_file.close()
 
     if not common_success:
-        log.warning('IO ended with errors. Check logs for details.')
+        LOG.warning('IO ended with errors. Check logs for details.')
         sys.exit(1)
+
+    if args.log:
+        LOG.close()
 
 
 if __name__ == '__main__':

@@ -1,3 +1,9 @@
+'''
+
+Logger - utility class
+
+'''
+
 import os
 
 

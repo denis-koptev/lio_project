@@ -1,3 +1,11 @@
+'''
+
+PARSE_JSON
+Validates initial JSON configuration
+Appends configuration with generated additional parameters
+
+'''
+
 import os
 import json
 import datetime
@@ -7,7 +15,7 @@ from jsonschema import validate
 
 # -- Scheme for JSON validation
 
-schema = {
+SCHEME = {
     "type": "object",
     "properties": {
         "target": {
@@ -44,7 +52,7 @@ schema = {
 }
 
 
-# -- Overriden --show_scheme flag action (acts like help, not requirin config)
+# Overriden class for --show_scheme flag action (acts like help, not requirin config)
 
 class _SchemeAction(argparse.Action):
     def __init__(self,
@@ -60,7 +68,7 @@ class _SchemeAction(argparse.Action):
             help=help)
 
     def __call__(self, parser, namespace, values, option_string=None):
-        print(json.dumps(schema, indent=4))
+        print(json.dumps(SCHEME, indent=4))
         parser.exit()
 
 
@@ -87,7 +95,7 @@ def get_json_from_file(path):
 
 
 def validate_json(json_data):
-    validate(json_data, schema)
+    validate(json_data, SCHEME)
 
 
 def generate_target_iqn(tgt_name):
