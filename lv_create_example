@@ -1,0 +1,10 @@
+denis@ubuntu:~/lio_project$ sudo truncate --size 550M block_file
+denis@ubuntu:~/lio_project$ sudo losetup --find --show block_file 
+/dev/loop16
+denis@ubuntu:~/lio_project$ sudo vgcreate block_vg_1 /dev/loop16
+  Physical volume "/dev/loop16" successfully created.
+  Volume group "block_vg_1" successfully created
+denis@ubuntu:~/lio_project$ sudo lvcreate --size 520M --name block_lv_1 block_vg_1
+  Logical volume "block_lv_1" created.
+
+Your path for json config: /dev/block_vg_1/block_lv_1

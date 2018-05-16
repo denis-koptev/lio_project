@@ -12,6 +12,7 @@ import sys
 import json
 import glob
 import argparse
+from subprocess import getstatusoutput
 from logger import Logger
 
 
@@ -38,6 +39,37 @@ def get_json_from_file(path):
         return config
 
 
+'''
+def create_logical_volume(vol_name, vol_size):
+    file_name = 'file_lv_' + vol_name
+    file_path = '/' + file_name
+    file_size = str(int(int(vol_size)*1.2))
+    file_cmd = 'truncate --size {} {}'.format(file_size, file_path)
+    status, output = getstatusoutput(file_cmd)
+    LOG.info(str(status))
+    LOG.info(output)
+
+    dev_path_cmd = 'losetup --find --show {}'.format(file_path)
+    status, output = getstatusoutput(dev_path_cmd)
+    dev_path = output
+    LOG.info(str(status))
+    LOG.info(output)
+
+    vg_name = 'vg_' + vol_name
+    vol_name = 'lv_' + vol_name
+    vg_cmd = 'vgcreate {} {}'.format(vg_name, dev_path)
+    status, output = getstatusoutput(vg_cmd)
+    LOG.info(str(status))
+    LOG.info(output)
+    lv_cmd = 'lvcreate --size {} --name {} {}'.format(vol_size, vol_name, vg_name)
+    status, output = getstatusoutput(lv_cmd)
+    LOG.info(str(status))
+    LOG.info(output)
+
+    return vg_name, vol_name
+'''
+
+
 def create_device(config):
     if config['type'] == 'fileio':
         LOG.info('Configuring fileio device %s '
@@ -49,6 +81,16 @@ def create_device(config):
         storage.close()
         # Config string for sysfs entry
         control = 'fd_dev_name=/' + config['name'] + ',fd_dev_size=' + config['size']
+    elif config['type'] == 'block':
+        LOG.info('Configuring block device %s with existing storage' % config['name'])
+        type_dir = CORE_DIR + 'iblock_'
+        if not 'path' in config:
+            LOG.error('Path to an existing storage for block device not found in config')
+            return
+        if not os.path.islink(config['path']):
+            LOG.error('Logical volume not found in %s' % config['path'])
+            return
+        control = 'udev_path={}'.format(config['path'])
     elif config['type'] == 'alloc' or config['type'] == 'file':
         LOG.info('Configuring user device %s/%s' %
                  (config['type'], config['name']))

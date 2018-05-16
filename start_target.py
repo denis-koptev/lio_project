@@ -137,6 +137,8 @@ def create_target(config):
     for dev in config['devices']:
         if dev['type'] == 'fileio':
             type_path = core_path + 'fileio_*/'
+        elif dev['type'] == 'block':
+            type_path = core_path + 'iblock_*/'
         elif dev['type'] == 'file' or dev['type'] == 'alloc':
             type_path = core_path + 'user_*/'
         else:
@@ -144,8 +146,8 @@ def create_target(config):
 
         dev_paths = [dev for dev in glob.glob(type_path + dev['name'])]
         if not dev_paths:
-            LOG.error('Device ' + dev['name'] + ' not found')
-            sys.exit(1)
+            LOG.warning('Device ' + dev['name'] + ' not found. Skipping all for it.')
+            continue
         if len(dev_paths) > 1:
             LOG.error('More than 1 %s devices with name %s exist' % (dev['type'], dev['name']))
             LOG.error(' '.join(dev_paths))

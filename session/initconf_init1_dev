@@ -1,23 +1,22 @@
 [2:0:0:0]    disk    VMware,  VMware Virtual S 1.0   /dev/sda 
 [4:0:0:0]    cd/dvd  NECVMWar VMware SATA CD01 1.00  /dev/sr0 
 [33:0:0:0]   disk    LIO-ORG  FILEIO           4.0   /dev/sdb 
-[33:0:0:1]   disk    LIO-ORG  FILEIO           4.0   /dev/sdv 
-[33:0:0:2]   disk    LIO-ORG  FILEIO           4.0   /dev/sdu 
-[33:0:0:3]   disk    LIO-ORG  FILEIO           4.0   /dev/sdt 
-[33:0:0:4]   disk    LIO-ORG  FILEIO           4.0   /dev/sds 
-[33:0:0:5]   disk    LIO-ORG  FILEIO           4.0   /dev/sdr 
-[33:0:0:6]   disk    LIO-ORG  FILEIO           4.0   /dev/sdq 
-[33:0:0:7]   disk    LIO-ORG  TCMU device      0002  /dev/sdp 
-[33:0:0:8]   disk    LIO-ORG  TCMU device      0002  /dev/sdo 
-[33:0:0:9]   disk    LIO-ORG  TCMU device      0002  /dev/sdn 
-[33:0:0:10]  disk    LIO-ORG  TCMU device      0002  /dev/sdm 
-[33:0:0:11]  disk    LIO-ORG  TCMU device      0002  /dev/sdl 
-[33:0:0:12]  disk    LIO-ORG  TCMU device      0002  /dev/sdk 
-[33:0:0:13]  disk    LIO-ORG  TCMU device      0002  /dev/sdj 
-[33:0:0:14]  disk    LIO-ORG  TCMU device      0002  /dev/sdi 
-[33:0:0:15]  disk    LIO-ORG  TCMU device      0002  /dev/sdh 
-[33:0:0:16]  disk    LIO-ORG  TCMU device      0002  /dev/sdg 
-[33:0:0:17]  disk    LIO-ORG  TCMU device      0002  /dev/sdf 
-[33:0:0:18]  disk    LIO-ORG  TCMU device      0002  /dev/sde 
-[33:0:0:19]  disk    LIO-ORG  TCMU device      0002  /dev/sdd 
-[33:0:0:20]  disk    LIO-ORG  TCMU device      0002  /dev/sdc 
+[33:0:0:1]   disk    LIO-ORG  FILEIO           4.0   /dev/sdu 
+[33:0:0:2]   disk    LIO-ORG  FILEIO           4.0   /dev/sdt 
+[33:0:0:3]   disk    LIO-ORG  FILEIO           4.0   /dev/sds 
+[33:0:0:4]   disk    LIO-ORG  FILEIO           4.0   /dev/sdr 
+[33:0:0:5]   disk    LIO-ORG  TCMU device      0002  /dev/sdq 
+[33:0:0:6]   disk    LIO-ORG  TCMU device      0002  /dev/sdp 
+[33:0:0:7]   disk    LIO-ORG  TCMU device      0002  /dev/sdo 
+[33:0:0:8]   disk    LIO-ORG  TCMU device      0002  /dev/sdn 
+[33:0:0:9]   disk    LIO-ORG  TCMU device      0002  /dev/sdm 
+[33:0:0:10]  disk    LIO-ORG  TCMU device      0002  /dev/sdl 
+[33:0:0:11]  disk    LIO-ORG  TCMU device      0002  /dev/sdk 
+[33:0:0:12]  disk    LIO-ORG  TCMU device      0002  /dev/sdj 
+[33:0:0:13]  disk    LIO-ORG  TCMU device      0002  /dev/sdi 
+[33:0:0:14]  disk    LIO-ORG  TCMU device      0002  /dev/sdh 
+[33:0:0:15]  disk    LIO-ORG  IBLOCK           4.0   /dev/sdg 
+[33:0:0:16]  disk    LIO-ORG  IBLOCK           4.0   /dev/sdf 
+[33:0:0:17]  disk    LIO-ORG  IBLOCK           4.0   /dev/sde 
+[33:0:0:18]  disk    LIO-ORG  IBLOCK           4.0   /dev/sdd 
+[33:0:0:19]  disk    LIO-ORG  IBLOCK           4.0   /dev/sdc 

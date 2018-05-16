@@ -5,8 +5,8 @@
         "dev_path": "/dev/sdb",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "6.36",
-        "speed": "80.48",
+        "total_time": "6.33",
+        "speed": "80.83",
         "dev_name": "fileio1",
         "dev_type": "fileio",
         "dev_lun": "lun_0"
@@ -14,11 +14,11 @@
     {
         "success": 1,
         "message": "OK",
-        "dev_path": "/dev/sdv",
+        "dev_path": "/dev/sdu",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "6.64",
-        "speed": "77.14",
+        "total_time": "5.67",
+        "speed": "90.29",
         "dev_name": "fileio2",
         "dev_type": "fileio",
         "dev_lun": "lun_1"
@@ -26,11 +26,11 @@
     {
         "success": 1,
         "message": "OK",
-        "dev_path": "/dev/sdu",
+        "dev_path": "/dev/sdt",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "4.92",
-        "speed": "104.03",
+        "total_time": "6.20",
+        "speed": "82.56",
         "dev_name": "fileio3",
         "dev_type": "fileio",
         "dev_lun": "lun_2"
@@ -38,11 +38,11 @@
     {
         "success": 1,
         "message": "OK",
-        "dev_path": "/dev/sdt",
+        "dev_path": "/dev/sds",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "4.80",
-        "speed": "106.77",
+        "total_time": "6.44",
+        "speed": "79.50",
         "dev_name": "fileio4",
         "dev_type": "fileio",
         "dev_lun": "lun_3"
@@ -50,11 +50,11 @@
     {
         "success": 1,
         "message": "OK",
-        "dev_path": "/dev/sds",
+        "dev_path": "/dev/sdr",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "6.31",
-        "speed": "81.12",
+        "total_time": "9.33",
+        "speed": "54.85",
         "dev_name": "fileio5",
         "dev_type": "fileio",
         "dev_lun": "lun_4"
@@ -62,26 +62,14 @@
     {
         "success": 1,
         "message": "OK",
-        "dev_path": "/dev/sdr",
-        "dev_size": 536870912,
-        "bs": 4096,
-        "total_time": "6.74",
-        "speed": "75.95",
-        "dev_name": "fileio6",
-        "dev_type": "fileio",
-        "dev_lun": "lun_5"
-    },
-    {
-        "success": 1,
-        "message": "OK",
         "dev_path": "/dev/sdq",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "5.11",
-        "speed": "100.15",
-        "dev_name": "fileio7",
-        "dev_type": "fileio",
-        "dev_lun": "lun_6"
+        "total_time": "6.35",
+        "speed": "80.57",
+        "dev_name": "file1",
+        "dev_type": "file",
+        "dev_lun": "lun_5"
     },
     {
         "success": 1,
@@ -89,11 +77,11 @@
         "dev_path": "/dev/sdp",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "4.84",
-        "speed": "105.84",
-        "dev_name": "file1",
+        "total_time": "8.19",
+        "speed": "62.48",
+        "dev_name": "file2",
         "dev_type": "file",
-        "dev_lun": "lun_7"
+        "dev_lun": "lun_6"
     },
     {
         "success": 1,
@@ -101,11 +89,11 @@
         "dev_path": "/dev/sdo",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "4.97",
-        "speed": "103.00",
-        "dev_name": "file2",
+        "total_time": "7.37",
+        "speed": "69.47",
+        "dev_name": "file3",
         "dev_type": "file",
-        "dev_lun": "lun_8"
+        "dev_lun": "lun_7"
     },
     {
         "success": 1,
@@ -113,11 +101,11 @@
         "dev_path": "/dev/sdn",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "6.40",
-        "speed": "79.99",
-        "dev_name": "file3",
+        "total_time": "6.54",
+        "speed": "78.32",
+        "dev_name": "file4",
         "dev_type": "file",
-        "dev_lun": "lun_9"
+        "dev_lun": "lun_8"
     },
     {
         "success": 1,
@@ -125,11 +113,11 @@
         "dev_path": "/dev/sdm",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "4.68",
-        "speed": "109.32",
-        "dev_name": "file4",
+        "total_time": "6.36",
+        "speed": "80.51",
+        "dev_name": "file5",
         "dev_type": "file",
-        "dev_lun": "lun_10"
+        "dev_lun": "lun_9"
     },
     {
         "success": 1,
@@ -137,11 +125,11 @@
         "dev_path": "/dev/sdl",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "4.86",
-        "speed": "105.40",
-        "dev_name": "file5",
-        "dev_type": "file",
-        "dev_lun": "lun_11"
+        "total_time": "5.14",
+        "speed": "99.56",
+        "dev_name": "alloc1",
+        "dev_type": "alloc",
+        "dev_lun": "lun_10"
     },
     {
         "success": 1,
@@ -149,11 +137,11 @@
         "dev_path": "/dev/sdk",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "5.26",
-        "speed": "97.39",
-        "dev_name": "file6",
-        "dev_type": "file",
-        "dev_lun": "lun_12"
+        "total_time": "4.48",
+        "speed": "114.30",
+        "dev_name": "alloc2",
+        "dev_type": "alloc",
+        "dev_lun": "lun_11"
     },
     {
         "success": 1,
@@ -161,11 +149,11 @@
         "dev_path": "/dev/sdj",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "4.77",
-        "speed": "107.41",
-        "dev_name": "file7",
-        "dev_type": "file",
-        "dev_lun": "lun_13"
+        "total_time": "4.43",
+        "speed": "115.69",
+        "dev_name": "alloc3",
+        "dev_type": "alloc",
+        "dev_lun": "lun_12"
     },
     {
         "success": 1,
@@ -173,11 +161,11 @@
         "dev_path": "/dev/sdi",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "4.77",
-        "speed": "107.23",
-        "dev_name": "alloc1",
+        "total_time": "4.34",
+        "speed": "118.11",
+        "dev_name": "alloc4",
         "dev_type": "alloc",
-        "dev_lun": "lun_14"
+        "dev_lun": "lun_13"
     },
     {
         "success": 1,
@@ -185,11 +173,11 @@
         "dev_path": "/dev/sdh",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "4.54",
-        "speed": "112.78",
-        "dev_name": "alloc2",
+        "total_time": "4.34",
+        "speed": "118.00",
+        "dev_name": "alloc5",
         "dev_type": "alloc",
-        "dev_lun": "lun_15"
+        "dev_lun": "lun_14"
     },
     {
         "success": 1,
@@ -197,11 +185,11 @@
         "dev_path": "/dev/sdg",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "4.59",
-        "speed": "111.63",
-        "dev_name": "alloc3",
-        "dev_type": "alloc",
-        "dev_lun": "lun_16"
+        "total_time": "4.93",
+        "speed": "103.78",
+        "dev_name": "block1",
+        "dev_type": "block",
+        "dev_lun": "lun_15"
     },
     {
         "success": 1,
@@ -209,11 +197,11 @@
         "dev_path": "/dev/sdf",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "4.64",
-        "speed": "110.26",
-        "dev_name": "alloc4",
-        "dev_type": "alloc",
-        "dev_lun": "lun_17"
+        "total_time": "5.71",
+        "speed": "89.63",
+        "dev_name": "block2",
+        "dev_type": "block",
+        "dev_lun": "lun_16"
     },
     {
         "success": 1,
@@ -221,11 +209,11 @@
         "dev_path": "/dev/sde",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "4.60",
-        "speed": "111.26",
-        "dev_name": "alloc5",
-        "dev_type": "alloc",
-        "dev_lun": "lun_18"
+        "total_time": "5.40",
+        "speed": "94.83",
+        "dev_name": "block3",
+        "dev_type": "block",
+        "dev_lun": "lun_17"
     },
     {
         "success": 1,
@@ -233,11 +221,11 @@
         "dev_path": "/dev/sdd",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "4.59",
-        "speed": "111.46",
-        "dev_name": "alloc6",
-        "dev_type": "alloc",
-        "dev_lun": "lun_19"
+        "total_time": "5.22",
+        "speed": "98.17",
+        "dev_name": "block4",
+        "dev_type": "block",
+        "dev_lun": "lun_18"
     },
     {
         "success": 1,
@@ -245,10 +233,10 @@
         "dev_path": "/dev/sdc",
         "dev_size": 536870912,
         "bs": 4096,
-        "total_time": "5.83",
-        "speed": "87.84",
-        "dev_name": "alloc7",
-        "dev_type": "alloc",
-        "dev_lun": "lun_20"
+        "total_time": "5.91",
+        "speed": "86.61",
+        "dev_name": "block5",
+        "dev_type": "block",
+        "dev_lun": "lun_19"
     }
 ]

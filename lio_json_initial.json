@@ -29,16 +29,6 @@
       "size": "536870912"
     },
     {
-      "name": "fileio6",
-      "type": "fileio",
-      "size": "536870912"
-    },
-    {
-      "name": "fileio7",
-      "type": "fileio",
-      "size": "536870912"
-    },
-    {
       "name": "file1",
       "type": "file",
       "size": "536870912"
@@ -60,16 +50,6 @@
     },
     {
       "name": "file5",
-      "type": "file",
-      "size": "536870912"
-    },
-    {
-      "name": "file6",
-      "type": "file",
-      "size": "536870912"
-    },
-    {
-      "name": "file7",
       "type": "file",
       "size": "536870912"
     },
@@ -99,25 +79,39 @@
       "size": "536870912"
     },
     {
-      "name": "alloc6",
-      "type": "alloc",
-      "size": "536870912"
+      "name": "block1",
+      "type": "block",
+      "size": "536870912",
+      "path": "/dev/vol_group_0/log_vol"
     },
     {
-      "name": "alloc7",
-      "type": "alloc",
-      "size": "536870912"
+      "name": "block2",
+      "type": "block",
+      "size": "536870912",
+      "path": "/dev/vol_group_1/log_vol"
+    },
+    {
+      "name": "block3",
+      "type": "block",
+      "size": "536870912",
+      "path": "/dev/vol_group_2/log_vol"
+    },
+    {
+      "name": "block4",
+      "type": "block",
+      "size": "536870912",
+      "path": "/dev/vol_group_3/log_vol"
+    },
+    {
+      "name": "block5",
+      "type": "block",
+      "size": "536870912",
+      "path": "/dev/vol_group_4/log_vol"
     }
   ],
   "initiators": [
     {
       "name": "init1"
-    },
-    {
-      "name": "init2"
-    },
-    {
-      "name": "init3"
     }
   ],
   "io": [
@@ -128,43 +122,8 @@
     },
     {
       "initiator": "init1",
-      "device": "file2",
-      "size": "512"
-    },
-    {
-      "initiator": "init2",
       "device": "file1",
-      "size": "1024"
-    },
-    {
-      "initiator": "init1",
-      "device": "alloc2",
-      "size": "5M"
-    },
-    {
-      "initiator": "init1",
-      "device": "alloc3",
-      "size": "5M"
-    },
-    {
-      "initiator": "init1",
-      "device": "alloc4",
-      "size": "5M"
-    },
-    {
-      "initiator": "init1",
-      "device": "alloc5",
-      "size": "5M"
-    },
-    {
-      "initiator": "init1",
-      "device": "alloc6",
-      "size": "5M"
-    },
-    {
-      "initiator": "init1",
-      "device": "alloc7",
-      "size": "5M"
+      "size": "512"
     }
   ]
 }
