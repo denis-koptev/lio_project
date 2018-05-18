@@ -49,16 +49,17 @@ Example is provided in `lio_json_initial.json`
 
 Limitations for JSON:
 
+Target
 * `target` object must be presented. It contains only `name` parameter
 
-
+Devices
 * `devices` JSON-array must be presented
 * Each device contains 3 string parameters: `name`, `type` and `size`
 * `type`: `block`, `fileio`, `file` or `alloc`
 * `size` - in bytes (as string)
 * `path` string to a logical volume for block device
 
-
+Initiators
 * `initiators` JSON-array must be presented
 * Each `initiator` object contains only name
 * `io` JSON-array must be presented
