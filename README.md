@@ -6,7 +6,7 @@ Linux-IO (LIO, TCM) - has been the Linux SCSI target since kernel version 2.6.38
 It supports a rapidly growing number of fabric modules, and all existing Linux block devices as backstores.
 
 These repository provides system for userspace passthrought testing using various types of devices:
-- block
+- block (demo support)
 - fileio
 - user:file
 - user:alloc
