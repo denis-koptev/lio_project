@@ -106,9 +106,10 @@ Created user-backed storage object rbd0 size 1073741824.
 
 Note that the cfgstring is handler specific. The format is:
 
-- **rbd**: /pool_name/image_name[;osd_op_timeout=N;conf=N]
+- **rbd**: /pool_name/image_name[;osd_op_timeout=N;conf=N;id=N]
 (osd_op_timeout is optional and N is in seconds)
 (conf is optional and N is the path to the conf file)
+(id is optional and N is the id to connect to the cluster as)
 - **qcow**: /path_to_file
 - **glfs**: /volume@hostname/filename
 - **file**: /path_to_file
@@ -220,10 +221,10 @@ loop and SCSI command handling for your plugin, and your handler's registered
 functions are called repeatedly to handle storage requests as required by the
 upper SCSI layer, which will handle most of the SCSI commands for you.
 
-* *Note:* If the .handle_cmd is also implemented by the handler, tcmu-runner will
-try to pass through the commands to the handler first, if and only when the handler
-won't support the commands it should return TCMU_NOT_HANDLED, then the tcmu-runner
-will handle them in generic.
+* *Note:* If the .handle_cmd is also implemented by the handler, tcmu-runner
+will try to pass through the commands to the handler first. If and only when
+the handler won't support the commands it should return TCMU_STS_NOT_HANDLED,
+then the tcmu-runner will handle them in the generic handler.
 
 The `file_example` handler is an example of this type.
 

@@ -190,6 +190,8 @@ static int open_handlers(void)
 
 static gboolean sighandler(gpointer user_data)
 {
+	tcmu_dbg("Have received signal!\n");
+
 	g_main_loop_quit((GMainLoop*)user_data);
 
 	return G_SOURCE_CONTINUE;
@@ -590,8 +592,10 @@ static void tcmur_stop_device(void *arg)
 	}
 	pthread_mutex_unlock(&rdev->state_lock);
 
-	if (is_open)
+	if (is_open) {
+		tcmu_release_dev_lock(dev);
 		rhandler->close(dev);
+	}
 
 	pthread_mutex_lock(&rdev->state_lock);
 	rdev->flags |= TCMUR_DEV_FLAG_STOPPED;
@@ -620,15 +624,15 @@ static void *tcmur_cmdproc_thread(void *arg)
 		while (!dev_stopping && (cmd = tcmulib_get_next_command(dev)) != NULL) {
 
 			if (tcmu_get_log_level() == TCMU_LOG_DEBUG_SCSI_CMD)
-				tcmu_cdb_debug_info(dev, cmd);
+				tcmu_print_cdb_info(dev, cmd, NULL);
 
 			if (tcmur_handler_is_passthrough_only(rhandler))
 				ret = tcmur_cmd_passthrough_handler(dev, cmd);
 			else
 				ret = tcmur_generic_handle_cmd(dev, cmd);
 
-			if (ret == TCMU_NOT_HANDLED)
-				tcmu_dev_warn(dev, "Command 0x%x not supported\n", cmd->cdb[0]);
+			if (ret == TCMU_STS_NOT_HANDLED)
+				tcmu_print_cdb_info(dev, cmd, "is not supported");
 
 			/*
 			 * command (processing) completion is called in the following
@@ -637,7 +641,7 @@ static void *tcmur_cmdproc_thread(void *arg)
 			 *   - generic_handle_cmd: non tcmur handler calls (see generic_cmd())
 			 *			   and on errors when calling tcmur handler.
 			 */
-			if (ret != TCMU_ASYNC_HANDLED) {
+			if (ret != TCMU_STS_ASYNC_HANDLED) {
 				completed = 1;
 				tcmur_command_complete(dev, cmd, ret);
 			}
@@ -1126,7 +1130,7 @@ int main(int argc, char **argv)
 
 	g_main_loop_run(loop);
 
-	tcmu_dbg("Exiting...\n");
+	tcmu_info("Exiting...\n");
 	g_bus_unown_name(reg_id);
 	g_main_loop_unref(loop);
 	g_io_channel_shutdown(libtcmu_gio, TRUE, NULL);

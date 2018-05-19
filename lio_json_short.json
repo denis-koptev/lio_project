@@ -1,0 +1,34 @@
+{
+  "target": {
+    "name": "tgt1"
+  },
+  "devices": [
+    {
+      "name": "fileio1",
+      "type": "fileio",
+      "size": "536870912"
+    },
+    {
+      "name": "file1",
+      "type": "file",
+      "size": "536870912"
+    },
+    {
+      "name": "alloc1",
+      "type": "alloc",
+      "size": "536870912"
+    },
+    {
+      "name": "block1",
+      "type": "block",
+      "size": "536870912",
+      "path": "/dev/vol_group_0/log_vol"
+    }
+  ],
+  "initiators": [
+    {
+      "name": "init1"
+    }
+  ],
+  "io": []
+}

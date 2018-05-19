@@ -43,12 +43,6 @@ typedef int (*unmap_fn_t)(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 
 struct tcmulib_cfg_info;
 
-enum {
-	TCMUR_LOCK_SUCCESS,
-	TCMUR_LOCK_FAILED,
-	TCMUR_LOCK_NOTCONN,
-};
-
 struct tcmur_handler {
 	const char *name;	/* Human-friendly name */
 	const char *subtype;	/* Name for cfgstring matching */
@@ -88,34 +82,35 @@ struct tcmur_handler {
 	/*
 	 * Async handle_cmd only handlers return:
 	 *
-	 * - SCSI status if handled (either good/bad)
-	 * - TCMU_NOT_HANDLED if opcode is not handled
-	 * - TCMU_ASYNC_HANDLED if opcode is handled asynchronously
+	 * - TCMU_STS_OK if the command has been executed successfully
+	 * - TCMU_STS_NOT_HANDLED if opcode is not handled
+	 * - TCMU_STS_ASYNC_HANDLED if opcode is handled asynchronously
+	 * - Non TCMU_STS_OK code indicating failure
+	 * - TCMU_STS_PASSTHROUGH_ERR For handlers that require low level
+	 *   SCSI processing and want to setup their own sense buffers.
 	 *
 	 * Handlers that set nr_threads > 0 and async handlers
 	 * that implement handle_cmd and the IO callouts below return:
 	 *
-	 * 0 if the handler has queued the command.
-	 * - TCMU_NOT_HANDLED if the command is not supported.
-	 * - SAM_STAT_TASK_SET_FULL if the handler was not able to allocate
+	 * - TCMU_STS_OK if the handler has queued the command.
+	 * - TCMU_STS_NOT_HANDLED if the command is not supported.
+	 * - TCMU_STS_NO_RESOURCE if the handler was not able to allocate
 	 *   resources for the command.
 	 *
-	 * If 0 is returned the handler must call the tcmulib_cmd->done
-	 * function with SAM_STAT_GOOD or a SAM status code and set the
-	 * the sense asc/ascq if needed.
+	 * If TCMU_STS_OK is returned from the callout the handler must call
+	 * the tcmulib_cmd->done function with TCMU_STS return code.
 	 */
 	handle_cmd_fn_t handle_cmd;
 
 	/*
-	 * Below callbacks are only exected called by generic_handle_cmd.
+	 * Below callbacks are only executed by generic_handle_cmd.
 	 * Returns:
-	 * - 0 if the handler has queued the command.
-	 * - SAM_STAT_TASK_SET_FULL if the handler was not able to allocate
+	 * - TCMU_STS_OK if the handler has queued the command.
+	 * - TCMU_STS_NO_RESOURCE if the handler was not able to allocate
 	 *   resources for the command.
 	 *
-	 * If 0 is returned the handler must call the tcmulib_cmd->done
-	 * function with SAM_STAT_GOOD or a SAM status code and set the
-	 * the sense asc/ascq if needed.
+	 * If TCMU_STS_OK is returned from the callout the handler must call
+	 * the tcmulib_cmd->done function with TCMU_STS return code.
 	 */
 	rw_fn_t write;
 	rw_fn_t read;
@@ -123,13 +118,21 @@ struct tcmur_handler {
 	unmap_fn_t unmap;
 
 	/*
-	 * Must return a TCMUR_LOCK return value.
+	 * If the lock is acquired and the tag is non-NULL, it must be
+	 * associated with the lock and returned by get_lock_tag on local
+	 * and remote nodes. When unlock is successful, the tag
+	 * associated with the lock must be deleted.
+	 *
+	 * Returns a TCMU_STS indicating success/failure.
 	 */
-	int (*lock)(struct tcmu_device *dev);
+	int (*lock)(struct tcmu_device *dev, uint16_t tag);
+	int (*unlock)(struct tcmu_device *dev);
+
 	/*
-	 * Must return TCMUR_DEV_LOCK state value.
+	 * Return tag set in lock call in tag buffer and a TCMU_STS
+	 * indicating success/failure.
 	 */
-	int (*get_lock_state)(struct tcmu_device *dev);
+	int (*get_lock_tag)(struct tcmu_device *dev, uint16_t *tag);
 
 	/*
 	 * internal field, don't touch this

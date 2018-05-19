@@ -1,5 +1,11 @@
 #!/bin/sh
 
+echo "Cleaning old tcmu-runner builds"
+make clean
+if [ -f CMakeCache.txt ]; then
+    rm CMakeCache.txt
+fi
+
 echo "Running CMake for tcmu-runner without qcow, rbd and glfs..."
 cmake -Dwith-glfs=false -Dwith-qcow=false -Dwith-rbd=false -DSUPPORT_SYSTEMD=ON -DCMAKE_INSTALL_PREFIX=/usr .
 
@@ -16,6 +22,7 @@ cp tcmu-runner.conf /etc/dbus-1/system.d/
 cp org.kernel.TCMUService1.service /usr/share/dbus-1/system-services/
 cp tcmu-runner.service /lib/systemd/system
 
+systemctl daemon-reload
+
 echo "Starting service..."
 service tcmu-runner start
-systemctl daemon-reload
