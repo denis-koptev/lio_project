@@ -15,6 +15,7 @@ pip3 install jsonschema
 pip3 install -r requirements.txt
 
 apt-get install -y targetcli-fb
+apt-get install -y lvm2
 
 if [ $? -ne 0 ]; then
     apt-get install -y targetcli
@@ -24,7 +25,6 @@ fi
 
 ./tcmu-runner/install_dep.sh
 
-# Temp initiator deps
 apt-get install -y open-iscsi
 apt-get install -y lsscsi
 

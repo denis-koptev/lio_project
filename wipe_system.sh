@@ -11,6 +11,23 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
+echo "[INFO] Logging out of all possible iSCSI sessions"
 iscsiadm -m session -u
+
+echo "[INFO] Clearing target configuration via targetcli"
 targetcli clearconfig confirm=True
+
+echo "[INFO] Deleting tcmu-runner build products"
+cd tcmu-runner
+if [ -f CMakeCache.txt ]; then
+    rm CMakeCache.txt
+fi;
+make clean
+
+echo "[INFO] Stopping tcmu-runner.service"
+systemctl stop tcmu-runner.service
+
+echo "[INFO] Restarting targetctl.service"
+systemctl stop rtslib-fb-targetctl.service
+systemctl start rtslib-fb-targetctl.service
 
