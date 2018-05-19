@@ -6,7 +6,7 @@ Linux-IO (LIO, TCM) - has been the Linux SCSI target since kernel version 2.6.38
 It supports a rapidly growing number of fabric modules, and all existing Linux block devices as backstores.
 
 These repository provides system for userspace passthrought testing using various types of devices:
-- block
+- block (demo support)
 - fileio
 - user:file
 - user:alloc
@@ -49,11 +49,17 @@ Example is provided in `lio_json_initial.json`
 
 Limitations for JSON:
 
+Target
 * `target` object must be presented. It contains only `name` parameter
+
+Devices
 * `devices` JSON-array must be presented
 * Each device contains 3 string parameters: `name`, `type` and `size`
-* `type`: `fileio`, `file` or `alloc`
+* `type`: `block`, `fileio`, `file` or `alloc`
 * `size` - in bytes (as string)
+* `path` string to a logical volume for block device
+
+Initiators
 * `initiators` JSON-array must be presented
 * Each `initiator` object contains only name
 * `io` JSON-array must be presented
@@ -73,6 +79,11 @@ LIO Session consists of:
 
 All results are collected in log-files. They can be found in `session` folder.
 Main results are displayed in console.
+
+_Note: if you want to configure and use block devices, you need to create logical volumes for them and specify correct paths in config.
+Otherwise, you will get warnings, that devices couldn't be found. IO operations for non-existent devices will be skipped._
+_For these aims `create_block.sh` is present._
+_Use it in the following way: `sudo ./create_block.sh <backing file name> <vol_group size> <vol size>`_
 
 ### Typical displayed results:
 
