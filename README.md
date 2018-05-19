@@ -68,7 +68,7 @@ Initiators
 
 ### Starting session
 
-* It's simple: `sudo ./lio_start_session.sh lio_json_initial.json`
+* It's simple: `sudo ./lio_start_session.sh lio_json_short.json`
 
 LIO Session consists of:
 
@@ -88,7 +88,8 @@ _Use it in the following way: `sudo ./create_block.sh <backing file name> <vol_g
 ### Typical displayed results:
 
 ```
-denis@ubuntu:~/lio_project$ sudo ./lio_start_session.sh lio_json_initial.json 
+
+sudo ./lio_start_session.sh lio_json_short.json 
 =================================================
 ====== WELCOME TO LIO-SESSION START SCRIPT ======
 =================================================
@@ -96,7 +97,6 @@ denis@ubuntu:~/lio_project$ sudo ./lio_start_session.sh lio_json_initial.json
 [INFO] Creating internal configs for target and initiators in ./session
 ----- ENTERING START_TARGET SCRIPT -----
 [INFO] Building and starting tcmu-runner daemon
-Warning: The unit file, source configuration file or drop-ins of tcmu-runner.service changed on disk. Run 'systemctl daemon-reload' to reload units.
 [INFO] Verifying that propper modules are loaded
 [INFO] Creating devices.
 [INFO] Devices created successfully.
@@ -111,35 +111,25 @@ Logging in to [iface: default, target: iqn.2018-05.com.lio-project:tgt-tgt1, por
 Login to [iface: default, target: iqn.2018-05.com.lio-project:tgt-tgt1, portal: 127.0.1.1,3260] successful.
 [INFO] Creating a file with the list of iSCSI devices: session/initconf_init1_dev
 [INFO] Starting IO operations to devices
-[INFO] Found following devices: [
-{'lun': 'lun_0', 'dev': 'sdb'}, 
-{'lun': 'lun_1', 'dev': 'sdv'}, 
-...
-{'lun': 'lun_19', 'dev': 'sdd'}, 
-{'lun': 'lun_20', 'dev': 'sdc'}]
+[INFO] Found following devices: [{'lun': 'lun_0', 'dev': 'sdb'}, {'lun': 'lun_1', 'dev': 'sde'}, {'lun': 'lun_2', 'dev': 'sdd'}, {'lun': 'lun_3', 'dev': 'sdc'}]
 [INFO] Starting random IO to fileio1 with fileio type and lun=lun_0
-[INFO] Time: 6.41 s; Speed: 79.85 MB/s
-[INFO] Result: {'success': 1, 'message': 'OK', 'dev_path': '/dev/sdb', 'dev_size': 536870912, 'bs': 4096, 'total_time': '6.41', 'speed': '79.85', 'dev_name': 'fileio1', 'dev_type': 'fileio', 'dev_lun': 'lun_0'}
-[INFO] Starting random IO to fileio2 with fileio type and lun=lun_1
-[INFO] Time: 6.54 s; Speed: 78.28 MB/s
-[INFO] Result: {'success': 1, 'message': 'OK', 'dev_path': '/dev/sdv', 'dev_size': 536870912, 'bs': 4096, 'total_time': '6.54', 'speed': '78.28', 'dev_name': 'fileio2', 'dev_type': 'fileio', 'dev_lun': 'lun_1'}
-...
-[INFO] Starting random IO to file1 with file type and lun=lun_7
-[INFO] Time: 5.31 s; Speed: 96.45 MB/s
-[INFO] Result: {'success': 1, 'message': 'OK', 'dev_path': '/dev/sdp', 'dev_size': 536870912, 'bs': 4096, 'total_time': '5.31', 'speed': '96.45', 'dev_name': 'file1', 'dev_type': 'file', 'dev_lun': 'lun_7'}
-...
-[INFO] Starting random IO to alloc1 with alloc type and lun=lun_15
-[INFO] Time: 4.86 s; Speed: 105.36 MB/s
-[INFO] Result: {'success': 1, 'message': 'OK', 'dev_path': '/dev/sdh', 'dev_size': 536870912, 'bs': 4096, 'total_time': '4.86', 'speed': '105.36', 'dev_name': 'alloc1', 'dev_type': 'alloc', 'dev_lun': 'lun_15'}
-...
-[INFO] Starting random IO to alloc7 with alloc type and lun=lun_20
-[INFO] Time: 4.71 s; Speed: 108.71 MB/s
-[INFO] Result: {'success': 1, 'message': 'OK', 'dev_path': '/dev/sdc', 'dev_size': 536870912, 'bs': 4096, 'total_time': '4.71', 'speed': '108.71', 'dev_name': 'alloc7', 'dev_type': 'alloc', 'dev_lun': 'lun_20'}
+[INFO] Time: 5.44 s; Speed: 94.07 MB/s
+[INFO] Result: {'success': 1, 'message': 'OK', 'dev_path': '/dev/sdb', 'dev_size': 536870912, 'bs': 4096, 'total_time': '5.44', 'speed': '94.07', 'dev_name': 'fileio1', 'dev_type': 'fileio', 'dev_lun': 'lun_0'}
+[INFO] Starting random IO to file1 with file type and lun=lun_1
+[INFO] Time: 6.53 s; Speed: 78.39 MB/s
+[INFO] Result: {'success': 1, 'message': 'OK', 'dev_path': '/dev/sde', 'dev_size': 536870912, 'bs': 4096, 'total_time': '6.53', 'speed': '78.39', 'dev_name': 'file1', 'dev_type': 'file', 'dev_lun': 'lun_1'}
+[INFO] Starting random IO to alloc1 with alloc type and lun=lun_2
+[INFO] Time: 5.14 s; Speed: 99.65 MB/s
+[INFO] Result: {'success': 1, 'message': 'OK', 'dev_path': '/dev/sdd', 'dev_size': 536870912, 'bs': 4096, 'total_time': '5.14', 'speed': '99.65', 'dev_name': 'alloc1', 'dev_type': 'alloc', 'dev_lun': 'lun_2'}
+[INFO] Starting random IO to block1 with block type and lun=lun_3
+[INFO] Time: 5.17 s; Speed: 99.01 MB/s
+[INFO] Result: {'success': 1, 'message': 'OK', 'dev_path': '/dev/sdc', 'dev_size': 536870912, 'bs': 4096, 'total_time': '5.17', 'speed': '99.01', 'dev_name': 'block1', 'dev_type': 'block', 'dev_lun': 'lun_3'}
 [INFO] IO operations finished normally
 [INFO] Logging out of session
-Logging out of session [sid: 2, target: iqn.2018-05.com.lio-project:tgt-tgt1, portal: 127.0.1.1,3260]
-Logout of [sid: 2, target: iqn.2018-05.com.lio-project:tgt-tgt1, portal: 127.0.1.1,3260] successful.
+Logging out of session [sid: 5, target: iqn.2018-05.com.lio-project:tgt-tgt1, portal: 127.0.1.1,3260]
+Logout of [sid: 5, target: iqn.2018-05.com.lio-project:tgt-tgt1, portal: 127.0.1.1,3260] successful.
 [INFO] LIO SESSION ENDED NORMALLY
+
 ```
 
 `start_target` scripts include tcmu-runner build stage.
@@ -164,6 +154,49 @@ So, if you have this problem or system crashed without any obvious reason you ar
 
 After that you can create session again.
 If problem remains, reboot your system.
+
+
+## Verifying IO success
+
+To verify that all IO operations completed successfully run:
+`sudo python3 verify_io.py <path_to_io_results>`
+
+```
+
+sudo python3 verify_io.py session/initconf_init1_io_result 
+[INFO] IO operations finished successfully
+
+```
+
+## Retrieving average results
+
+If you are making a lot of similar (i.e. equal sizes) IO operations to a number of devices you can be interested
+to get average IO speed for each device type.
+
+```
+
+sudo python3 get_type_average.py session/initconf_init1_io_result 
+[INFO] Average result: 
+{
+    "fileio": {
+        "speed": 94.07,
+        "records": 1
+    },
+    "file": {
+        "speed": 78.39,
+        "records": 1
+    },
+    "alloc": {
+        "speed": 99.65,
+        "records": 1
+    },
+    "block": {
+        "speed": 99.01,
+        "records": 1
+    }
+}
+
+```
 
 ## Internal architecture
 
