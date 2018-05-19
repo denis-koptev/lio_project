@@ -49,7 +49,7 @@ mkdir ./session
 # Configs will be placed in session directory
 
 echo "[INFO] Creating internal configs for target and initiators in ./session"
-python3 parse_json.py $CONFIG --workdir ./session
+./parse_json.py $CONFIG --workdir ./session
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to create JSON configs. Exiting..."

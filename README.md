@@ -157,10 +157,10 @@ If problem remains, reboot your system.
 ### Verifying IO success
 
 To verify that all IO operations completed successfully run:
-`sudo python3 verify_io.py <path_to_io_results>`
+`sudo ./verify_io.py <path_to_io_results>`
 
 ```
-sudo python3 verify_io.py session/initconf_init1_io_result 
+sudo ./verify_io.py session/initconf_init1_io_result
 [INFO] IO operations finished successfully
 ```
 
@@ -170,7 +170,7 @@ If you are making a lot of similar (i.e. equal sizes) IO operations to a number 
 to get average IO speed for each device type.
 
 ```
-sudo python3 get_type_average.py session/initconf_init1_io_result 
+sudo ./get_type_average.py session/initconf_init1_io_result
 [INFO] Average result: 
 {
     "fileio": {
@@ -277,13 +277,13 @@ To create LIO Session `lio_start_session.sh` script uses some other modules (pyt
 
 ### Verification and testing
 
-To verify that IO ended correctly: `sudo python3 verify_io.py <path_to_json_io_results>`
+To verify that IO ended correctly: `sudo ./verify_io.py <path_to_json_io_results>`
 
-Example: `sudo python3 verify_io.py session/initconf_init1_io_result `
+Example: `sudo ./verify_io.py session/initconf_init1_io_result `
 
 To get average speed for each device type run `get_type_average.py` script
 
-Example: `sudo python3 get_type_average.py session/initconf_init1_io_result`
+Example: `sudo ./get_type_average.py session/initconf_init1_io_result`
 
 #### Jenkins
 

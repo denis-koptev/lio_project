@@ -40,7 +40,7 @@ fi
 
 echo "[INFO] Creating devices."
 
-python3 create_devices.py session/dev_config.json --log session/dev_log
+./create_devices.py session/dev_config.json --log session/dev_log
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to create devices. Exiting..."
@@ -53,7 +53,7 @@ echo "[INFO] Devices created successfully."
 
 echo "[INFO] Creating target."
 
-python3 start_target.py session/tgt_config.json --log session/target_log
+./start_target.py session/tgt_config.json --log session/target_log
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] Failed to create target. Exiting..."

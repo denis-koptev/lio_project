@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 '''
 
 GET_TYPE_AVERAGE SCRIPT
