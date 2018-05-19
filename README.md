@@ -88,7 +88,6 @@ _Use it in the following way: `sudo ./create_block.sh <backing file name> <vol_g
 ### Typical displayed results:
 
 ```
-
 sudo ./lio_start_session.sh lio_json_short.json 
 =================================================
 ====== WELCOME TO LIO-SESSION START SCRIPT ======
@@ -129,7 +128,6 @@ Login to [iface: default, target: iqn.2018-05.com.lio-project:tgt-tgt1, portal: 
 Logging out of session [sid: 5, target: iqn.2018-05.com.lio-project:tgt-tgt1, portal: 127.0.1.1,3260]
 Logout of [sid: 5, target: iqn.2018-05.com.lio-project:tgt-tgt1, portal: 127.0.1.1,3260] successful.
 [INFO] LIO SESSION ENDED NORMALLY
-
 ```
 
 `start_target` scripts include tcmu-runner build stage.
@@ -156,25 +154,22 @@ After that you can create session again.
 If problem remains, reboot your system.
 
 
-## Verifying IO success
+### Verifying IO success
 
 To verify that all IO operations completed successfully run:
 `sudo python3 verify_io.py <path_to_io_results>`
 
 ```
-
 sudo python3 verify_io.py session/initconf_init1_io_result 
 [INFO] IO operations finished successfully
-
 ```
 
-## Retrieving average results
+### Retrieving average results
 
 If you are making a lot of similar (i.e. equal sizes) IO operations to a number of devices you can be interested
 to get average IO speed for each device type.
 
 ```
-
 sudo python3 get_type_average.py session/initconf_init1_io_result 
 [INFO] Average result: 
 {
@@ -195,7 +190,50 @@ sudo python3 get_type_average.py session/initconf_init1_io_result
         "records": 1
     }
 }
+```
 
+### targetcli
+
+You can use targetcli tool to see target configuration.
+If you create `lio_json_short` configuration you will see:
+
+```
+sudo targetcli
+targetcli shell version 2.1.fb43
+Copyright 2011-2013 by Datera, Inc and others.
+For help on commands, type 'help'.
+
+/> ls
+o- / ............................................................................... [...]
+  o- backstores .................................................................... [...]
+  | o- block ........................................................ [Storage Objects: 1]
+  | | o- block1 ....................................... [ (520.0MiB) write-thru activated]
+  | o- fileio ....................................................... [Storage Objects: 1]
+  | | o- fileio1 .............................. [/fileio1 (512.0MiB) write-thru activated]
+  | o- pscsi ........................................................ [Storage Objects: 0]
+  | o- ramdisk ...................................................... [Storage Objects: 0]
+  | o- user:alloc ................................................... [Storage Objects: 1]
+  | | o- alloc1 ............................................ [alloc1 (512.0MiB) activated]
+  | o- user:file .................................................... [Storage Objects: 1]
+  |   o- file1 .............................................. [file1 (512.0MiB) activated]
+  o- iscsi .................................................................. [Targets: 1]
+  | o- iqn.2018-05.com.lio-project:tgt-tgt1 .................................... [TPGs: 1]
+  |   o- tpg1 ..................................................... [no-gen-acls, no-auth]
+  |     o- acls ................................................................ [ACLs: 1]
+  |     | o- iqn.2018-05.com.lio-project:init-init1 ..................... [Mapped LUNs: 4]
+  |     |   o- mapped_lun0 .................................... [lun0 fileio/fileio1 (rw)]
+  |     |   o- mapped_lun1 ........................................ [lun1 user/file1 (rw)]
+  |     |   o- mapped_lun2 ....................................... [lun2 user/alloc1 (rw)]
+  |     |   o- mapped_lun3 ...................................... [lun3 block/block1 (rw)]
+  |     o- luns ................................................................ [LUNs: 4]
+  |     | o- lun0 ............................................ [fileio/fileio1 (/fileio1)]
+  |     | o- lun1 ........................................................... [user/file1]
+  |     | o- lun2 .......................................................... [user/alloc1]
+  |     | o- lun3 ......................................................... [block/block1]
+  |     o- portals .......................................................... [Portals: 1]
+  |       o- 127.0.1.1:3260 ......................................................... [OK]
+  o- loopback ............................................................... [Targets: 0]
+  o- vhost .................................................................. [Targets: 0]
 ```
 
 ## Internal architecture
