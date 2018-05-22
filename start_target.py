@@ -107,7 +107,10 @@ def create_target(config):
 
     # Create portal
 
-    ipaddr = socket.gethostbyname(socket.gethostname())
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(('8.8.8.8', 80))
+    ipaddr = s.getsockname()[0]
+    s.close()
     LOG.info('Creating portal using IP: %s' % ipaddr)
 
     portal_dir = tpg_dir + 'np/'
