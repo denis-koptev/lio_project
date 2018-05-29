@@ -14,7 +14,7 @@ import sys
 import json
 import glob
 import argparse
-from subprocess import getstatusoutput
+# from subprocess import getstatusoutput
 from logger import Logger
 
 
@@ -86,7 +86,7 @@ def create_device(config):
     elif config['type'] == 'block':
         LOG.info('Configuring block device %s with existing storage' % config['name'])
         type_dir = CORE_DIR + 'iblock_'
-        if not 'path' in config:
+        if 'path' not in config:
             LOG.error('Path to an existing storage for block device not found in config')
             return
         if not os.path.islink(config['path']):

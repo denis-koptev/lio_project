@@ -74,7 +74,7 @@ def write_random(dev_path, size, bs):
     try:
         with open(dev_path, 'wb') as f:
             start_time = time.time()
-            for i in range(bc):
+            for _ in range(bc):
                 f.write(os.urandom(bs))
             end_time = time.time()
             total_time = end_time - start_time
