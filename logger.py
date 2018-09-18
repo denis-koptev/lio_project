@@ -7,6 +7,14 @@ Logger - utility class
 '''
 
 import os
+from datetime import datetime
+
+# Colors for messages
+
+class MsgColors:
+    WARNING = '\033[93m'
+    ERROR = '\033[91m'
+    ENDC = '\033[0m'
 
 
 class Logger:
@@ -22,23 +30,21 @@ class Logger:
         if self.filename is not None:
             self.file = open(((self.path + '/') if self.path else '') + self.filename, 'w')
 
-    def info(self, msg):
+    def message(self, severity_str, msg, color_symbol=None):
+        result = str(datetime.now().time()) + ' ' + severity_str + ' ' + msg
         if self.file is not None:
-            self.file.write('[INFO] %s\n' % str(msg))
+            self.file.write(result + '\n')
         else:
-            print('[INFO] %s' % str(msg))
+            print((color_symbol if color_symbol else '') + result + (MsgColors.ENDC if color_symbol else ''))
+
+    def info(self, msg):
+        self.message('[INFO]', msg)
 
     def warning(self, msg):
-        if self.file is not None:
-            self.file.write('[WARNING] %s\n' % str(msg))
-        else:
-            print('[WARNING] %s' % str(msg))
+        self.message('[WARNING]', msg, MsgColors.WARNING)
 
     def error(self, msg):
-        if self.file is not None:
-            self.file.write('[ERROR] %s\n' % str(msg))
-        else:
-            print('[ERROR] %s' % str(msg))
+        self.message('[ERROR]', msg, MsgColors.ERROR)
 
     def close(self):
         if self.file is not None:
