@@ -15,7 +15,7 @@ import json
 import glob
 import argparse
 # from subprocess import getstatusoutput
-from logger import Logger
+from .logger import Logger
 
 
 LOG = Logger()
@@ -78,29 +78,41 @@ def create_device(config):
                  'and creaing storage' % config['name'])
         type_dir = CORE_DIR + 'fileio_'
         LOG.info('Creating backstore for device %s' % config['name'])
-        storage = open('/' + config['name'], 'w')
-        storage.truncate(int(config['size']))
-        storage.close()
+
+        try:
+            storage = open('/' + config['name'], 'w')
+            storage.truncate(int(config['size']))
+            storage.close()
+        except IOError as io_err:
+            LOG.error("Failed to create file %s: %s" % (config['name'], str(io_err)))
+            return {"success": False, "message": str(io_err)}
+
         # Config string for sysfs entry
         control = 'fd_dev_name=/' + config['name'] + ',fd_dev_size=' + config['size']
+
     elif config['type'] == 'block':
         LOG.info('Configuring block device %s with existing storage' % config['name'])
         type_dir = CORE_DIR + 'iblock_'
+
         if 'path' not in config:
             LOG.error('Path to an existing storage for block device not found in config')
-            return
+            return {"success": False, "message":"Path to an existing storage for block device not found in config"}
+
         if not os.path.islink(config['path']):
             LOG.error('Logical volume not found in %s' % config['path'])
-            return
+            return {"success": False, "message":"Logical volume not found"}
+
         control = 'udev_path={}'.format(config['path'])
+
     elif config['type'] == 'alloc' or config['type'] == 'file':
         LOG.info('Configuring user device %s/%s' %
                  (config['type'], config['name']))
         type_dir = CORE_DIR + 'user_'
         control = 'dev_size=' + config['size'] + ',dev_config=' + config['type'] + '/' + config['name']
+
     else:
         LOG.warning('Device type %s is not supported' % config['type'])
-        return
+        return {"success": False, "message": "Device type %s not supported" % config['type']}
 
     # Discover existing paths for devices
     dev_paths = [dev for dev in glob.glob(type_dir + '*/' + config['name'])]
@@ -108,7 +120,7 @@ def create_device(config):
     if dev_paths:
         LOG.warning('There is another device with name: %s. Skipping...'
                     % config['name'])
-        return
+        return {"success": False, "message": "There is another device with name %s" % config['name']}
 
     LOG.info('Creating %s device with name: %s'
              % (config['type'], config['name']))
@@ -117,18 +129,24 @@ def create_device(config):
     while os.path.isdir(type_dir + str(idx)):
         idx = idx + 1
 
-    type_dir = type_dir + str(idx) + '/'
-    LOG.info('Creating entry in sysfs: %s' % type_dir)
-    os.makedirs(type_dir)
+    try:
+        type_dir = type_dir + str(idx) + '/'
+        LOG.info('Creating entry in sysfs: %s' % type_dir)
+        os.makedirs(type_dir)
 
-    dev_dir = type_dir + config['name'] + '/'
-    LOG.info('Creating entry in sysfs: %s' % dev_dir)
-    os.makedirs(dev_dir)
+        dev_dir = type_dir + config['name'] + '/'
+        LOG.info('Creating entry in sysfs: %s' % dev_dir)
+        os.makedirs(dev_dir)
 
-    LOG.info('Configuring params of device %s' % config['name'])
-    open(dev_dir + 'control', 'w').write(control)
-    LOG.info('Enabling device %s' % config['name'])
-    open(dev_dir + 'enable', 'w').write('1')
+        LOG.info('Configuring params of device %s' % config['name'])
+        open(dev_dir + 'control', 'w').write(control)
+        LOG.info('Enabling device %s' % config['name'])
+        open(dev_dir + 'enable', 'w').write('1')
+    except IOError as io_err:
+        LOG.error("Failed to create entry in sysfs: %s" % str(io_err))
+        return {"success": False, "message": "SYSFS error: %s" % str(io_err)}
+
+    return {"success": True, "message": "Device %s successfully created" % config['name']}
 
 
 def main():

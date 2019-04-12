@@ -5,7 +5,7 @@
 
 #include <linux/types.h>
 
-#ifndef __USE_GNU
+#if 1
 #include <linux/uio.h>
 #else
 #include <sys/uio.h>

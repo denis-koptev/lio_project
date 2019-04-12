@@ -12,8 +12,7 @@ cd tcmu-runner
 ./deploy.sh > /dev/null
 
 if [ $? -ne 0 ]; then
-    echo "[ERROR] Failed to start tcmu-runner daemon. Exiting..."
-    exit 1
+    echo "[ERROR] Failed to start tcmu-runner daemon. Continuing anyway..."
 fi
 
 cd ..
@@ -26,14 +25,14 @@ modinfo target_core_mod > /dev/null
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] target module is not loaded. Exiting..."
-    exit 1
+    #exit 1
 fi
 
 modinfo target_core_user > /dev/null
 
 if [ $? -ne 0 ]; then
     echo "[ERROR] target_core_user module is not loaded. Exiting..."
-    exit 1
+    #exit 1
 fi
 
 # Create target devices
