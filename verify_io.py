@@ -11,7 +11,7 @@ import os
 import sys
 import json
 import argparse
-from logger import Logger
+from .logger import Logger
 
 
 LOG = Logger()

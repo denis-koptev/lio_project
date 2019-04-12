@@ -24,4 +24,5 @@ RUN bash -c "/install_tcmur_deps.sh"
 # Temp initiator deps
 RUN apt-get install --yes open-iscsi
 RUN apt-get install --yes lsscsi
+RUN pip3 install -U pytest
 
