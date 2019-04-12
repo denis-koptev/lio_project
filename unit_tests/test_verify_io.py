@@ -3,13 +3,6 @@ from .. import verify_io
 
 # Test data
 
-
-class VerifyIO:
-
-    def setup(self):
-        print("VerifyIO test setup")
-
-
 empty_config = {}
 
 error_msg_config = [
@@ -81,7 +74,7 @@ def test_successfull_io():
 def test_incomplete_config():
     # Delete every field in config one by one and check if script is
     # able to return error gracefully
-    keys = incomplete_err_config[0].keys():
+    keys = [ k for k in incomplete_err_config[0].keys() ]
     for k in keys:
         incomplete_err_config[0].pop(k)
         _ = verify_io.verify_io_success(incomplete_err_config)
