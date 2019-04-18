@@ -14,7 +14,8 @@ import socket
 import json
 import glob
 import argparse
-from logger import Logger
+import re
+from .logger import Logger
 
 
 LOG = Logger()
@@ -38,12 +39,18 @@ def get_json_from_file(path):
         return config
 
 
-# This function needs to be split
-def create_target(config):
-    LOG.info('JSON config was successfully read')
-    LOG.info('Creating target with name:  %s' % config['name'])
+def build_func_result(success, message, args=[]):
+    return {
+        "success": success, 
+        "message": message,
+        "args": args
+    }
 
-    # Create target itself via sysfs
+def create_main_target_dir(config):
+    # Verify IQN format
+    if re.match(r"iqn\..[0-9\-]*\.[a-zA-Z\.\:]*", config["iqn"]) is None:
+        LOG.error("IQN does not match standards: %s" % config["iqn"])
+        return build_func_result(False, "IQN does not match standards: %s" % config["iqn"])
 
     iscsi_dir = '/sys/kernel/config/target/iscsi/'
     tgt_dir = iscsi_dir + config['iqn'] + '/'
@@ -52,24 +59,108 @@ def create_target(config):
 
     if not os.path.isdir(iscsi_dir):
         LOG.error('Directory for target configuration does not exist')
-        sys.exit(1)
+        return build_funct_result(False, "Directory for target configuration does not exist")
 
     if os.path.isdir(tgt_dir):
         LOG.warning('Target with such iqn exists: %s' % config['iqn'])
+        return build_func_result(False, "Target exists: %s" % config['iqn'], [tgt_dir])
     else:
         LOG.info('Creating entry in sysfs: %s' % tgt_dir)
-        os.makedirs(tgt_dir)
+        try:
+            os.makedirs(tgt_dir)
+        except OSError as os_err:
+            LOG.error("Failed to create target directory: %s" % str(os_err))
+            return build_func_result(False, "Failed to create target: %s" % str(os_err))
+
+    return build_func_result(True, "Successfully created", [tgt_dir])
+
+
+def create_tpg(config, tgt_dir):
+    tpg_dir = tgt_dir + 'tpgt_1/'
+    if os.path.isdir(tpg_dir):
+        LOG.warning('Target Portal Group already exists')
+        return build_func_result(False, "Target Portal Group already exists", [tpg_dir])
+
+    os.makedirs(tpg_dir)
+    LOG.info('Created entry in sysfs: %s' % tpg_dir)
+    return build_func_result(True, "Target Portal Group successfully created", [tpg_dir])
+
+
+def add_luns(config, tpg_dir, acl_dir):
+    lun_dir = tpg_dir + 'lun/'
+    if not os.path.isdir(lun_dir):
+        LOG.error('No sysfs entry for luns created')
+        return build_func_result(False, "No sysfs entry for luns")
+
+    core_path = '/sys/kernel/config/target/core/'
+    if not os.path.isdir(core_path):
+        LOG.error('sysfs entry for devices is not presented')
+        return build_func_result(False, "No sysfs entry for devices")
+
+    for dev in config['devices']:
+        if dev['type'] == 'fileio':
+            type_path = core_path + 'fileio_*/'
+        elif dev['type'] == 'block':
+            type_path = core_path + 'iblock_*/'
+        elif dev['type'] == 'file' or dev['type'] == 'alloc':
+            type_path = core_path + 'user_*/'
+        else:
+            LOG.warning('%s device type is not supported' % dev['type'])
+
+        dev_paths = [dev for dev in glob.glob(type_path + dev['name'])]
+        if not dev_paths:
+            LOG.warning('Device ' + dev['name'] + ' not found. Skipping all for it.')
+            continue
+        if len(dev_paths) > 1:
+            LOG.error('More than 1 %s devices with name %s exist' % (dev['type'], dev['name']))
+            LOG.error(' '.join(dev_paths))
+            sys.exit(1)
+        dev_lun_dir = lun_dir + dev['lun'] + '/'
+        if os.path.isdir(dev_lun_dir):
+            LOG.warning('sysfs entry already exists: %s' % dev_lun_dir)
+            LOG.warning('Skipping...')
+        else:
+            LOG.info('Creating sysfs entry: %s' % dev_lun_dir)
+            os.makedirs(dev_lun_dir)
+            LOG.info('Creating symlink to %s' % dev_paths[0])
+            os.symlink(dev_paths[0], dev_lun_dir + dev['name'])
+        # Make lun mapping
+        for init in config['acl']:
+            # acl_dir + init
+            LOG.info('Creating lun mapping: %s -> %s' % (init, dev['name']))
+            map_dir = acl_dir + init + '/' + dev['lun'] + '/'
+            if os.path.isdir(map_dir):
+                LOG.warning('Sysfs entry for lun-map already exists: %s' % map_dir)
+                LOG.warning('Skipping creation of entire lun-map with symlink...')
+            else:
+                LOG.info('Creating sysfs entry: %s' % map_dir)
+                os.makedirs(map_dir)
+                LOG.info('Creating symlink: %s -> %s' % (map_dir + dev['lun'], dev_lun_dir))
+                os.symlink(dev_lun_dir, map_dir + dev['lun'])
+    return build_func_result(True, "Successfully created all luns")
+
+
+# This function needs to be split
+def create_target(config):
+    LOG.info('JSON config was successfully read')
+    LOG.info('Creating target with name:  %s' % config['name'])
+
+    # Create target itself via sysfs
+    result = create_main_target_dir(config)
+    if not result["args"]:
+        sys.exit(1)
+
+    tgt_dir = result["args"][0]
 
     # Create target portal group
 
     LOG.info('Creating Target Portal Group: tpgt_1')
 
-    tpg_dir = tgt_dir + 'tpgt_1/'
-    if os.path.isdir(tpg_dir):
-        LOG.warning('Target Portal Group already exists')
-    else:
-        os.makedirs(tpg_dir)
-        LOG.info('Creating entry in sysfs: %s' % tpg_dir)
+    result = create_tpg(config, tgt_dir)
+    if not result["args"]:
+        sys.exit(1)
+
+    tpg_dir = result["args"][0]
 
     # Enable target
 
@@ -128,57 +219,9 @@ def create_target(config):
     # Add luns for devices if exist
 
     LOG.info('Binding backstores with target')
-
-    lun_dir = tpg_dir + 'lun/'
-    if not os.path.isdir(lun_dir):
-        LOG.error('No sysfs entry for luns created')
+    result = add_luns(config, tpg_dir, acl_dir)
+    if not result["success"]:
         sys.exit(1)
-
-    core_path = '/sys/kernel/config/target/core/'
-    if not os.path.isdir(core_path):
-        LOG.error('sysfs entry for devices is not presented')
-        sys.exit(1)
-
-    for dev in config['devices']:
-        if dev['type'] == 'fileio':
-            type_path = core_path + 'fileio_*/'
-        elif dev['type'] == 'block':
-            type_path = core_path + 'iblock_*/'
-        elif dev['type'] == 'file' or dev['type'] == 'alloc':
-            type_path = core_path + 'user_*/'
-        else:
-            LOG.warning('%s device type is not supported' % dev['type'])
-
-        dev_paths = [dev for dev in glob.glob(type_path + dev['name'])]
-        if not dev_paths:
-            LOG.warning('Device ' + dev['name'] + ' not found. Skipping all for it.')
-            continue
-        if len(dev_paths) > 1:
-            LOG.error('More than 1 %s devices with name %s exist' % (dev['type'], dev['name']))
-            LOG.error(' '.join(dev_paths))
-            sys.exit(1)
-        dev_lun_dir = lun_dir + dev['lun'] + '/'
-        if os.path.isdir(dev_lun_dir):
-            LOG.warning('sysfs entry already exists: %s' % dev_lun_dir)
-            LOG.warning('Skipping...')
-        else:
-            LOG.info('Creating sysfs entry: %s' % dev_lun_dir)
-            os.makedirs(dev_lun_dir)
-            LOG.info('Creating symlink to %s' % dev_paths[0])
-            os.symlink(dev_paths[0], dev_lun_dir + dev['name'])
-        # Make lun mapping
-        for init in config['acl']:
-            # acl_dir + init
-            LOG.info('Creating lun mapping: %s -> %s' % (init, dev['name']))
-            map_dir = acl_dir + init + '/' + dev['lun'] + '/'
-            if os.path.isdir(map_dir):
-                LOG.warning('Sysfs entry for lun-map already exists: %s' % map_dir)
-                LOG.warning('Skipping creation of entire lun-map with symlink...')
-            else:
-                LOG.info('Creating sysfs entry: %s' % map_dir)
-                os.makedirs(map_dir)
-                LOG.info('Creating symlink: %s -> %s' % (map_dir + dev['lun'], dev_lun_dir))
-                os.symlink(dev_lun_dir, map_dir + dev['lun'])
 
     # To let host know that target started and to inform
     # initiators about its IP we will create file in mounted folder
@@ -187,6 +230,8 @@ def create_target(config):
     ip_file.write(ipaddr)
     ip_file.close()
     LOG.info('Target IP was written to session/target_ip: %s' % ipaddr)
+
+    return build_func_result(True, "Successfully create target")
 
 
 def main():

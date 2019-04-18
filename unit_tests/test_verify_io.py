@@ -40,7 +40,9 @@ incomplete_err_config = good_config
 # Module initialization
 
 def setup_module(module):
-    pass
+    print("====================================")
+    print("STARTING TEST_VERIFY_IO")
+    print("====================================")
 
 def teardown_module(module):
     pass

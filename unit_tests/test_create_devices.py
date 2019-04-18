@@ -39,7 +39,9 @@ empty_config = {}
 # Module initialization
 
 def setup_module(module):
-    pass
+    print("====================================")
+    print("STARTING TEST_CREATE_DEVICES")
+    print("====================================")
 
 def teardown_module(module):
     pass
