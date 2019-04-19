@@ -109,6 +109,7 @@ def cleanup_each_test():
 def test_empty_config():
     result = start_target.create_target(empty_config)
     assert not result["success"], "Got success while creating target with empty config"
+    LOGGER.info("Got expected error trying to pass empty config: %s" % result["message"])
 
 def test_valid_full_config():
     # Create test device first

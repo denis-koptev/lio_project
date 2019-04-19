@@ -157,6 +157,15 @@ def add_luns(config, tpg_dir, acl_dir):
 # This function needs to be split
 def create_target(config):
     LOG.info('JSON config was successfully read')
+
+    # Validate config
+    if ("name" not in config) or\
+       ("iqn" not in config) or\
+       ("acl" not in config) or\
+       ("devices" not in config):
+        LOG.error("Target config must contain IQN, name, ACL and devices")
+        return build_func_result(False, "Invalid config")
+
     LOG.info('Creating target with name:  %s' % config['name'])
 
     # Create target itself via sysfs

@@ -39,6 +39,13 @@ def verify_io_success(io_res_array):
     success = True
     error_reports = []
     for io_res in io_res_array:
+        # Validate IO config
+        if ("success" not in io_res) or\
+           ("message" not in io_res) or\
+           ("dev_name" not in io_res):
+            LOG.error("Config must contain success, message and dev_name")
+            return False, error_reports
+
         if io_res['success'] != 1:
             report = 'IO to {} failed with message: {}'.format(io_res['dev_name'], io_res['message'])
             error_reports.append(report)

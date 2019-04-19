@@ -73,6 +73,13 @@ def create_logical_volume(vol_name, vol_size):
 
 
 def create_device(config):
+    # Validate input configuration
+    if ("type" not in config) or\
+       ("name" not in config) or\
+       ("size" not in config):
+        LOG.error("Config for device must contain type, name and size")
+        return {"success": False, "message": "Invalid config: %s" % str(config)}
+
     if config['type'] == 'fileio':
         LOG.info('Configuring fileio device %s '
                  'and creaing storage' % config['name'])

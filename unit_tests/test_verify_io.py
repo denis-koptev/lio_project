@@ -77,8 +77,10 @@ def test_successfull_io():
 def test_incomplete_config():
     # Delete every field in config one by one and check if script is
     # able to return error gracefully
-    keys = [ k for k in incomplete_err_config[0].keys() ]
+    keys = [ "success", "message", "dev_name" ]
     for k in keys:
         incomplete_err_config[0].pop(k)
-        _ = verify_io.verify_io_success(incomplete_err_config)
+        res, reports = verify_io.verify_io_success(incomplete_err_config)
+        assert not res, "Got success while passing incorrect config"
+        LOGGER.info("Got expected error trying to pass incorrect config")
 
