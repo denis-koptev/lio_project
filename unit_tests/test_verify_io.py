@@ -1,5 +1,8 @@
 import pytest
+import logging
 from .. import verify_io
+
+LOGGER = logging.getLogger(__name__)
 
 # Test data
 
@@ -40,9 +43,7 @@ incomplete_err_config = good_config
 # Module initialization
 
 def setup_module(module):
-    print("====================================")
-    print("STARTING TEST_VERIFY_IO")
-    print("====================================")
+    pass
 
 def teardown_module(module):
     pass
@@ -60,7 +61,7 @@ def test_error_message():
 
     assert res != True, "Got successful result for unsuccessful IO"
     if not res:
-        print("Got expected error message")
+        LOGGER.info("Got expected error message")
 
     assert len(reports) == 1, \
             "Length of reports for unsuccessful config is not 1: %d" % len(reports)

@@ -1,9 +1,12 @@
 import subprocess
 import pytest
 import os
+import logging
 
 from .. import start_target
 from .. import create_devices
+
+LOGGER = logging.getLogger(__name__)
 
 # Test data
 
@@ -33,23 +36,6 @@ invalid_tgt_config = {
         "iqn": "invalid_iqn"
 }
 
-valid_luns_config = [
-        {
-            "name": "fileio1",
-            "type": "fileio",
-            "size": "536870912",
-            "lun": "lun_1"
-        }
-]
-
-invalid_luns_config = [
-        {
-            "name": "fileio1",
-            "type": "fileio",
-            "size": "0",
-            "lun": "invalid_lun"
-        }
-]
 
 empty_config = {}
 
@@ -57,12 +43,6 @@ empty_config = {}
 # Module initialization
 
 def setup_module(module):
-    print()
-    print("====================================")
-    print("STARTING TEST_CREATE_TARGET")
-    print("====================================")
-
-    flush_kernel_devices()
     os.chdir("../")
     try:
         os.makedirs("session")
@@ -82,7 +62,7 @@ def verify_tgt_data(tgt_name):
     # Call special iSCSI CLI to get device
     output = subprocess.getstatusoutput("targetcli ls iscsi/%s" % str(tgt_name))
     if output[0] != 0:
-        print("Failed to get target %s: %s" % (str(dev_name), str(output[1])))
+        LOGGER.info("Failed to get target %s: %s" % (str(dev_name), str(output[1])))
         return False
     # If we succeeded to run command, find target_name in output
     # If name is found we consider that target is created
@@ -91,23 +71,27 @@ def verify_tgt_data(tgt_name):
 def verify_portal_data(tgt_name):
     output = subprocess.getstatusoutput("targetcli ls iscsi/%s/tpg1/portals" % tgt_name)
     if output[0] != 0:
-        print("Failed to get portal: %s" % str(output[1]))
+        LOGGER.info("Failed to get portal: %s" % str(output[1]))
         return False
     return "Portals: 0" not in output[1]
 
 def verify_lun_data(tgt_name, lun):
     output = subprocess.getstatusoutput("targetcli ls iscsi/%s/tpg1/luns" % tgt_name)
     if output[0] != 0:
-        print("Failed to get luns: %s" % str(output[1]))
+        LOGGER.info("Failed to get luns: %s" % str(output[1]))
         return False
     return lun in output[1]
 
 # For cleanup
 
 def flush_kernel_devices():
-    print("\nClearing test data...")
+    LOGGER.info("Clearing test data...")
     res = subprocess.getstatusoutput("targetcli clearconfig confirm=True")
-    print("Cleanup result: %s" % str(res))
+    LOGGER.info("Cleanup result: %s" % str(res))
+
+@pytest.fixture(autouse=True)
+def cleanup_each_test():
+    flush_kernel_devices()
 
 
 # Test functions
@@ -147,19 +131,14 @@ def test_valid_full_config():
         if dump_res[0] != 0:
             dump = "Failed to get dump: %s" % dump_res[1]
         dump = dump_res[1]
-        print("DUMP: %s" % dump)
-        flush_kernel_devices()
+        LOGGER.info("DUMP: %s" % dump)
         assert False, message
-
-    flush_kernel_devices()
 
 def test_valid_target():
     tgt_name = valid_tgt_config["iqn"]
     result = start_target.create_main_target_dir(valid_tgt_config)
 
     assert result["success"], "Failed to create target: %s" % result["message"]
-
-    flush_kernel_devices()
 
 def test_same_target():
     tgt_name = valid_tgt_config["iqn"]
@@ -170,16 +149,10 @@ def test_same_target():
     result = start_target.create_main_target_dir(valid_tgt_config)
     assert not result["success"], "Got successfull result trying to create the same target"
     assert result["message"] == err_msg, "Got unexpected error message %s" % result["message"]
-    print("Got expected error trying to create the same target: %s" % result["message"])
+    LOGGER.info("Got expected error trying to create the same target: %s" % result["message"])
 
 def test_invalid_target():
     result = start_target.create_main_target_dir(invalid_tgt_config)
     assert not result["success"], "Got success while creating invalid target"
-    print("Got expected error trying to create invalid target: %s" % result["message"])
-
-# Cleanup
-
-@pytest.fixture(scope="session", autouse=True)
-def cleanup(request):
-    request.addfinalizer(flush_kernel_devices)
+    LOGGER.info("Got expected error trying to create invalid target: %s" % result["message"])
 

@@ -1,6 +1,9 @@
 import subprocess
 import pytest
+import logging
 from .. import create_devices
+
+LOGGER = logging.getLogger(__name__)
 
 # Test data
 
@@ -35,16 +38,24 @@ dev_config_invalid = {
 
 empty_config = {}
 
+# For cleanup
+
+def flush_kernel_devices():
+    LOGGER.info("Clearing test data...")
+    res = subprocess.getstatusoutput("targetcli clearconfig confirm=True")
+    LOGGER.info("Cleanup result: %s" % str(res))
+
+@pytest.fixture(autouse=True)
+def cleanup_each_test():
+    flush_kernel_devices()
 
 # Module initialization
 
 def setup_module(module):
-    print("====================================")
-    print("STARTING TEST_CREATE_DEVICES")
-    print("====================================")
+    pass
 
 def teardown_module(module):
-    pass
+    flush_kernel_devices()
 
 
 # Helper functions
@@ -53,18 +64,11 @@ def verify_device_data(dev_name):
     # Call special iSCSI CLI to get device
     output = subprocess.getstatusoutput("targetcli ls backstores/fileio/%s" % str(dev_name))
     if output[0] != 0:
-        print("Failed to get %s device: %s" % (str(dev_name), str(output[1])))
+        LOGGER.info("Failed to get %s device: %s" % (str(dev_name), str(output[1])))
         return False
     # If we succeeded to run command, find device_name in output
     # If name is found we consider that device is created
     return dev_name in output[1]
-
-# For cleanup
-def flush_kernel_devices():
-    print("\nClearing test data...")
-    res = subprocess.getstatusoutput("targetcli clearconfig confirm=True")
-    print("Cleanup result: %s" % str(res))
-
 
 # Test functions
 
@@ -75,19 +79,17 @@ def test_empty_config():
 def test_valid_config():
     # Create valid devices
     for dev in dev_config_valid:
-        print("Creating device %s" % dev["name"])
+        LOGGER.info("Creating device %s" % dev["name"])
         result = create_devices.create_device(dev)
         assert result["success"], "Failed to create valid device: %s" % result["message"]
         assert verify_device_data(dev["name"]), "Failed to find device %s" % dev["name"]
-    # Cleanup
-    flush_kernel_devices()
 
 def test_invalid_config():
     err_msg = "Device type %s not supported" % dev_config_invalid["type"]
     result = create_devices.create_device(dev_config_invalid)
     assert not result["success"], "Got success trying to create device with invalid type"
     assert result["message"] == err_msg, "Got unexpected error message: %s" % result["message"]
-    print("Got expected error trying to create invalid device: %s" % result["message"])
+    LOGGER.info("Got expected error trying to create invalid device: %s" % result["message"])
 
 def test_already_done():
     err_msg = "There is another device with name %s" % dev_config_already_done["name"]
@@ -98,14 +100,6 @@ def test_already_done():
     result = create_devices.create_device(dev_config_already_done)
     assert not result["success"], "Got success trying to create the same device"
     assert result["message"] == err_msg, "Got unexpected error message: %s" % result["message"]
-    print("Got expected error message trying to create the same device: %s" % result["message"])
-    # Cleanup
-    flush_kernel_devices()
+    LOGGER.info("Got expected error message trying to create the same device: %s" % result["message"])
 
-
-# Cleanup
-
-@pytest.fixture(scope="session", autouse=True)
-def cleanup(request):
-    request.addfinalizer(flush_kernel_devices)
 
