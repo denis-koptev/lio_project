@@ -86,10 +86,10 @@ def create_tpg(config, tgt_dir):
     return build_func_result(True, "Target Portal Group successfully created", [tpg_dir])
 
 
-def add_luns(config, tpg_dir, acl_dir):
+def add_single_lun(dev, config, tpg_dir, acl_dir):
     lun_dir = tpg_dir + 'lun/'
     if not os.path.isdir(lun_dir):
-        LOG.error('No sysfs entry for luns created')
+        LOG.error('No sysfs entry for luns created: %s' % lun_dir)
         return build_func_result(False, "No sysfs entry for luns")
 
     core_path = '/sys/kernel/config/target/core/'
@@ -97,46 +97,60 @@ def add_luns(config, tpg_dir, acl_dir):
         LOG.error('sysfs entry for devices is not presented')
         return build_func_result(False, "No sysfs entry for devices")
 
-    for dev in config['devices']:
-        if dev['type'] == 'fileio':
-            type_path = core_path + 'fileio_*/'
-        elif dev['type'] == 'block':
-            type_path = core_path + 'iblock_*/'
-        elif dev['type'] == 'file' or dev['type'] == 'alloc':
-            type_path = core_path + 'user_*/'
-        else:
-            LOG.warning('%s device type is not supported' % dev['type'])
+    if dev['type'] == 'fileio':
+        type_path = core_path + 'fileio_*/'
+    elif dev['type'] == 'block':
+        type_path = core_path + 'iblock_*/'
+    elif dev['type'] == 'file' or dev['type'] == 'alloc':
+        type_path = core_path + 'user_*/'
+    else:
+        LOG.warning('%s device type is not supported' % dev['type'])
+        return build_func_result(False, "Device type %s not supported" % dev["type"])
 
-        dev_paths = [dev for dev in glob.glob(type_path + dev['name'])]
-        if not dev_paths:
-            LOG.warning('Device ' + dev['name'] + ' not found. Skipping all for it.')
-            continue
-        if len(dev_paths) > 1:
-            LOG.error('More than 1 %s devices with name %s exist' % (dev['type'], dev['name']))
-            LOG.error(' '.join(dev_paths))
-            sys.exit(1)
-        dev_lun_dir = lun_dir + dev['lun'] + '/'
-        if os.path.isdir(dev_lun_dir):
-            LOG.warning('sysfs entry already exists: %s' % dev_lun_dir)
-            LOG.warning('Skipping...')
-        else:
-            LOG.info('Creating sysfs entry: %s' % dev_lun_dir)
-            os.makedirs(dev_lun_dir)
-            LOG.info('Creating symlink to %s' % dev_paths[0])
-            os.symlink(dev_paths[0], dev_lun_dir + dev['name'])
-        # Make lun mapping
-        for init in config['acl']:
-            # acl_dir + init
-            LOG.info('Creating lun mapping: %s -> %s' % (init, dev['name']))
-            map_dir = acl_dir + init + '/' + dev['lun'] + '/'
-            if os.path.isdir(map_dir):
-                LOG.warning('Sysfs entry for lun-map already exists: %s' % map_dir)
-                LOG.warning('Skipping creation of entire lun-map with symlink...')
-            else:
-                LOG.info('Creating sysfs entry: %s' % map_dir)
-                os.makedirs(map_dir)
-                LOG.info('Creating symlink: %s -> %s' % (map_dir + dev['lun'], dev_lun_dir))
-                os.symlink(dev_lun_dir, map_dir + dev['lun'])
+    dev_paths = [dev for dev in glob.glob(type_path + dev['name'])]
+    if not dev_paths:
+        LOG.warning('Device ' + dev['name'] + ' not found. Skipping all for it.')
+        return build_func_result(False, "Device %s not found" % dev["name"])
+
+    if len(dev_paths) > 1:
+        LOG.error('More than 1 %s devices with name %s exist' % (dev['type'], dev['name']))
+        LOG.error(' '.join(dev_paths))
+        sys.exit(1)
+
+    dev_lun_dir = lun_dir + dev['lun'] + '/'
+    if os.path.isdir(dev_lun_dir):
+        LOG.warning('sysfs entry already exists: %s' % dev_lun_dir)
+        LOG.warning('Skipping...')
+        return build_func_result(False, "LUN already exists")
+
+    LOG.info('Creating sysfs entry: %s' % dev_lun_dir)
+    os.makedirs(dev_lun_dir)
+    LOG.info('Creating symlink to %s' % dev_paths[0])
+    os.symlink(dev_paths[0], dev_lun_dir + dev['name'])
+
+    # Make lun mapping
+    for init in config['acl']:
+        # acl_dir + init
+        LOG.info('Creating lun mapping: %s -> %s' % (init, dev['name']))
+        map_dir = acl_dir + init + '/' + dev['lun'] + '/'
+        if os.path.isdir(map_dir):
+            LOG.warning('Sysfs entry for lun-map already exists: %s' % map_dir)
+            LOG.warning('Skipping creation of entire lun-map with symlink...')
+            return build_func_result(False, "Mapping already exists")
+
+        LOG.info('Creating sysfs entry: %s' % map_dir)
+        os.makedirs(map_dir)
+        LOG.info('Creating symlink: %s -> %s' % (map_dir + dev['lun'], dev_lun_dir))
+        os.symlink(dev_lun_dir, map_dir + dev['lun'])
+
+    return build_func_result(True, "LUN successfully created")
+
+
+def add_luns(config, tpg_dir, acl_dir):
+
+    for dev in config['devices']:
+        result = add_single_lun(dev, config, tpg_dir, acl_dir)
+
     return build_func_result(True, "Successfully created all luns")
 
 

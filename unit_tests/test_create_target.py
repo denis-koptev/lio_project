@@ -36,9 +36,19 @@ invalid_tgt_config = {
         "iqn": "invalid_iqn"
 }
 
-
 empty_config = {}
 
+extra_lun_config = {
+        "devices": [
+            {
+                "name": "fileio2",
+                "type": "fileio",
+                "size": "1024",
+                "lun": "lun_1"
+            }
+        ],
+        "acl": []
+}
 
 # Module initialization
 
@@ -155,4 +165,48 @@ def test_invalid_target():
     result = start_target.create_main_target_dir(invalid_tgt_config)
     assert not result["success"], "Got success while creating invalid target"
     LOGGER.info("Got expected error trying to create invalid target: %s" % result["message"])
+
+def test_add_extra_lun():
+    message = None
+    result = create_devices.create_device(valid_full_config["devices"][0])
+    if not result["success"]:
+        message = "Failed to create device: %s" % result["message"]
+
+    # Create target
+    result = start_target.create_target(valid_full_config)
+    if not result["success"]:
+        message = "Failed to create target: %s" % result["message"]
+
+    # Now add extra lun to existging target
+
+    tpg_dir = "/sys/kernel/config/target/iscsi/%s/tpgt_1/" % valid_full_config["iqn"]
+    acls_dir = tpg_dir + "acls/"
+    luns_dir = tpg_dir + "luns/"
+
+    # First create device for this lun
+    result = create_devices.create_device(extra_lun_config["devices"][0])
+    if not result["success"]:
+        message = "Failed to create extra device: %s" % result["message"]
+
+    # Now add lun itself
+    result = start_target.add_single_lun(extra_lun_config["devices"][0], extra_lun_config,
+                                         tpg_dir, acls_dir)
+    if not result["success"]:
+        message = "Failed to create extra lun: %s" % result["message"]
+
+    # Try to add the same lun again
+    result = start_target.add_single_lun(extra_lun_config["devices"][0], extra_lun_config,
+                                         tpg_dir, acls_dir)
+    if result["success"]:
+        message = "Got success trying to create extra lun again"
+    else:
+        LOGGER.info("Got expected error trying to create extra lun again: %s" % result["message"])
+
+    if message is not None:
+        dump_res = subprocess.getstatusoutput("targetcli ls")
+        if dump_res[0] != 0:
+            dump = "Failed to get dump: %s" % dump_res[1]
+        dump = dump_res[1]
+        LOGGER.info("DUMP: %s" % dump)
+        assert False, message
 
