@@ -11,11 +11,12 @@ import os
 import sys
 import json
 import argparse
-from .logger import Logger
+import logging
+import logging.config
 
 
-LOG = Logger()
-
+logging.config.fileConfig('logging.conf')
+LOG = logging.getLogger('verifyio')
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -32,6 +33,7 @@ def get_json_from_file(path):
         config_file = open(path, 'r')
         config = json.load(config_file)
         config_file.close()
+        LOG.debug("Successfully read JSON IO configuration");
         return config
 
 
@@ -48,23 +50,22 @@ def verify_io_success(io_res_array):
 
         if io_res['success'] != 1:
             report = 'IO to {} failed with message: {}'.format(io_res['dev_name'], io_res['message'])
+            LOG.error("Found unsuccessfull IO in config: %s" % report)
             error_reports.append(report)
             LOG.error(report)
             success = False
+        else:
+            LOG.debug("Found successfull IO for device %s" % io_res['dev_name'])
     return success, error_reports
 
 
 def main():
     global LOG
     args = parse_args()
-    if args.log:
-        LOG = Logger(filename=args.log)
     config = get_json_from_file(args.result_file)
     success, error_reports = verify_io_success(config)
     assert success, '\n'.join(error_reports)
     LOG.info('IO operations finished successfully')
-    if args.log:
-        LOG.close()
 
 
 if __name__ == '__main__':

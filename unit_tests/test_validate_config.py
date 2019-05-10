@@ -4,7 +4,7 @@ from jsonschema import ValidationError
 
 from .. import parse_json
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = logging.getLogger()
 
 # Test data
 
@@ -86,7 +86,7 @@ def test_validate_missing_tgt_config():
     try:
         parse_json.validate_json(missing_tgt_config)
     except ValidationError as err:
-        LOGGER.info("Got expected exception: %s" % str(err))
+        LOGGER.info("Got expected exception: %s" % str(err)[:200])
     else:
         assert False, "Got no exception trying to validate incorrect config"
 
@@ -94,7 +94,7 @@ def test_validate_invalid_type_config():
     try:
         parse_json.validate_json(invalid_type_config)
     except ValidationError as err:
-        LOGGER.info("Got expected exception: %s" % str(err))
+        LOGGER.info("Got expected exception: %s" % str(err)[:200])
     else:
         assert False, "Got no exception trying to validate incorrect config"
 
@@ -102,7 +102,7 @@ def test_validate_invalid_member_config():
     try:
         parse_json.validate_json(invalid_member_config)
     except ValidationError as err:
-        LOGGER.info("Got expected exception: %s" % str(err))
+        LOGGER.info("Got expected exception: %s" % str(err)[:200])
     else:
         assert False, "Got no exception trying to validate incorrect config"
 

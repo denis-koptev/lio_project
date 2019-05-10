@@ -1,0 +1,157 @@
+============================= test session starts ==============================
+platform linux -- Python 3.7.3, pytest-3.10.1, py-1.7.0, pluggy-0.8.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/denis/lio_project/unit_tests, inifile: pytest.ini
+collecting ... collected 18 items
+
+test_create_devices.py::test_empty_config 
+-------------------------------- live log setup --------------------------------
+09:38:41.564 [INFO] Clearing test data... (test_create_devices.py:44)
+09:38:41.708 [INFO] Cleanup result: (0, 'All configuration cleared') (test_create_devices.py:46)
+2019-05-10 09:38:41,710 - createdevices - ERROR   create_devices:83 - Config for device must contain type, name and size
+-------------------------------- live log call ---------------------------------
+09:38:41.710 [INFO] Got expected error trying to pass empty config: Invalid config: {} (test_create_devices.py:78)
+PASSED
+test_create_devices.py::test_valid_config 
+-------------------------------- live log setup --------------------------------
+09:38:41.712 [INFO] Clearing test data... (test_create_devices.py:44)
+09:38:41.852 [INFO] Cleanup result: (0, 'All configuration cleared') (test_create_devices.py:46)
+-------------------------------- live log call ---------------------------------
+09:38:41.853 [INFO] Creating device fileio1 (test_create_devices.py:83)
+09:38:41.996 [INFO] Creating device fileio2 (test_create_devices.py:83)
+PASSED
+test_create_devices.py::test_invalid_config 
+-------------------------------- live log setup --------------------------------
+09:38:42.132 [INFO] Clearing test data... (test_create_devices.py:44)
+09:38:42.269 [INFO] Cleanup result: (0, 'All configuration cleared') (test_create_devices.py:46)
+-------------------------------- live log call ---------------------------------
+09:38:42.270 [INFO] Got expected error trying to create invalid device: Device type err_type not supported (test_create_devices.py:93)
+PASSED
+test_create_devices.py::test_already_done 
+-------------------------------- live log setup --------------------------------
+09:38:42.271 [INFO] Clearing test data... (test_create_devices.py:44)
+09:38:42.405 [INFO] Cleanup result: (0, 'All configuration cleared') (test_create_devices.py:46)
+-------------------------------- live log call ---------------------------------
+09:38:42.407 [INFO] Got expected error message trying to create the same device: There is another device with name fileio3 (test_create_devices.py:104)
+PASSED
+------------------------------ live log teardown -------------------------------
+09:38:42.407 [INFO] Clearing test data... (test_create_devices.py:44)
+09:38:42.554 [INFO] Cleanup result: (0, 'All configuration cleared') (test_create_devices.py:46)
+
+test_create_target.py::test_empty_config 
+-------------------------------- live log setup --------------------------------
+09:38:42.556 [INFO] Clearing test data... (test_create_target.py:98)
+09:38:42.691 [INFO] Cleanup result: (0, 'All configuration cleared') (test_create_target.py:100)
+2019-05-10 09:38:42,692 - starttarget - INFO    start_target:160 - JSON config was successfully read
+2019-05-10 09:38:42,692 - starttarget - ERROR   start_target:167 - Target config must contain IQN, name, ACL and devices
+-------------------------------- live log call ---------------------------------
+09:38:42.692 [INFO] Got expected error trying to pass empty config: Invalid config (test_create_target.py:112)
+PASSED
+test_create_target.py::test_valid_full_config 
+-------------------------------- live log setup --------------------------------
+09:38:42.693 [INFO] Clearing test data... (test_create_target.py:98)
+09:38:42.841 [INFO] Cleanup result: (0, 'All configuration cleared') (test_create_target.py:100)
+2019-05-10 09:38:42,843 - starttarget - INFO    start_target:160 - JSON config was successfully read
+2019-05-10 09:38:42,843 - starttarget - INFO    start_target:170 - Creating target with name:  tgt1
+2019-05-10 09:38:42,843 - starttarget - INFO    start_target:59 - Creating Target IQN: iqn.2019-04.com.lio-project:tgt-tgt1
+2019-05-10 09:38:42,843 - starttarget - INFO    start_target:181 - Creating Target Portal Group: tpgt_1
+2019-05-10 09:38:42,844 - starttarget - INFO    start_target:209 - Creating ACL
+2019-05-10 09:38:42,844 - starttarget - INFO    start_target:229 - Creating portal using IP: 192.168.235.133
+2019-05-10 09:38:42,844 - starttarget - INFO    start_target:245 - Binding backstores with target
+2019-05-10 09:38:42,844 - starttarget - INFO    start_target:135 - Creating lun mapping: iqn.2019-04.com.lio-project:init-init1 -> fileio1
+PASSED
+test_create_target.py::test_valid_target 
+-------------------------------- live log setup --------------------------------
+09:38:43.285 [INFO] Clearing test data... (test_create_target.py:98)
+09:38:43.443 [INFO] Cleanup result: (0, 'All configuration cleared') (test_create_target.py:100)
+2019-05-10 09:38:43,444 - starttarget - INFO    start_target:59 - Creating Target IQN: iqn.2019-04.com.lio-project:tgt-tgt1
+PASSED
+test_create_target.py::test_same_target 
+-------------------------------- live log setup --------------------------------
+09:38:43.445 [INFO] Clearing test data... (test_create_target.py:98)
+09:38:43.584 [INFO] Cleanup result: (0, 'All configuration cleared') (test_create_target.py:100)
+2019-05-10 09:38:43,586 - starttarget - INFO    start_target:59 - Creating Target IQN: iqn.2019-04.com.lio-project:tgt-tgt1
+2019-05-10 09:38:43,586 - starttarget - INFO    start_target:59 - Creating Target IQN: iqn.2019-04.com.lio-project:tgt-tgt1
+2019-05-10 09:38:43,586 - starttarget - WARNING start_target:66 - Target with such iqn exists: iqn.2019-04.com.lio-project:tgt-tgt1
+-------------------------------- live log call ---------------------------------
+09:38:43.586 [INFO] Got expected error trying to create the same target: Target exists: iqn.2019-04.com.lio-project:tgt-tgt1 (test_create_target.py:163)
+PASSED
+test_create_target.py::test_invalid_target 
+-------------------------------- live log setup --------------------------------
+09:38:43.587 [INFO] Clearing test data... (test_create_target.py:98)
+09:38:43.737 [INFO] Cleanup result: (0, 'All configuration cleared') (test_create_target.py:100)
+2019-05-10 09:38:43,738 - starttarget - ERROR   start_target:53 - IQN does not match standards: invalid_iqn
+-------------------------------- live log call ---------------------------------
+09:38:43.738 [INFO] Got expected error trying to create invalid target: IQN does not match standards: invalid_iqn (test_create_target.py:168)
+PASSED
+test_create_target.py::test_add_extra_lun 
+-------------------------------- live log setup --------------------------------
+09:38:43.739 [INFO] Clearing test data... (test_create_target.py:98)
+09:38:43.883 [INFO] Cleanup result: (0, 'All configuration cleared') (test_create_target.py:100)
+2019-05-10 09:38:43,885 - starttarget - INFO    start_target:160 - JSON config was successfully read
+2019-05-10 09:38:43,885 - starttarget - INFO    start_target:170 - Creating target with name:  tgt1
+2019-05-10 09:38:43,885 - starttarget - INFO    start_target:59 - Creating Target IQN: iqn.2019-04.com.lio-project:tgt-tgt1
+2019-05-10 09:38:43,885 - starttarget - INFO    start_target:181 - Creating Target Portal Group: tpgt_1
+2019-05-10 09:38:43,885 - starttarget - INFO    start_target:209 - Creating ACL
+2019-05-10 09:38:43,886 - starttarget - INFO    start_target:229 - Creating portal using IP: 192.168.235.133
+2019-05-10 09:38:43,886 - starttarget - INFO    start_target:245 - Binding backstores with target
+2019-05-10 09:38:43,886 - starttarget - INFO    start_target:135 - Creating lun mapping: iqn.2019-04.com.lio-project:init-init1 -> fileio1
+2019-05-10 09:38:43,887 - starttarget - WARNING start_target:123 - sysfs entry already exists: /sys/kernel/config/target/iscsi/iqn.2019-04.com.lio-project:tgt-tgt1/tpgt_1/lun/lun_1/
+2019-05-10 09:38:43,887 - starttarget - WARNING start_target:124 - Skipping...
+-------------------------------- live log call ---------------------------------
+09:38:43.887 [INFO] Got expected error trying to create extra lun again: LUN already exists (test_create_target.py:204)
+PASSED
+------------------------------ live log teardown -------------------------------
+09:38:43.887 [INFO] Clearing test data... (test_create_target.py:98)
+09:38:44.063 [INFO] Cleanup result: (0, 'All configuration cleared') (test_create_target.py:100)
+
+test_validate_config.py::test_validate_valid_config PASSED
+test_validate_config.py::test_validate_missing_tgt_config 
+-------------------------------- live log call ---------------------------------
+09:38:44.069 [INFO] Got expected exception: 'target' is a required property
+
+Failed validating 'required' in schema:
+    {'properties': {'devices': {'items': {'properties': {'name': {'type': 'string'},
+                                           (test_validate_config.py:89)
+PASSED
+test_validate_config.py::test_validate_invalid_type_config 
+-------------------------------- live log call ---------------------------------
+09:38:44.070 [INFO] Got expected exception: 536870912 is not of type 'string'
+
+Failed validating 'type' in schema['properties']['devices']['items']['properties']['size']:
+    {'type': 'string'}
+
+On instance['devices'][0]['size']:
+    536870912 (test_validate_config.py:97)
+PASSED
+test_validate_config.py::test_validate_invalid_member_config 
+-------------------------------- live log call ---------------------------------
+09:38:44.072 [INFO] Got expected exception: 'name' is a required property
+
+Failed validating 'required' in schema['properties']['target']:
+    {'properties': {'name': {'type': 'string'}},
+     'required': ['name'],
+     'type': 'object'}
+
+On in (test_validate_config.py:105)
+PASSED
+test_verify_io.py::test_empty_config PASSED
+test_verify_io.py::test_error_message 2019-05-10 09:38:44,074 - verifyio - ERROR   verify_io:53 - Found unsuccessfull IO in config: IO to file1 failed with message: error message
+2019-05-10 09:38:44,074 - verifyio - ERROR   verify_io:55 - IO to file1 failed with message: error message
+
+-------------------------------- live log call ---------------------------------
+09:38:44.074 [INFO] Got expected error message (test_verify_io.py:64)
+PASSED
+test_verify_io.py::test_successfull_io 2019-05-10 09:38:44,075 - verifyio - DEBUG   verify_io:58 - Found successfull IO for device file1
+PASSED
+test_verify_io.py::test_incomplete_config 2019-05-10 09:38:44,075 - verifyio - ERROR   verify_io:48 - Config must contain success, message and dev_name
+
+-------------------------------- live log call ---------------------------------
+09:38:44.075 [INFO] Got expected error trying to pass incorrect config (test_verify_io.py:85)
+2019-05-10 09:38:44,076 - verifyio - ERROR   verify_io:48 - Config must contain success, message and dev_name
+09:38:44.076 [INFO] Got expected error trying to pass incorrect config (test_verify_io.py:85)
+2019-05-10 09:38:44,076 - verifyio - ERROR   verify_io:48 - Config must contain success, message and dev_name
+09:38:44.076 [INFO] Got expected error trying to pass incorrect config (test_verify_io.py:85)
+PASSED
+
+========================== 18 passed in 2.56 seconds ===========================

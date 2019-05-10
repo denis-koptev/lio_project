@@ -3,7 +3,7 @@ import pytest
 import logging
 from .. import create_devices
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = logging.getLogger()
 
 # Test data
 
@@ -64,7 +64,7 @@ def verify_device_data(dev_name):
     # Call special iSCSI CLI to get device
     output = subprocess.getstatusoutput("targetcli ls backstores/fileio/%s" % str(dev_name))
     if output[0] != 0:
-        LOGGER.info("Failed to get %s device: %s" % (str(dev_name), str(output[1])))
+        LOGGER.error("Failed to get %s device: %s" % (str(dev_name), str(output[1])))
         return False
     # If we succeeded to run command, find device_name in output
     # If name is found we consider that device is created
@@ -75,6 +75,7 @@ def verify_device_data(dev_name):
 def test_empty_config():
     result = create_devices.create_device(empty_config)
     assert not result["success"], "Got success while creating device with empty config"
+    LOGGER.info("Got expected error trying to pass empty config: %s" % result["message"])
 
 def test_valid_config():
     # Create valid devices

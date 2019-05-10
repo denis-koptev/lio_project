@@ -1,0 +1,11 @@
+============================= test session starts ==============================
+platform linux -- Python 3.7.3, pytest-3.10.1, py-1.7.0, pluggy-0.8.0
+rootdir: /home/denis/lio_project/unit_tests, inifile: pytest.ini
+collected 18 items
+
+test_create_devices.py ....                                              [ 22%]
+test_create_target.py ......                                             [ 55%]
+test_validate_config.py ....                                             [ 77%]
+test_verify_io.py ....                                                   [100%]
+
+========================== 18 passed in 2.53 seconds ===========================

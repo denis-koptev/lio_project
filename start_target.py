@@ -15,10 +15,11 @@ import json
 import glob
 import argparse
 import re
-from .logger import Logger
+import logging
+import logging.config
 
-
-LOG = Logger()
+logging.config.fileConfig('logging.conf')
+LOG = logging.getLogger('starttarget')
 
 
 def parse_args():
@@ -59,13 +60,13 @@ def create_main_target_dir(config):
 
     if not os.path.isdir(iscsi_dir):
         LOG.error('Directory for target configuration does not exist')
-        return build_funct_result(False, "Directory for target configuration does not exist")
+        return build_func_result(False, "Directory for target configuration does not exist")
 
     if os.path.isdir(tgt_dir):
         LOG.warning('Target with such iqn exists: %s' % config['iqn'])
         return build_func_result(False, "Target exists: %s" % config['iqn'], [tgt_dir])
     else:
-        LOG.info('Creating entry in sysfs: %s' % tgt_dir)
+        LOG.debug('Creating entry in sysfs: %s' % tgt_dir)
         try:
             os.makedirs(tgt_dir)
         except OSError as os_err:
@@ -82,7 +83,7 @@ def create_tpg(config, tgt_dir):
         return build_func_result(False, "Target Portal Group already exists", [tpg_dir])
 
     os.makedirs(tpg_dir)
-    LOG.info('Created entry in sysfs: %s' % tpg_dir)
+    LOG.debug('Created entry in sysfs: %s' % tpg_dir)
     return build_func_result(True, "Target Portal Group successfully created", [tpg_dir])
 
 
@@ -123,9 +124,9 @@ def add_single_lun(dev, config, tpg_dir, acl_dir):
         LOG.warning('Skipping...')
         return build_func_result(False, "LUN already exists")
 
-    LOG.info('Creating sysfs entry: %s' % dev_lun_dir)
+    LOG.debug('Creating sysfs entry: %s' % dev_lun_dir)
     os.makedirs(dev_lun_dir)
-    LOG.info('Creating symlink to %s' % dev_paths[0])
+    LOG.debug('Creating symlink to %s' % dev_paths[0])
     os.symlink(dev_paths[0], dev_lun_dir + dev['name'])
 
     # Make lun mapping
@@ -138,9 +139,9 @@ def add_single_lun(dev, config, tpg_dir, acl_dir):
             LOG.warning('Skipping creation of entire lun-map with symlink...')
             return build_func_result(False, "Mapping already exists")
 
-        LOG.info('Creating sysfs entry: %s' % map_dir)
+        LOG.debug('Creating sysfs entry: %s' % map_dir)
         os.makedirs(map_dir)
-        LOG.info('Creating symlink: %s -> %s' % (map_dir + dev['lun'], dev_lun_dir))
+        LOG.debug('Creating symlink: %s -> %s' % (map_dir + dev['lun'], dev_lun_dir))
         os.symlink(dev_lun_dir, map_dir + dev['lun'])
 
     return build_func_result(True, "LUN successfully created")
@@ -187,12 +188,12 @@ def create_target(config):
 
     # Enable target
 
-    LOG.info('Enabling target')
+    LOG.debug('Enabling target')
     open(tpg_dir + 'enable', 'w').write('1')
 
     # Set no auth
 
-    LOG.info('Switching auth off')
+    LOG.debug('Switching auth off')
 
     attrib_dir = tpg_dir + 'attrib/'
     param_dir = tpg_dir + 'param/'
@@ -216,7 +217,7 @@ def create_target(config):
         if os.path.isdir(acl_dir + iqn):
             LOG.warning('IQN %s already presented in ACL' % iqn)
         else:
-            LOG.info('Creating entry in sysfs: %s' % (acl_dir + iqn))
+            LOG.debug('Creating entry in sysfs: %s' % (acl_dir + iqn))
             os.makedirs(acl_dir + iqn)
 
     # Create portal
@@ -236,7 +237,7 @@ def create_target(config):
         if os.path.isdir(ip_dir):
             LOG.warning('Portal %s:3260 already presented' % ipaddr)
         else:
-            LOG.info('Creating entry in sysfs: %s' % ip_dir)
+            LOG.debug('Creating entry in sysfs: %s' % ip_dir)
             os.makedirs(ip_dir)
 
     # Add luns for devices if exist
@@ -252,7 +253,7 @@ def create_target(config):
     ip_file = open('session/target_ip', 'w')
     ip_file.write(ipaddr)
     ip_file.close()
-    LOG.info('Target IP was written to session/target_ip: %s' % ipaddr)
+    LOG.debug('Target IP was written to session/target_ip: %s' % ipaddr)
 
     return build_func_result(True, "Successfully create target")
 
@@ -260,12 +261,12 @@ def create_target(config):
 def main():
     global LOG
     args = parse_args()
-    if args.log:
-        LOG = Logger(filename=args.log)
+    #if args.log:
+    #    LOG = Logger(filename=args.log)
     config = get_json_from_file(args.config)
     create_target(config)
-    if args.log:
-        LOG.close()
+    #if args.log:
+    #    LOG.close()
 
 
 if __name__ == '__main__':

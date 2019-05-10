@@ -2,7 +2,7 @@ import pytest
 import logging
 from .. import verify_io
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = logging.getLogger()
 
 # Test data
 

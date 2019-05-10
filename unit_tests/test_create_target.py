@@ -6,7 +6,7 @@ import logging
 from .. import start_target
 from .. import create_devices
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = logging.getLogger()
 
 # Test data
 

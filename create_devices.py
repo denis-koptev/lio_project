@@ -15,10 +15,13 @@ import json
 import glob
 import argparse
 # from subprocess import getstatusoutput
-from .logger import Logger
+import logging
+import logging.config
 
 
-LOG = Logger()
+logging.config.fileConfig('logging.conf')
+LOG = logging.getLogger('createdevices')
+
 CORE_DIR = '/sys/kernel/config/target/core/'
 
 
@@ -84,7 +87,7 @@ def create_device(config):
         LOG.info('Configuring fileio device %s '
                  'and creaing storage' % config['name'])
         type_dir = CORE_DIR + 'fileio_'
-        LOG.info('Creating backstore for device %s' % config['name'])
+        LOG.debug('Creating backstore for device %s' % config['name'])
 
         try:
             storage = open('/' + config['name'], 'w')
@@ -138,16 +141,16 @@ def create_device(config):
 
     try:
         type_dir = type_dir + str(idx) + '/'
-        LOG.info('Creating entry in sysfs: %s' % type_dir)
+        LOG.debug('Creating entry in sysfs: %s' % type_dir)
         os.makedirs(type_dir)
 
         dev_dir = type_dir + config['name'] + '/'
-        LOG.info('Creating entry in sysfs: %s' % dev_dir)
+        LOG.debug('Creating entry in sysfs: %s' % dev_dir)
         os.makedirs(dev_dir)
 
-        LOG.info('Configuring params of device %s' % config['name'])
+        LOG.debug('Configuring params of device %s' % config['name'])
         open(dev_dir + 'control', 'w').write(control)
-        LOG.info('Enabling device %s' % config['name'])
+        LOG.debug('Enabling device %s' % config['name'])
         open(dev_dir + 'enable', 'w').write('1')
     except IOError as io_err:
         LOG.error("Failed to create entry in sysfs: %s" % str(io_err))
@@ -159,8 +162,8 @@ def create_device(config):
 def main():
     global LOG
     args = parse_args()
-    if args.log:
-        LOG = Logger(filename=args.log)
+    #if args.log:
+    #    LOG = Logger(filename=args.log)
     config = get_json_from_file(args.config)
 
     LOG.info('JSON config was successfully read')
@@ -175,8 +178,8 @@ def main():
 
     LOG.info('Finished creating devices')
 
-    if args.log:
-        LOG.close()
+    #if args.log:
+    #    LOG.close()
 
 
 if __name__ == '__main__':
